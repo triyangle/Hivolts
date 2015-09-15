@@ -1,3 +1,4 @@
+// class made by William based on Conway's Game of Life code
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -15,7 +16,7 @@ public class Display extends JComponent {
 	private final int CELL_WIDTH = 50;
 	private final int CELL_HEIGHT = 50;
 
-	private final int DISPLAY_WIDTH;   
+	private final int DISPLAY_WIDTH;
 	private final int DISPLAY_HEIGHT;
 	private boolean paintloop = false;
 	private boolean running = true;
@@ -60,10 +61,33 @@ public class Display extends JComponent {
 
 		}
 
+		addFences();
+		
 		//these just changes a certain cell to orange color, can be used for Hivolts maybe
-		cell[0][0].setAlive(true);
-		cell[3][2].setAlive(true);
+		//cell[0][0].setAlive(true);
+		//cell[3][2].setAlive(true);
 
+	}
+	
+	/*
+	 * Places fences on the grid
+	 */
+	public void addFences() {
+		
+		for (int row = 0; row < ROWS; row++) {
+			
+			cell[row][0].setFence(true);
+			cell[row][COLS-1].setFence(true);
+			
+		}
+		
+		for (int col = 0; col < COLS; col++) {
+			
+			cell[0][col].setFence(true);
+			cell[ROWS-1][col].setFence(true);
+			
+		}
+		
 	}
 
 	/**
@@ -75,9 +99,9 @@ public class Display extends JComponent {
 		for (int row = 0; row <= ROWS; row++) {
 
 			g.drawLine(X_GRID_OFFSET,
-					Y_GRID_OFFSET + (row * (CELL_HEIGHT + 1)), X_GRID_OFFSET
-					+ COLS * (CELL_WIDTH + 1), Y_GRID_OFFSET
-					+ (row * (CELL_HEIGHT + 1)));
+					   Y_GRID_OFFSET + (row * (CELL_HEIGHT + 1)), X_GRID_OFFSET
+					                 + COLS * (CELL_WIDTH + 1), Y_GRID_OFFSET
+					                 + (row * (CELL_HEIGHT + 1)));
 
 		}
 
