@@ -1,3 +1,3 @@
-__Hivolts__
+# Hivolts
 
 The purpose of this project is to reimplement the Hivolts game.
