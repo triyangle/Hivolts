@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 import javax.swing.JComponent;
 
-public class Display extends JComponent {
+public class Grid extends JComponent {
 
 	//grid info
 	public static final int ROWS = 12;
@@ -20,16 +20,42 @@ public class Display extends JComponent {
 	private final int DISPLAY_HEIGHT;
 	private boolean paintloop = false;
 	private boolean running = true;
+	
+	private Mho[] mhos; // list of all mhos
 
 
-	public Display(int width, int height) {
+	public Grid(int width, int height) {
 
 		DISPLAY_WIDTH = width;
 		DISPLAY_HEIGHT = height;
+		//placeMhos();
 		init();
 
 	}
 
+	// BUGGED
+	private void placeMhos() {
+		for (int i = 0; i < 12; i++) {
+			boolean occupied = true;
+			int x = 0, y = 0;
+			while (occupied) {
+				x = (int) Math.floor(12 * Math.random());
+				y = (int) Math.floor(12 * Math.random());
+				for (int j = 0; j < i; j++) {
+					int x2 = mhos[j].getX();
+					int y2 = mhos[j].getY();
+					if (x == x2 && y == y2) {
+						occupied = true;
+					}
+					else {
+						occupied = false;
+					}
+				}
+			}
+			mhos[i] = new Mho(x, y);
+		}
+	}
+	
 	public void init() {
 
 		setSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
@@ -134,4 +160,78 @@ public class Display extends JComponent {
 
 	}
 
+}
+
+class Cell {
+	
+	private int myX, myY; // x,y position on grid
+	private boolean myAlive; // alive (true) or dead (false)
+	private int myNeighbors; // count of neighbors with respect to x,y
+	private boolean myAliveNextTurn; // Used for state in next iteration
+	private Color myColor; // Based on fence/not fence
+	private boolean isFence; // Whether or not there is a fence in this cell
+	private final Color DEFAULT_FENCE = Color.ORANGE;
+	private final Color DEFAULT_EMPTY = Color.GRAY;
+
+	public Cell(int x, int y) {
+		this(x, y, false);
+	}
+
+	public Cell(int row, int col, boolean isFence) {
+		this.isFence = isFence;
+		this.myX = col;
+		this.myY = row;
+		if (this.isFence) {
+			this.myColor = DEFAULT_FENCE;
+		}
+		else {
+			this.myColor = DEFAULT_EMPTY;
+		}
+	}
+
+	public boolean getAlive() {
+		return myAlive;
+	}
+
+	public int getX() {
+		return myX;
+	}
+
+	public int getY() {
+		return myY;
+	}
+
+	public boolean setFence(boolean isFence) {
+		this.isFence = isFence;
+		if (this.isFence) {
+			this.myColor = DEFAULT_FENCE;
+		}
+		else {
+			this.myColor = DEFAULT_EMPTY;
+		}
+		return isFence;
+	}
+	
+	/**
+	 * Draws each cell according to the bounding gridlines
+	 * @param x_offset 
+	 * @param y_offset
+	 * @param width
+	 * @param height
+	 * @param g
+	 */
+	public void draw(int x_offset, int y_offset, int width, int height,
+			Graphics g) {
+
+		int xleft = x_offset + 1 + (myX * (width + 1));
+		int xright = x_offset + width + (myX * (width + 1));
+		int ytop = y_offset + 1 + (myY * (height + 1));
+		int ybottom = y_offset + height + (myY * (height + 1));
+		Color temp = g.getColor();
+
+		g.setColor(myColor);
+		g.fillRect(xleft, ytop, width, height);
+	}
+	
+	
 }
