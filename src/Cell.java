@@ -1,3 +1,4 @@
+// class made by William based on Conway's Game of Life code
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -8,19 +9,25 @@ public class Cell {
 	private boolean myAlive; // alive (true) or dead (false)
 	private int myNeighbors; // count of neighbors with respect to x,y
 	private boolean myAliveNextTurn; // Used for state in next iteration
-	private Color myColor; // Based on alive/dead rules
-	private final Color DEFAULT_ALIVE = Color.ORANGE;
-	private final Color DEFAULT_DEAD = Color.GRAY;
+	private Color myColor; // Based on fence/not fence
+	private boolean isFence; // Whether or not there is a fence in this cell
+	private final Color DEFAULT_FENCE = Color.ORANGE;
+	private final Color DEFAULT_EMPTY = Color.GRAY;
 
 	public Cell(int x, int y) {
-		this(x, y, false, Color.GRAY);
+		this(x, y, false);
 	}
 
-	public Cell(int row, int col, boolean alive, Color color) {
-		myAlive = alive;
-		myColor = color;
-		myX = col;
-		myY = row;
+	public Cell(int row, int col, boolean isFence) {
+		this.isFence = isFence;
+		this.myX = col;
+		this.myY = row;
+		if (this.isFence) {
+			this.myColor = DEFAULT_FENCE;
+		}
+		else {
+			this.myColor = DEFAULT_EMPTY;
+		}
 	}
 
 	public boolean getAlive() {
@@ -35,33 +42,17 @@ public class Cell {
 		return myY;
 	}
 
-	public Color getColor() {
-		return myColor;
-	}
-
-	public void setAlive(boolean alive) {
-		
-		if (alive) {
-			
-			setAlive(true, DEFAULT_ALIVE);
-			
-		} else {
-			
-			setAlive(false, DEFAULT_DEAD);
-			
+	public boolean setFence(boolean isFence) {
+		this.isFence = isFence;
+		if (this.isFence) {
+			this.myColor = DEFAULT_FENCE;
 		}
-		
+		else {
+			this.myColor = DEFAULT_EMPTY;
+		}
+		return isFence;
 	}
-
-	public void setAlive(boolean alive, Color color) {
-		myColor = color;
-		myAlive = alive;
-	}
-
-	public void setColor(Color color) {
-		myColor = color;
-	}
-
+	
 	/**
 	 * Draws each cell according to the bounding gridlines
 	 * @param x_offset 
