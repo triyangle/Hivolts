@@ -28,38 +28,83 @@ public class Grid extends JComponent {
 
 		DISPLAY_WIDTH = width;
 		DISPLAY_HEIGHT = height;
-		//placeMhos();
 		init();
 
 	}
 
-	/*// BUGGED
-	private void placeMhos() {
-		for (int i = 0; i < 12; i++) {
+	/**
+	 * Place fences randomly in the interior so that there are no overlapping fences.
+	 * @param n The number of fences to place
+	 */
+	private void placeFences(int n) {
+		for (int i = 0; i < n; i++) {
 			boolean occupied = true;
-			int x = 0, y = 0;
+			int x = 0;
+			int y = 0;
 			while (occupied) {
 				x = (int) Math.floor(12 * Math.random());
 				y = (int) Math.floor(12 * Math.random());
-				for (int j = 0; j < i; j++) {
-					int x2 = mhos[j].getX();
-					int y2 = mhos[j].getY();
-					if (x == x2 && y == y2) {
-						occupied = true;
-					}
-					else {
-						occupied = false;
-					}
-				}
+				occupied = occupiedByFence(x, y);
+			}
+			cell[x][y].setFence(true);
+		}
+	}
+	
+	/**
+	 * Place mhos randomly in the interior so that no mhos overlap other mhos or fences.
+	 * Also initializes the list of mhos
+	 * @param n The number of mhos to place
+	 */
+	private void placeMhos(int n) {
+		for (int i = 0; i < n; i++) {
+			boolean occupied = true;
+			int x = 0;
+			int y = 0;
+			while (occupied) {
+				x = (int) Math.floor(12 * Math.random());
+				y = (int) Math.floor(12 * Math.random());
+				occupied = occupiedByMho(x, y, i) || occupiedByFence(x, y);
 			}
 			mhos[i] = new Mho(x, y);
 		}
-	}*/
+	}
+	
+	/**
+	 * This method loops through all existing mhos to see whether or not a certain cell is occupied by a mho
+	 * @param x The x-coordinate of the cell
+	 * @param y The y-coordinate of the cell
+	 * @param mhoCount The number of mhos in the list of mhos
+	 * @return whether or not the cell in question is occupied by a mho
+	 */
+	public boolean occupiedByMho(int x, int y, int mhoCount) {
+		boolean occupied = false;
+		for (int i = 0; i < mhoCount; i++) {
+			int x2 = mhos[i].getX();
+			int y2 = mhos[i].getY();
+			if (x == x2 && y == y2) {
+				occupied = true;
+			}
+		}
+		return occupied;
+	}
+	
+	/**
+	 * This method checks to see if a certain cell is occupied by a fence
+	 * @param x The x-coordinate of the cell
+	 * @param y The y-coordinate of the cell
+	 * @return whether or not the cell in question is occupied by a fence
+	 */
+	public boolean occupiedByFence(int x, int y) {
+		return cell[x][y].getFence();
+	}
 
 	public void init() {
 
 		setSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
 		initCells();
+		addOuterFences();
+		placeFences(20);
+		placeMhos(12);
 		repaint();
 
 	}
@@ -69,7 +114,8 @@ public class Grid extends JComponent {
 		g.setColor(Color.BLACK);
 		drawGrid(g);
 		drawCells(g);
-
+		drawMhos(g);
+		
 		//drawFences(g);
 
 	}
@@ -83,24 +129,18 @@ public class Grid extends JComponent {
 
 			for (int col = 0; col < COLS; col++) {
 
-				cell[row][col] = new Cell(row, col);
+				cell[row][col] = new Cell(row, col, false);
 
 			}
 
 		}
 
-		addFences();
-		initMhos();
-		//these just changes a certain cell to orange color, can be used for Hivolts maybe
-		//cell[0][0].setAlive(true);
-		//cell[3][2].setAlive(true);
-
 	}
 
-	/*
-	 * Places fences on the grid
+	/**
+	 * Places the outer fences
 	 */
-	public void addFences() {
+	public void addOuterFences() {
 
 		for (int row = 0; row < ROWS; row++) {
 
@@ -124,21 +164,6 @@ public class Grid extends JComponent {
 		fence1.drawFence();
 
 
-	}
-
-	public void initMhos() {
-
-		for(int i = 0; i < mhos.length; i++) {
-
-			mhos[i] = new Mho();
-
-		}
-
-		for(Mho mho : mhos) {
-
-			mho.placeMho(cell);
-
-		}
 	}
 
 
@@ -184,6 +209,12 @@ public class Grid extends JComponent {
 
 		}
 
+	}
+	
+	void drawMhos(Graphics g) {
+		for (Mho mho : mhos) {
+			mho.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
+		}
 	}
 
 	private void nextTurn() {
@@ -262,6 +293,10 @@ class Cell {
 		}
 		return isFence;
 	}
+	
+	public boolean getFence() {
+		return isFence;
+	}
 
 	/**
 	 * Draws each cell according to the bounding gridlines
@@ -307,11 +342,11 @@ class Cell {
 
 	}*/
 
-	public void setMho() {
+	/*public void setMho() { Cells should not have the property of being a Mho or not because that makes it awkward to move them around
 
 		this.myColor = MHO;
 
-	}
+	}*/
 
 
 }
