@@ -1,14 +1,10 @@
-/**
- * 
- * @author Albert
- *
- */
+import java.awt.Color;
+import java.awt.Graphics;
 
-//can probably use some of the Mho class methods/fields for the general entity class
-public class Mho {
+// class made by Albert
 
-	private int x;
-	private int y;
+public class Mho extends Entity {
+
 	private boolean alive;
 	
 	public Mho() {
@@ -17,9 +13,9 @@ public class Mho {
 		
 	}
 	
-	public Mho(int x, int y, Cell cell) {
+	public Mho(int x, int y) {
 		
-		this.x = 
+		this.x = x;
 		this.y = y;
 		
 	}
@@ -48,11 +44,20 @@ public class Mho {
 		
 	}
 	
-	/*
-	 * 
+	/**
+	 * Draws a mho (based on Cell.draw) -- maybe entity should have the draw method that takes color/image as a param
 	 */
-	public void draw() {
-		
+	public void draw(int x_offset, int y_offset, int width, int height,
+			Graphics g) {
+
+		int xleft = x_offset + 1 + (x * (width + 1));
+		int xright = x_offset + width + (x * (width + 1));
+		int ytop = y_offset + 1 + (y * (height + 1));
+		int ybottom = y_offset + height + (y * (height + 1));
+		Color temp = g.getColor();
+
+		g.setColor(Color.RED);
+		g.fillRect(xleft, ytop, width, height);
 	}
 	
 	public void setAlive(boolean newAlive) {
@@ -68,8 +73,8 @@ public class Mho {
 	}
 	
 	//places one particular mho
-	
-	public void placeMho(Cell[][] cell) {
+	// Mhos should not be a property of a cell because that makes it awkward to move them around
+	/*public void placeMho(Cell[][] cell) {
 		
 		x = (int)(Math.random() * 12);
 		y = (int)(Math.random() * 12);
@@ -84,7 +89,7 @@ public class Mho {
 		
 		cell[x][y].setMho();
 		
-	}
+	}*/
 	
 	public void nextTurn() {
 		
