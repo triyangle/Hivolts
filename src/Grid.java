@@ -20,8 +20,8 @@ public class Grid extends JComponent {
 	private final int DISPLAY_HEIGHT;
 	private boolean paintloop = false;
 	private boolean running = true;
-	
-	private Mho[] mhos; // list of all mhos
+
+	private Mho[] mhos = new Mho[12]; // list of all mhos
 
 
 	public Grid(int width, int height) {
@@ -33,7 +33,7 @@ public class Grid extends JComponent {
 
 	}
 
-	// BUGGED
+	/*// BUGGED
 	private void placeMhos() {
 		for (int i = 0; i < 12; i++) {
 			boolean occupied = true;
@@ -54,8 +54,8 @@ public class Grid extends JComponent {
 			}
 			mhos[i] = new Mho(x, y);
 		}
-	}
-	
+	}*/
+
 	public void init() {
 
 		setSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
@@ -69,7 +69,9 @@ public class Grid extends JComponent {
 		g.setColor(Color.BLACK);
 		drawGrid(g);
 		drawCells(g);
-		//drawButtons();
+
+		//drawFences(g);
+
 	}
 
 	/**
@@ -88,33 +90,57 @@ public class Grid extends JComponent {
 		}
 
 		addFences();
-		
+		initMhos();
 		//these just changes a certain cell to orange color, can be used for Hivolts maybe
 		//cell[0][0].setAlive(true);
 		//cell[3][2].setAlive(true);
 
 	}
-	
+
 	/*
 	 * Places fences on the grid
 	 */
 	public void addFences() {
-		
+
 		for (int row = 0; row < ROWS; row++) {
-			
+
 			cell[row][0].setFence(true);
 			cell[row][COLS-1].setFence(true);
-			
+
 		}
-		
+
 		for (int col = 0; col < COLS; col++) {
-			
+
 			cell[0][col].setFence(true);
 			cell[ROWS-1][col].setFence(true);
-			
+
 		}
-		
+
 	}
+
+	public void drawFences(Graphics g) {
+
+		Fence fence1 = new Fence(g);
+		fence1.drawFence();
+
+
+	}
+
+	public void initMhos() {
+
+		for(int i = 0; i < mhos.length; i++) {
+
+			mhos[i] = new Mho();
+
+		}
+
+		for(Mho mho : mhos) {
+
+			mho.placeMho(cell);
+
+		}
+	}
+
 
 	/**
 	 * Draws the lines for the grid
@@ -125,9 +151,9 @@ public class Grid extends JComponent {
 		for (int row = 0; row <= ROWS; row++) {
 
 			g.drawLine(X_GRID_OFFSET,
-					   Y_GRID_OFFSET + (row * (CELL_HEIGHT + 1)), X_GRID_OFFSET
-					                 + COLS * (CELL_WIDTH + 1), Y_GRID_OFFSET
-					                 + (row * (CELL_HEIGHT + 1)));
+					Y_GRID_OFFSET + (row * (CELL_HEIGHT + 1)), X_GRID_OFFSET
+					+ COLS * (CELL_WIDTH + 1), Y_GRID_OFFSET
+					+ (row * (CELL_HEIGHT + 1)));
 
 		}
 
@@ -160,11 +186,19 @@ public class Grid extends JComponent {
 
 	}
 
+	private void nextTurn() {
+
+
+		//repaint();
+
+	}
+
 }
 
 class Cell {
-	
+
 	private int myX, myY; // x,y position on grid
+	private boolean occupied;
 	private boolean myAlive; // alive (true) or dead (false)
 	private int myNeighbors; // count of neighbors with respect to x,y
 	private boolean myAliveNextTurn; // Used for state in next iteration
@@ -173,32 +207,49 @@ class Cell {
 	private final Color DEFAULT_FENCE = Color.ORANGE;
 	private final Color DEFAULT_EMPTY = Color.GRAY;
 
+	private final Color MHO = Color.RED;
+
 	public Cell(int x, int y) {
+
 		this(x, y, false);
+
 	}
 
 	public Cell(int row, int col, boolean isFence) {
+
 		this.isFence = isFence;
 		this.myX = col;
 		this.myY = row;
+
 		if (this.isFence) {
+
 			this.myColor = DEFAULT_FENCE;
+
 		}
+
 		else {
+
 			this.myColor = DEFAULT_EMPTY;
+
 		}
 	}
 
 	public boolean getAlive() {
+
 		return myAlive;
+
 	}
 
 	public int getX() {
+
 		return myX;
+
 	}
 
 	public int getY() {
+
 		return myY;
+
 	}
 
 	public boolean setFence(boolean isFence) {
@@ -211,7 +262,7 @@ class Cell {
 		}
 		return isFence;
 	}
-	
+
 	/**
 	 * Draws each cell according to the bounding gridlines
 	 * @param x_offset 
@@ -232,6 +283,35 @@ class Cell {
 		g.setColor(myColor);
 		g.fillRect(xleft, ytop, width, height);
 	}
-	
-	
+
+	public void setOccupied(boolean newOccupied) {
+
+		this.occupied = newOccupied;
+
+	}
+
+	public boolean getOccupied() {
+
+		return occupied;
+
+	}
+
+	public void setEntity() {
+
+
+
+	}
+
+	/*public Entity getEntity() {
+
+
+	}*/
+
+	public void setMho() {
+
+		this.myColor = MHO;
+
+	}
+
+
 }
