@@ -13,7 +13,7 @@ public class Main {
 		
 		f.setSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
 		
-		Display display = new Display(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+		Grid display = new Grid(DISPLAY_WIDTH, DISPLAY_HEIGHT);
 		
 		f.setLayout(null);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
