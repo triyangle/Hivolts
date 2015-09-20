@@ -17,7 +17,7 @@ public class Fence {
 	}
 
 	//works, but fence is too big
-	public void drawFence() {
+	public void drawFence(Graphics g) {
 		
 		try {
 
