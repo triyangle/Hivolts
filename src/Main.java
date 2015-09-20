@@ -1,4 +1,5 @@
 
+import java.awt.BorderLayout;
 import javax.swing.JFrame;
 
 public class Main {
@@ -6,19 +7,18 @@ public class Main {
 	public static void main(String[] args) {
 		
 		// Bring up a JFrame with squares to represent the cells
-		final int DISPLAY_WIDTH = 800;
-		final int DISPLAY_HEIGHT = 800;
+		final int DISPLAY_WIDTH = 713;
+		final int DISPLAY_HEIGHT = 713;
 		
 		JFrame f = new JFrame();
 		
-		f.setSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
-		
 		Grid display = new Grid(DISPLAY_WIDTH, DISPLAY_HEIGHT);
 		
-		f.setLayout(null);
+		f.setLayout(new BorderLayout());
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setTitle("Hivolts");
-		f.add(display);
+		f.add(display, BorderLayout.CENTER);
+		f.pack();
 		f.setVisible(true);
 		
 	}
