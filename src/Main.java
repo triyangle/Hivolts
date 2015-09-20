@@ -21,6 +21,14 @@ public class Main {
 		f.pack();
 		f.setVisible(true);
 		
+		//fixes window dimensions
+		//f.setResizable(false);
+		
+		//centers window placement
+		//f.setLocationRelativeTo(null);
+		
+		
+		
 	}
 	
 }

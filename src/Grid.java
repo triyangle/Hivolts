@@ -7,8 +7,6 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JComponent;
-import java.awt.image.BufferedImage;
-import java.io.*;
 import java.awt.*;
 
 import javax.imageio.ImageIO;
@@ -135,6 +133,7 @@ public class Grid extends JComponent {
 	public void init() {
 
 		setSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+		initFenceImage();
 		initCells();
 		addOuterFences();
 		placeFences(20);
@@ -153,6 +152,23 @@ public class Grid extends JComponent {
 		drawMhos(g);
 		drawPlayer(g);
 
+	}
+	
+	/**
+	 * Initializes the fence image
+	 */
+	public void initFenceImage() {
+		
+		try {
+
+			Fence.setImage(ImageIO.read(new File("fence.png")));
+
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+
+		}
+		
 	}
 
 	/**

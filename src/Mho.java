@@ -1,5 +1,11 @@
+
 import java.awt.Color;
 
+/**
+ * 
+ * @author Albert
+ *
+ */
 // class made by Albert
 
 public class Mho extends Entity {
