@@ -149,11 +149,9 @@ public class Grid extends JComponent {
 		g.setColor(Color.BLACK);
 		drawGrid(g);
 		drawCells(g);
+		drawFences(g);
 		drawMhos(g);
 		drawPlayer(g);
-
-		drawFences(g);
-		//drawFences(g);
 
 	}
 
@@ -324,7 +322,7 @@ class Cell extends Entity {
 
 	}
 
-	public Cell(int row, int col, boolean isFence) {
+	public Cell(int col, int row, boolean isFence) {
 
 		this.isFence = isFence;
 		this.x = col;
