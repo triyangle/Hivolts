@@ -4,20 +4,15 @@ import java.io.*;
 
 import javax.imageio.ImageIO;
 
-public class Fence {
+public class Fence extends Entity {
 
 	private BufferedImage fence;
-	private Graphics g;
+	//private Graphics g;
 
-	public Fence(Graphics g) {
+	public Fence(int x, int y) {
 		
-		this.g = g;
-		//drawFence(g);
-
-	}
-
-	//works, but fence is too big
-	public void drawFence(Graphics g) {
+		this.x = x;
+		this.y = y;
 		
 		try {
 
@@ -25,13 +20,24 @@ public class Fence {
 
 		} catch (IOException e) {
 
-
-
 		}
-		
-		//use other drawImage method in Graphics class to scale height/width
-		g.drawImage(fence, 0, 0, null);
 
 	}
+
+	//works, but fence is too big
+	@Override
+	public void draw(int xOffset, int yOffset, int width, int height, Graphics g) {
+		
+		int xLeft = xOffset + 1 + (this.x * (width + 1));
+		int yTop = yOffset + 1 + (this.y * (height + 1));
+		
+		//g.setColor(myColor);
+		
+		g.drawImage(fence, xLeft, yTop, width, height, null);
+		//g.fillRect(xLeft, yTop, width, height);
+		
+	}
+	
+	
 
 }

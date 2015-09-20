@@ -3,8 +3,15 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JComponent;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.awt.*;
+
+import javax.imageio.ImageIO;
 
 public class Grid extends JComponent {
 
@@ -20,6 +27,9 @@ public class Grid extends JComponent {
 	private final int DISPLAY_WIDTH;
 	private final int DISPLAY_HEIGHT;
 
+	private Fence[] innerFences = new Fence[20];
+	private Fence[] outerFences = new Fence[48];
+	
 	private Mho[] mhos = new Mho[12]; // list of all mhos
 	private Player player;
 
@@ -38,7 +48,7 @@ public class Grid extends JComponent {
 	public Dimension getPreferredSize() {
 		return new Dimension(DISPLAY_WIDTH, DISPLAY_HEIGHT);
 	}
-	
+
 	/**
 	 * Place fences randomly in the interior so that there are no overlapping fences.
 	 * @param n The number of fences to place
@@ -53,10 +63,12 @@ public class Grid extends JComponent {
 				y = (int) Math.floor(12 * Math.random());
 				occupied = occupiedByFence(x, y);
 			}
+
+			innerFences[i] = new Fence(x, y);
 			cell[x][y].setFence(true);
 		}
 	}
-	
+
 	/**
 	 * Place mhos randomly in the interior so that no mhos overlap other mhos or fences.
 	 * Also initializes the list of mhos
@@ -75,7 +87,7 @@ public class Grid extends JComponent {
 			mhos[i] = new Mho(x, y);
 		}
 	}
-	
+
 	/**
 	 * Place the player where there is no mho or fence.
 	 */
@@ -90,7 +102,7 @@ public class Grid extends JComponent {
 		}
 		player = new Player(x, y);
 	}
-	
+
 	/**
 	 * This method loops through all existing mhos to see whether or not a certain cell is occupied by a mho
 	 * @param x The x-coordinate of the cell
@@ -109,7 +121,7 @@ public class Grid extends JComponent {
 		}
 		return occupied;
 	}
-	
+
 	/**
 	 * This method checks to see if a certain cell is occupied by a fence
 	 * @param x The x-coordinate of the cell
@@ -139,7 +151,8 @@ public class Grid extends JComponent {
 		drawCells(g);
 		drawMhos(g);
 		drawPlayer(g);
-		
+
+		drawFences(g);
 		//drawFences(g);
 
 	}
@@ -166,26 +179,46 @@ public class Grid extends JComponent {
 	 */
 	public void addOuterFences() {
 
+		int outerFenceCount = 0;
+		
 		for (int row = 0; row < ROWS; row++) {
 
 			cell[row][0].setFence(true);
+			
+			outerFences[outerFenceCount++] = new Fence(row, 0);
+			
+			//outerFenceCount++;
+			
 			cell[row][COLS-1].setFence(true);
+			
+			outerFences[outerFenceCount++] = new Fence(row, COLS - 1);
+			
+			//outerFenceCount++;
 
 		}
 
 		for (int col = 0; col < COLS; col++) {
 
 			cell[0][col].setFence(true);
+						
+			outerFences[outerFenceCount++] = new Fence(0, col);
+			
+			//outerFenceCount++;
+			
 			cell[ROWS-1][col].setFence(true);
+			
+			outerFences[outerFenceCount++] = new Fence(ROWS - 1, col);
+			
+			//outerFenceCount++;
 
 		}
 
 	}
 
-	public void drawFences(Graphics g) {
+	public void drawFences() {
 
-		Fence fence1 = new Fence(g);
-		fence1.drawFence(g);
+		//Fence fence1 = new Fence();
+		//fence1.drawFence(g);
 
 
 	}
@@ -234,7 +267,7 @@ public class Grid extends JComponent {
 		}
 
 	}
-	
+
 	void drawMhos(Graphics g) {
 		for (Mho mho : mhos) {
 			mho.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
@@ -244,13 +277,31 @@ public class Grid extends JComponent {
 	void drawPlayer(Graphics g) {
 		player.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
 	}
-	
+
 	private void nextTurn() {
 
 
 		//repaint();
 
 	}
+
+	public void drawFences(Graphics g) {
+
+		for(Fence innerFence : innerFences) {
+
+			innerFence.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
+
+		}
+
+		for(Fence outerFence : outerFences) {
+			
+			outerFence.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
+
+		}
+
+	}
+
+
 
 }
 
@@ -262,6 +313,8 @@ class Cell extends Entity {
 	private boolean isFence; // Whether or not there is a fence in this cell
 	private final Color DEFAULT_FENCE = Color.ORANGE;
 	private final Color DEFAULT_EMPTY = Color.GRAY;
+
+	private static Image fence;
 
 	// private final Color MHO = Color.RED;
 
@@ -296,17 +349,19 @@ class Cell extends Entity {
 
 	}
 
-	public boolean setFence(boolean isFence) {
+	public void setFence(boolean isFence) {
+
 		this.isFence = isFence;
-		if (this.isFence) {
+
+		/*if (this.isFence) {
 			this.myColor = DEFAULT_FENCE;
 		}
 		else {
 			this.myColor = DEFAULT_EMPTY;
-		}
-		return isFence;
+		}*/
+
 	}
-	
+
 	public boolean getFence() {
 		return isFence;
 	}
