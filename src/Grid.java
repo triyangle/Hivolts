@@ -43,6 +43,7 @@ public class Grid extends JComponent {
 	/**
 	 * Overrides the preferred size (of 0) to make it the correct with and height.
 	 */
+	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(DISPLAY_WIDTH, DISPLAY_HEIGHT);
 	}
@@ -130,9 +131,12 @@ public class Grid extends JComponent {
 		return cell[x][y].getFence();
 	}
 
+	/**
+	 * Call methods to load the fence image, initialize the cells, add fences around the edge,
+	 * place fences and mhos, and place the player.
+	 */
 	public void init() {
 
-		setSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
 		initFenceImage();
 		initCells();
 		addOuterFences();
@@ -143,6 +147,7 @@ public class Grid extends JComponent {
 
 	}
 
+	@Override
 	public void paintComponent(Graphics g) {
 
 		g.setColor(Color.BLACK);
@@ -229,14 +234,6 @@ public class Grid extends JComponent {
 
 	}
 
-	public void drawFences() {
-
-		//Fence fence1 = new Fence();
-		//fence1.drawFence(g);
-
-
-	}
-
 
 	/**
 	 * Draws the lines for the grid
@@ -282,23 +279,34 @@ public class Grid extends JComponent {
 
 	}
 
+	/**
+	 * Draws all the mhos on the grid
+	 * @param g The graphics component on which to draw the mhos
+	 */
 	void drawMhos(Graphics g) {
 		for (Mho mho : mhos) {
 			mho.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
 		}
 	}
 
+	/**
+	 * Draws the player
+	 * @param g The graphics component on which to draw the mhos
+	 */
 	void drawPlayer(Graphics g) {
 		player.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
 	}
 
-	private void nextTurn() {
-
+	/*private void nextTurn() {
 
 		//repaint();
 
-	}
+	}*/
 
+	/**
+	 * Draws the inner and outer fences
+	 * @param g The graphics component on which to draw the mhos
+	 */
 	public void drawFences(Graphics g) {
 
 		for(Fence innerFence : innerFences) {
@@ -315,20 +323,17 @@ public class Grid extends JComponent {
 
 	}
 
-
-
 }
 
 class Cell extends Entity {
 
 	private boolean occupied;
 	private boolean myAlive; // alive (true) or dead (false)
-	//private Color myColor; // Based on fence/not fence
 	private boolean isFence; // Whether or not there is a fence in this cell
 	private final Color DEFAULT_FENCE = Color.ORANGE;
 	private final Color DEFAULT_EMPTY = Color.GRAY;
 
-	private static Image fence;
+	//private static Image fence;
 
 	// private final Color MHO = Color.RED;
 
@@ -343,18 +348,8 @@ class Cell extends Entity {
 		this.isFence = isFence;
 		this.x = col;
 		this.y = row;
-
-		if (this.isFence) {
-
-			this.myColor = DEFAULT_FENCE;
-
-		}
-
-		else {
-
-			this.myColor = DEFAULT_EMPTY;
-
-		}
+		this.myColor = DEFAULT_EMPTY;
+		
 	}
 
 	public boolean getAlive() {
@@ -366,13 +361,6 @@ class Cell extends Entity {
 	public void setFence(boolean isFence) {
 
 		this.isFence = isFence;
-
-		/*if (this.isFence) {
-			this.myColor = DEFAULT_FENCE;
-		}
-		else {
-			this.myColor = DEFAULT_EMPTY;
-		}*/
 
 	}
 
@@ -392,20 +380,13 @@ class Cell extends Entity {
 
 	}
 
-	public void setEntity() {
-
+	/*public void setEntity() {
 
 
 	}
 
-	/*public Entity getEntity() {
+	public Entity getEntity() {
 
-
-	}*/
-
-	/*public void setMho() { Cells should not have the property of being a Mho or not because that makes it awkward to move them around
-
-		this.myColor = MHO;
 
 	}*/
 
