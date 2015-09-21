@@ -3,7 +3,7 @@ import java.awt.image.BufferedImage;
 
 public class Fence extends Entity {
 
-	private static BufferedImage fenceImage;
+	private static BufferedImage sprite;
 	//private Graphics g;
 
 	public Fence(int x, int y) {
@@ -19,7 +19,7 @@ public class Fence extends Entity {
 	 */
 	public static void setImage(BufferedImage image) {
 		
-		fenceImage = image;
+		sprite = image;
 		
 	}
 	
@@ -31,7 +31,7 @@ public class Fence extends Entity {
 		
 		//g.setColor(myColor);
 		
-		g.drawImage(fenceImage, xLeft, yTop, width, height, null);
+		g.drawImage(sprite, xLeft, yTop, width, height, null);
 		//g.fillRect(xLeft, yTop, width, height);
 		
 	}
