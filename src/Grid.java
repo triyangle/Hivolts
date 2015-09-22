@@ -330,9 +330,35 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	}
 
 	@Override
-	public void keyPressed(KeyEvent arg0) {
+	public void keyPressed(KeyEvent e) {
 
-		
+		switch(e.getKeyChar()) {
+
+		case 'q': //up and left
+			break;
+		case 'w': //up
+			break;
+		case 'e': //up and right
+			break;
+		case 'a': //left
+			break;
+		case 's': //sit/stay
+			break;
+		case 'd': //right
+			break;
+		case 'z': //down and left
+			break;
+		case 'x': //down
+			break;
+		case 'c': //down and right
+			break;
+		case 'j': //jump
+			System.out.println(e.getKeyChar());
+		default:  break;
+
+
+
+		}
 
 	}
 
@@ -344,30 +370,13 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 
 	/**
 	 * Click on window to focus keylistener
+	 * Don't use keyTyped unless you are actually typing anything which we are not
 	 * @param e The KeyEvent that occurs
 	 */
 	@Override
 	public void keyTyped(KeyEvent e) {
 
-		switch(e.getKeyChar()) {
 
-		case 'q': //up and left
-			
-		case 'w': //up
-		case 'e': //up and right
-		case 'a': //left
-		case 's': //sit/stay
-		case 'd': //right
-		case 'z': //down and left
-		case 'x': //down
-		case 'c': //down and right
-		case 'j': //jump
-			System.out.println(e.getKeyChar());
-		default:  break;
-
-
-
-		}
 
 	}
 
