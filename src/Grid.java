@@ -3,6 +3,10 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -11,7 +15,7 @@ import java.awt.*;
 
 import javax.imageio.ImageIO;
 
-public class Grid extends JComponent {
+public class Grid extends JComponent implements KeyListener, MouseListener {
 
 	//grid info
 	public static final int ROWS = 12;
@@ -27,7 +31,7 @@ public class Grid extends JComponent {
 
 	private Fence[] innerFences = new Fence[20];
 	private Fence[] outerFences = new Fence[48];
-	
+
 	private Mho[] mhos = new Mho[12]; // list of all mhos
 	private Player player;
 
@@ -36,6 +40,8 @@ public class Grid extends JComponent {
 
 		DISPLAY_WIDTH = width;
 		DISPLAY_HEIGHT = height;
+		addKeyListener(this);
+		addMouseListener(this);
 		init();
 
 	}
@@ -158,22 +164,22 @@ public class Grid extends JComponent {
 		drawPlayer(g);
 
 	}
-	
+
 	/**
 	 * Initializes the fence image
 	 */
 	public void initFenceImage() {
-		
+
 		try {
 
 			Fence.setImage(ImageIO.read(new File("fence.png")));
 
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 
 		}
-		
+
 	}
 
 	/**
@@ -199,19 +205,19 @@ public class Grid extends JComponent {
 	public void addOuterFences() {
 
 		int outerFenceCount = 0;
-		
+
 		for (int row = 0; row < ROWS; row++) {
 
 			cell[row][0].setFence(true);
-			
+
 			outerFences[outerFenceCount++] = new Fence(row, 0);
-			
+
 			//outerFenceCount++;
-			
+
 			cell[row][COLS-1].setFence(true);
-			
+
 			outerFences[outerFenceCount++] = new Fence(row, COLS - 1);
-			
+
 			//outerFenceCount++;
 
 		}
@@ -219,15 +225,15 @@ public class Grid extends JComponent {
 		for (int col = 0; col < COLS; col++) {
 
 			cell[0][col].setFence(true);
-						
+
 			outerFences[outerFenceCount++] = new Fence(0, col);
-			
+
 			//outerFenceCount++;
-			
+
 			cell[ROWS-1][col].setFence(true);
-			
+
 			outerFences[outerFenceCount++] = new Fence(ROWS - 1, col);
-			
+
 			//outerFenceCount++;
 
 		}
@@ -316,11 +322,84 @@ public class Grid extends JComponent {
 		}
 
 		for(Fence outerFence : outerFences) {
-			
+
 			outerFence.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
 
 		}
 
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+
+		
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * Click on window to focus keylistener
+	 * @param e The KeyEvent that occurs
+	 */
+	@Override
+	public void keyTyped(KeyEvent e) {
+
+		switch(e.getKeyChar()) {
+
+		case 'q': //up and left
+			
+		case 'w': //up
+		case 'e': //up and right
+		case 'a': //left
+		case 's': //sit/stay
+		case 'd': //right
+		case 'z': //down and left
+		case 'x': //down
+		case 'c': //down and right
+		case 'j': //jump
+			System.out.println(e.getKeyChar());
+		default:  break;
+
+
+
+		}
+
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+
+		this.grabFocus();
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+
+		
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
@@ -349,7 +428,7 @@ class Cell extends Entity {
 		this.x = col;
 		this.y = row;
 		this.myColor = DEFAULT_EMPTY;
-		
+
 	}
 
 	public boolean getAlive() {
