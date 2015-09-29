@@ -169,6 +169,26 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	public boolean occupiedByFence(int x, int y) {
 		return cell[x][y].getFence();
 	}
+	
+	/**
+	 * Make all mhos move. In order to comply with the specification, mhos that are
+	 * on the same horizontal or vertical line as the player must move first.
+	 */
+	public void moveMhos() {
+		for (int i = 0; i < mhos.length; i++) {
+			if (mhos[i].x == player.x) {
+				mhos[i].acty(player.y);
+			}
+			if (mhos[i].y == player.y) {
+				mhos[i].actx(player.x);
+			}
+		}
+		for (int i = 0; i < mhos.length; i++) {
+			if (mhos[i].x != player.x && mhos[i].y != player.y) {
+				mhos[i].act(player.x, player.y);
+			}
+		}
+	}
 
 	@Override
 	public void paintComponent(Graphics g) {
@@ -271,54 +291,50 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 
 		switch(e.getKeyChar()) {
 		
+		case '7':
 		case 'q': //up and left
-			if(occupiedByFence(player.x - 1, player.y - 1) || occupiedByMho(player.x - 1, player.y - 1, 12)) {
-			
-				System.out.println("Game Over");
-				
-			} else {
-			
-				player.move(player.x - 1, player.y - 1);
-			
-			}
+			player.move(player.x - 1, player.y - 1);
 			repaint();
 			break;
 		
+		case '8':
 		case 'w': //up
 			
 			player.move(player.x, player.y - 1);
 			repaint();
 			break;
 		
+		case '9':
 		case 'e': //up and right
 			player.move(player.x + 1, player.y - 1);
 			repaint();
 			break;
 			
+		case '4':
 		case 'a': //left
 			player.move(player.x - 1, player.y);
 			repaint();
 			break;
 			
-		case 's': //sit/stay
-			repaint();
-			break;
-			
+		case '6':
 		case 'd': //right
 			player.move(player.x + 1, player.y);
 			repaint();
 			break;
 			
+		case '1':
 		case 'z': //down and left
 			player.move(player.x - 1, player.y + 1);
 			repaint();
 			break;
 			
+		case '2':
 		case 'x': //down
 			player.move(player.x, player.y + 1);
 			repaint();
 			break;
 			
+		case '3':
 		case 'c': //down and right
 			player.move(player.x + 1, player.y + 1);
 			repaint();

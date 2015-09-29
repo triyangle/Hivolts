@@ -3,6 +3,8 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 
 public class Main {
+	
+	public static Grid display;
 
 	public static void main(String[] args) {
 		
@@ -12,7 +14,7 @@ public class Main {
 		
 		JFrame f = new JFrame();
 		
-		Grid display = new Grid(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+		display = new Grid(DISPLAY_WIDTH, DISPLAY_HEIGHT);
 		
 		f.setLayout(new BorderLayout());
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
