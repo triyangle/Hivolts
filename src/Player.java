@@ -12,4 +12,11 @@ public class Player extends Entity {
 		this.myColor = Color.blue;
 	}
 	
+	public void move(int x, int y) {
+		
+		this.x = x;
+		this.y = y;
+				
+	}
+	
 }

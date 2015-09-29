@@ -72,7 +72,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 			cell[ROWS-1][y] = new Fence(ROWS-1, y);
 		}
 	}
-	
+
 	/**
 	 * Initialize everything inside the outer fences.
 	 * This method creates a linear array containing all the empty space, fences,
@@ -92,26 +92,26 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		Integer[] fences = placeRandom(empty, 1, 20);
 		Integer[] mhos = placeRandom(fences, 2, 12);
 		Integer[] player = placeRandom(mhos, 3, 1);
-		
+
 		int mhoCount = 0;
 		for (int i = 0; i < player.length; i++) {
 			int x = 1 + i / (ROWS-2);
 			int y = 1 + i - (x-1) * (ROWS-2);
 			switch (player[i]) {
-				case 0:
-					cell[x][y] = new Cell(x, y);
-					break;
-				case 1:
-					cell[x][y] = new Fence(x, y);
-					break;
-				case 2:
-					this.mhos[mhoCount++] = new Mho(x, y);
-					cell[x][y] = new Cell(x, y);
-					break;
-				case 3:
-					this.player = new Player(x, y);
-					cell[x][y] = new Cell(x, y);
-					break;
+			case 0:
+				cell[x][y] = new Cell(x, y);
+				break;
+			case 1:
+				cell[x][y] = new Fence(x, y);
+				break;
+			case 2:
+				this.mhos[mhoCount++] = new Mho(x, y);
+				cell[x][y] = new Cell(x, y);
+				break;
+			case 3:
+				this.player = new Player(x, y);
+				cell[x][y] = new Cell(x, y);
+				break;
 			}
 		}
 	}
@@ -140,7 +140,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		Integer[] finalArray = new Integer[array.length + itemCount];
 		return list.toArray(finalArray);
 	}
-	
+
 	/**
 	 * This method loops through all existing mhos to see whether or not a certain cell is occupied by a mho
 	 * @param x The x-coordinate of the cell
@@ -270,28 +270,58 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	public void keyPressed(KeyEvent e) {
 
 		switch(e.getKeyChar()) {
-
+		
 		case 'q': //up and left
+			player.move(player.x - 1, player.y - 1);
+			repaint();
 			break;
+		
 		case 'w': //up
+			player.move(player.x, player.y - 1);
+			repaint();
 			break;
+		
 		case 'e': //up and right
+			player.move(player.x + 1, player.y - 1);
+			repaint();
 			break;
+			
 		case 'a': //left
+			player.move(player.x - 1, player.y);
+			repaint();
 			break;
+			
 		case 's': //sit/stay
+			repaint();
 			break;
+			
 		case 'd': //right
+			player.move(player.x + 1, player.y);
+			repaint();
 			break;
+			
 		case 'z': //down and left
+			player.move(player.x - 1, player.y + 1);
+			repaint();
 			break;
+			
 		case 'x': //down
+			player.move(player.x, player.y + 1);
+			repaint();
 			break;
+			
 		case 'c': //down and right
+			player.move(player.x + 1, player.y + 1);
+			repaint();
 			break;
+			
 		case 'j': //jump
+			
 			System.out.println(e.getKeyChar());
-		default:  break;
+			repaint();
+			
+		default:
+			break;
 
 
 
@@ -321,31 +351,31 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	public void mouseClicked(MouseEvent arg0) {
 
 		this.grabFocus();
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 
-		
-		
+
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
