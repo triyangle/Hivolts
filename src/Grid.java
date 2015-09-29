@@ -9,10 +9,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
 
 import javax.swing.JComponent;
-
 import java.awt.*;
 
 import javax.imageio.ImageIO;
@@ -95,22 +93,6 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		}
 	}
 
-	/**
-	 * Algorithm for placing things randomly (see as-f/RandomPlacement method 5)
-	 */
-	private Object[] placeRandomly(int[] array, int totalItems, int item) {
-		LinkedList<Integer> list = new LinkedList<Integer>();
-		for (int i = array.length; i < totalItems; i++) {
-			list.add(0);
-		}
-		for (int i = 0; i < array.length; i++) {
-			double index = Math.floor((totalItems - array.length + i + 1) * Math.random());
-			list.add((int) index, 1);
-		}
-		return list.toArray();
-	}
-	
-	
 	/**
 	 * Place the player where there is no mho or fence.
 	 */
@@ -447,12 +429,6 @@ class Cell extends Entity {
 
 		this(x, y, false);
 
-	}
-	
-	public Cell() {
-		
-		this(0, 0, false);
-	
 	}
 
 	public Cell(int col, int row, boolean isFence) {
