@@ -1,5 +1,3 @@
-// class made by William based on Conway's Game of Life code
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -9,11 +7,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-
+import java.util.ArrayList;
 import javax.swing.JComponent;
 import java.awt.*;
-
 import javax.imageio.ImageIO;
+
+/**
+ * 
+ * @author William
+ * 
+ */
 
 public class Grid extends JComponent implements KeyListener, MouseListener {
 
@@ -29,9 +32,6 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	private final int DISPLAY_WIDTH;
 	private final int DISPLAY_HEIGHT;
 
-	private Fence[] innerFences = new Fence[20];
-	private Fence[] outerFences = new Fence[48];
-
 	private Mho[] mhos = new Mho[12]; // list of all mhos
 	private Player player;
 
@@ -42,7 +42,10 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		DISPLAY_HEIGHT = height;
 		addKeyListener(this);
 		addMouseListener(this);
-		init();
+		initFenceImage();
+		initExterior();
+		initInterior();
+		repaint();
 
 	}
 
@@ -55,57 +58,87 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	}
 
 	/**
-	 * Place fences randomly in the interior so that there are no overlapping fences.
-	 * @param n The number of fences to place
+	 * Initialize the outer fences.
+	 * This method creates the fences along the edge of the board and adds
+	 * them to the grid.
 	 */
-	private void placeFences(int n) {
-		for (int i = 0; i < n; i++) {
-			boolean occupied = true;
-			int x = 0;
-			int y = 0;
-			while (occupied) {
-				x = (int) Math.floor(12 * Math.random());
-				y = (int) Math.floor(12 * Math.random());
-				occupied = occupiedByFence(x, y);
-			}
-
-			innerFences[i] = new Fence(x, y);
-			cell[x][y].setFence(true);
+	private void initExterior() {
+		for (int x = 0; x < ROWS; x++) {
+			cell[x][0] = new Fence(x, 0);
+			cell[x][COLS-1] = new Fence(x, COLS-1);
+		}
+		for (int y = 0; y < COLS; y++) {
+			cell[0][y] = new Fence(0, y);
+			cell[ROWS-1][y] = new Fence(ROWS-1, y);
 		}
 	}
 
 	/**
-	 * Place mhos randomly in the interior so that no mhos overlap other mhos or fences.
-	 * Also initializes the list of mhos
-	 * @param n The number of mhos to place
+	 * Initialize everything inside the outer fences.
+	 * This method creates a linear array containing all the empty space, fences,
+	 * mhos, and the player that are inside the outer fences. It places these elements randomly
+	 * then iterates through them, placing them in the 2d array for the grid.
+	 * In the 1d array, since Integers are used to represent objects:
+	 * 0 represents empty cells
+	 * 1 represents fences
+	 * 2 represents mhos
+	 * 3 represents the player
 	 */
-	private void placeMhos(int n) {
-		for (int i = 0; i < n; i++) {
-			boolean occupied = true;
-			int x = 0;
-			int y = 0;
-			while (occupied) {
-				x = (int) Math.floor(12 * Math.random());
-				y = (int) Math.floor(12 * Math.random());
-				occupied = occupiedByMho(x, y, i) || occupiedByFence(x, y);
+	private void initInterior() {
+		Integer[] empty = new Integer[(ROWS-2)*(COLS-2)-33];
+		for (int i = 0; i < empty.length; i++) {
+			empty[i] = 0;
+		}
+		Integer[] fences = placeRandom(empty, 1, 20);
+		Integer[] mhos = placeRandom(fences, 2, 12);
+		Integer[] player = placeRandom(mhos, 3, 1);
+
+		int mhoCount = 0;
+		for (int i = 0; i < player.length; i++) {
+			int x = 1 + i / (ROWS-2);
+			int y = 1 + i - (x-1) * (ROWS-2);
+			switch (player[i]) {
+			case 0:
+				cell[x][y] = new Cell(x, y);
+				break;
+			case 1:
+				cell[x][y] = new Fence(x, y);
+				break;
+			case 2:
+				this.mhos[mhoCount++] = new Mho(x, y);
+				cell[x][y] = new Cell(x, y);
+				break;
+			case 3:
+				this.player = new Player(x, y);
+				cell[x][y] = new Cell(x, y);
+				break;
 			}
-			mhos[i] = new Mho(x, y);
 		}
 	}
 
 	/**
-	 * Place the player where there is no mho or fence.
+	 * Create an array that includes n items randomly placed among an input array.
+	 * This method does not modify the input array.
+	 * This method works by creating a list out of the input array, then adding items at random
+	 * indices for each item. The fact that it is a list ensures that there are no overlapping items.
+	 * @param array The array that items should be placed into.
+	 * @param item An int representing the item to be placed
+	 * @param itemCount The number of items to be placed
+	 * @return A new array with the items placed among the input array
 	 */
-	private void placePlayer() {
-		boolean occupied = true;
-		int x = 0;
-		int y = 0;
-		while (occupied) {
-			x = (int) Math.floor(12 * Math.random());
-			y = (int) Math.floor(12 * Math.random());
-			occupied = occupiedByMho(x, y, mhos.length) || occupiedByFence(x, y);
+	private static Integer[] placeRandom(Integer[] array, int item, int itemCount) {
+		// Create a list that represents the input array
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		for (int i = 0; i < array.length; i++) {
+			list.add(array[i]);
 		}
-		player = new Player(x, y);
+		// Add each item to the list at a random index
+		for (int i = 1; i <= itemCount; i++) {
+			int index = (int) Math.floor((array.length - itemCount + i) * Math.random());
+			list.add(index, item);
+		}
+		Integer[] finalArray = new Integer[array.length + itemCount];
+		return list.toArray(finalArray);
 	}
 
 	/**
@@ -136,21 +169,25 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	public boolean occupiedByFence(int x, int y) {
 		return cell[x][y].getFence();
 	}
-
+	
 	/**
-	 * Call methods to load the fence image, initialize the cells, add fences around the edge,
-	 * place fences and mhos, and place the player.
+	 * Make all mhos move. In order to comply with the specification, mhos that are
+	 * on the same horizontal or vertical line as the player must move first.
 	 */
-	public void init() {
-
-		initFenceImage();
-		initCells();
-		addOuterFences();
-		placeFences(20);
-		placeMhos(12);
-		placePlayer();
-		repaint();
-
+	public void moveMhos() {
+		for (int i = 0; i < mhos.length; i++) {
+			if (mhos[i].x == player.x) {
+				mhos[i].acty(player.y);
+			}
+			if (mhos[i].y == player.y) {
+				mhos[i].actx(player.x);
+			}
+		}
+		for (int i = 0; i < mhos.length; i++) {
+			if (mhos[i].x != player.x && mhos[i].y != player.y) {
+				mhos[i].act(player.x, player.y);
+			}
+		}
 	}
 
 	@Override
@@ -159,7 +196,6 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		g.setColor(Color.BLACK);
 		drawGrid(g);
 		drawCells(g);
-		drawFences(g);
 		drawMhos(g);
 		drawPlayer(g);
 
@@ -168,7 +204,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	/**
 	 * Initializes the fence image
 	 */
-	public void initFenceImage() {
+	private void initFenceImage() {
 
 		try {
 
@@ -181,65 +217,6 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		}
 
 	}
-
-	/**
-	 * Assigns a cell object to each grid cell
-	 */
-	public void initCells() {
-
-		for (int row = 0; row < ROWS; row++) {
-
-			for (int col = 0; col < COLS; col++) {
-
-				cell[row][col] = new Cell(row, col, false);
-
-			}
-
-		}
-
-	}
-
-	/**
-	 * Places the outer fences
-	 */
-	public void addOuterFences() {
-
-		int outerFenceCount = 0;
-
-		for (int row = 0; row < ROWS; row++) {
-
-			cell[row][0].setFence(true);
-
-			outerFences[outerFenceCount++] = new Fence(row, 0);
-
-			//outerFenceCount++;
-
-			cell[row][COLS-1].setFence(true);
-
-			outerFences[outerFenceCount++] = new Fence(row, COLS - 1);
-
-			//outerFenceCount++;
-
-		}
-
-		for (int col = 0; col < COLS; col++) {
-
-			cell[0][col].setFence(true);
-
-			outerFences[outerFenceCount++] = new Fence(0, col);
-
-			//outerFenceCount++;
-
-			cell[ROWS-1][col].setFence(true);
-
-			outerFences[outerFenceCount++] = new Fence(ROWS - 1, col);
-
-			//outerFenceCount++;
-
-		}
-
-	}
-
 
 	/**
 	 * Draws the lines for the grid
@@ -309,52 +286,67 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 
 	}*/
 
-	/**
-	 * Draws the inner and outer fences
-	 * @param g The graphics component on which to draw the mhos
-	 */
-	public void drawFences(Graphics g) {
-
-		for(Fence innerFence : innerFences) {
-
-			innerFence.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
-
-		}
-
-		for(Fence outerFence : outerFences) {
-
-			outerFence.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
-
-		}
-
-	}
-
 	@Override
 	public void keyPressed(KeyEvent e) {
 
 		switch(e.getKeyChar()) {
-
+		
+		case '7':
 		case 'q': //up and left
+			player.move(player.x - 1, player.y - 1);
+			repaint();
 			break;
+		
+		case '8':
 		case 'w': //up
+			
+			player.move(player.x, player.y - 1);
+			repaint();
 			break;
+		
+		case '9':
 		case 'e': //up and right
+			player.move(player.x + 1, player.y - 1);
+			repaint();
 			break;
+			
+		case '4':
 		case 'a': //left
+			player.move(player.x - 1, player.y);
+			repaint();
 			break;
-		case 's': //sit/stay
-			break;
+			
+		case '6':
 		case 'd': //right
+			player.move(player.x + 1, player.y);
+			repaint();
 			break;
+			
+		case '1':
 		case 'z': //down and left
+			player.move(player.x - 1, player.y + 1);
+			repaint();
 			break;
+			
+		case '2':
 		case 'x': //down
+			player.move(player.x, player.y + 1);
+			repaint();
 			break;
+			
+		case '3':
 		case 'c': //down and right
+			player.move(player.x + 1, player.y + 1);
+			repaint();
 			break;
+			
 		case 'j': //jump
+			
 			System.out.println(e.getKeyChar());
-		default:  break;
+			repaint();
+			
+		default:
+			break;
 
 
 
@@ -384,99 +376,33 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	public void mouseClicked(MouseEvent arg0) {
 
 		this.grabFocus();
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 
-		
-		
+
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
 
-class Cell extends Entity {
 
-	private boolean occupied;
-	private boolean myAlive; // alive (true) or dead (false)
-	private boolean isFence; // Whether or not there is a fence in this cell
-	private final Color DEFAULT_FENCE = Color.ORANGE;
-	private final Color DEFAULT_EMPTY = Color.GRAY;
-
-	//private static Image fence;
-
-	// private final Color MHO = Color.RED;
-
-	public Cell(int x, int y) {
-
-		this(x, y, false);
-
-	}
-
-	public Cell(int col, int row, boolean isFence) {
-
-		this.isFence = isFence;
-		this.x = col;
-		this.y = row;
-		this.myColor = DEFAULT_EMPTY;
-
-	}
-
-	public boolean getAlive() {
-
-		return myAlive;
-
-	}
-
-	public void setFence(boolean isFence) {
-
-		this.isFence = isFence;
-
-	}
-
-	public boolean getFence() {
-		return isFence;
-	}
-
-	public void setOccupied(boolean newOccupied) {
-
-		this.occupied = newOccupied;
-
-	}
-
-	public boolean getOccupied() {
-
-		return occupied;
-
-	}
-
-	/*public void setEntity() {
-
-
-	}
-
-	public Entity getEntity() {
-
-
-	}*/
-
-
-}
