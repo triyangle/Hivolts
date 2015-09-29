@@ -272,11 +272,20 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		switch(e.getKeyChar()) {
 		
 		case 'q': //up and left
-			player.move(player.x - 1, player.y - 1);
+			if(occupiedByFence(player.x - 1, player.y - 1) || occupiedByMho(player.x - 1, player.y - 1, 12)) {
+			
+				System.out.println("Game Over");
+				
+			} else {
+			
+				player.move(player.x - 1, player.y - 1);
+			
+			}
 			repaint();
 			break;
 		
 		case 'w': //up
+			
 			player.move(player.x, player.y - 1);
 			repaint();
 			break;
