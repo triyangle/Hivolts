@@ -1,15 +1,14 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Fence extends Entity {
+public class Fence extends Cell {
 
 	private static BufferedImage sprite;
 	//private Graphics g;
 
 	public Fence(int x, int y) {
 		
-		this.x = x;
-		this.y = y;
+		super(x, y, true);
 
 	}
 
@@ -29,10 +28,9 @@ public class Fence extends Entity {
 		int xLeft = xOffset + 1 + (this.x * (width + 1));
 		int yTop = yOffset + 1 + (this.y * (height + 1));
 		
-		//g.setColor(myColor);
-		
+		g.setColor(myColor);
+		g.fillRect(xLeft, yTop, width, height);
 		g.drawImage(sprite, xLeft, yTop, width, height, null);
-		//g.fillRect(xLeft, yTop, width, height);
 		
 	}
 	
