@@ -7,10 +7,6 @@ public class Cell extends Entity {
 	private boolean isFence; // Whether or not there is a fence in this cell
 	private final Color DEFAULT_EMPTY = Color.BLACK;
 
-	//private static Image fence;
-
-	// private final Color MHO = Color.RED;
-
 	public Cell(int x, int y) {
 
 		this(x, y, false);
@@ -53,16 +49,6 @@ public class Cell extends Entity {
 		return occupied;
 
 	}
-
-	/*public void setEntity() {
-
-
-	}
-
-	public Entity getEntity() {
-
-
-	}*/
 
 
 }

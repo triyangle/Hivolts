@@ -32,8 +32,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	private final int DISPLAY_WIDTH;
 	private final int DISPLAY_HEIGHT;
 
-	private int mhoCount = 12;
-	private Mho[] mhos = new Mho[mhoCount]; // list of all mhos
+	private Mho[] mhos = new Mho[12]; // list of all mhos
 	private ArrayList<Mho> mhoList = new ArrayList<Mho>();
 	private Player player;
 
@@ -184,19 +183,6 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	 * on the same horizontal or vertical line as the player must move first.
 	 */
 	public void moveMhos() {
-		/*for (int i = 0; i < mhos.length; i++) {
-			if (mhos[i].x == player.x) {
-				mhos[i].actY(player.y);
-			}
-			if (mhos[i].y == player.y) {
-				mhos[i].actX(player.x);
-			}
-		}
-		for (int i = 0; i < mhos.length; i++) {
-			if (mhos[i].x != player.x && mhos[i].y != player.y) {
-				mhos[i].act(player.x, player.y);
-			}
-		}*/
 		
 		for(int i = 0; i < mhoList.size(); i++) {
 			
@@ -347,24 +333,6 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	void drawPlayer(Graphics g) {
 		player.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
 	}
-	
-	public int getMhoCount() {
-		
-		return mhoCount;
-		
-	}
-	
-	public void setMhoCount(int mhoCount) {
-		
-		this.mhoCount = mhoCount;
-		
-	}
-
-	/*private void nextTurn() {
-
-		//repaint();
-
-	}*/
 
 	@Override
 	public void keyPressed(KeyEvent e) {
