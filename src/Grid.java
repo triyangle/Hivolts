@@ -152,11 +152,9 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	 * @param mhoCount The number of mhos in the list of mhos
 	 * @return whether or not the cell in question is occupied by a mho
 	 */
-	public boolean occupiedByMho(int x, int y, int mhoCount) {
+	public boolean occupiedByMho(int x, int y) {
 		boolean occupied = false;
-		for (int i = 0; i < mhoCount; i++) {
-			//int x2 = mhos[i].getX();
-			//int y2 = mhos[i].getY();
+		for (int i = 0; i < mhos.length; i++) {
 			
 			int x2 = mhoList.get(i).getX();
 			int y2 = mhoList.get(i).getY();

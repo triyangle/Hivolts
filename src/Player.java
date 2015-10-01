@@ -39,7 +39,7 @@ public class Player extends Entity {
 		if (Main.display.occupiedByFence(x, y)) {
 			// do nothing
 		}
-		else if (Main.display.occupiedByMho(x, y, 12)) {
+		else if (Main.display.occupiedByMho(x, y)) {
 			// game over
 		}
 		else {
