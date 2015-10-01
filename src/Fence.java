@@ -8,7 +8,7 @@ public class Fence extends Cell {
 
 	public Fence(int x, int y) {
 		
-		super(x, y, true);
+		super(x, y);
 
 	}
 
