@@ -182,7 +182,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	 */
 	public void moveMhos() {
 		
-		for(int i = 0; i < mhoList.size(); i++) {
+		/*for(int i = 0; i < mhoList.size(); i++) {
 			
 			if(mhoList.get(i).getX() == player.x) {
 				
@@ -206,6 +206,10 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 				
 			}
 			
+		}*/
+		
+		for (int i = 0; i < mhoList.size(); i++) {
+			mhoList.get(i).act(player.x, player.y);
 		}
 		
 	}
