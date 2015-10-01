@@ -5,8 +5,7 @@ public class Cell extends Entity {
 	private boolean occupied;
 	private boolean myAlive; // alive (true) or dead (false)
 	private boolean isFence; // Whether or not there is a fence in this cell
-	private final Color DEFAULT_FENCE = Color.ORANGE;
-	private final Color DEFAULT_EMPTY = Color.GRAY;
+	private final Color DEFAULT_EMPTY = Color.BLACK;
 
 	//private static Image fence;
 

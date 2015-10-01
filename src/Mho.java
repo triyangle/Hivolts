@@ -1,5 +1,7 @@
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 /**
  * 
@@ -9,6 +11,8 @@ import java.awt.Color;
 public class Mho extends Entity {
 
 	private boolean alive;
+	
+	private static BufferedImage sprite;
 	
 	public Mho() {
 		
@@ -23,7 +27,23 @@ public class Mho extends Entity {
 		this.myColor = Color.RED;
 		
 	}
+	public static void setImage(BufferedImage image) {
+		
+		sprite = image;
+		
+	}
 	
+	@Override
+	public void draw(int xOffset, int yOffset, int width, int height, Graphics g) {
+		
+		int xLeft = xOffset + 1 + (this.x * (width + 1));
+		int yTop = yOffset + 1 + (this.y * (height + 1));
+		
+		g.setColor(myColor);
+		g.fillRect(xLeft, yTop, width, height);
+		g.drawImage(sprite, xLeft, yTop, width, height, null);
+		
+	}
 	public void setAlive(boolean newAlive) {
 		
 		alive = newAlive;

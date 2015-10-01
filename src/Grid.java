@@ -43,6 +43,8 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		addKeyListener(this);
 		addMouseListener(this);
 		initFenceImage();
+		initPlayerImage();
+		initMhoImage();
 		initExterior();
 		initInterior();
 		repaint();
@@ -201,21 +203,46 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 
 	}
 
+	
 	/**
 	 * Initializes the fence image
 	 */
-	private void initFenceImage() {
-
+	public void initFenceImage() {
+		
 		try {
 
-			Fence.setImage(ImageIO.read(new File("fence.png")));
+			Fence.setImage(ImageIO.read(new File("fence.jpg")));
 
 		} catch (IOException e) {
-
+			
 			e.printStackTrace();
 
 		}
+		
+	}
+	
+	public void initMhoImage(){
+		try {
 
+			Mho.setImage(ImageIO.read(new File("Mho.jpg")));
+
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+
+		}
+	}
+	
+	public void initPlayerImage(){
+		try {
+
+			Player.setImage(ImageIO.read(new File("player.jpg")));
+
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+
+		}
 	}
 
 	/**
