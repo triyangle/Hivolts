@@ -14,16 +14,18 @@ public class Player extends Entity {
 	
 	public void move(int x, int y) {
 		
+		
 		if (Main.display.occupiedByFence(x, y)) {
 			// do nothing
 		}
 		else if (Main.display.occupiedByMho(x, y, 12)) {
 			// game over
 		}
-		else {	
-			this.x = x;
-			this.y = y;
+		else {
+			
+			super.move(x, y);
 			Main.display.moveMhos();
+			
 		}
 	}
 	

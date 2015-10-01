@@ -1,5 +1,7 @@
 
 import java.awt.Color;
+import java.util.*;
+
 
 /**
  * 
@@ -42,22 +44,18 @@ public class Mho extends Entity {
 		
 	}
 	
-	public void move(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-	
 	public void act(int playerx, int playery) {
 		
 	}
 	
-	public void actx(int playerx) {
+	public void actX(int playerx) {
 		int direction = 1;
 		if (this.x > playerx) {
 			direction = -1;
 		}
 		int newx = this.x + direction;
 		if (Main.display.occupiedByFence(newx, y)) {
+			
 			// remove mho
 		}
 		else {
@@ -65,18 +63,24 @@ public class Mho extends Entity {
 		}
 	}
 	
-	public void acty(int playery) {
-		int direction = 1;
-		if (this.y > playery) {
-			direction = -1;
-		}
-		int newy = this.y + direction;
-		if (Main.display.occupiedByFence(x, newy)) {
+	public void actY(int playerY) {
+		
+		int direction = (this.y > playerY) ? -1 : 1;
+		
+		int newY = this.y + direction;
+		
+		if (Main.display.occupiedByFence(x, newY)) {
+			
+			
 			// remove mho
 		}
+		
 		else {
-			move(x, newy);
+			
+			move(x, newY);
+			
 		}
 	}
+	
 	
 }

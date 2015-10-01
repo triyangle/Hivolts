@@ -32,7 +32,9 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	private final int DISPLAY_WIDTH;
 	private final int DISPLAY_HEIGHT;
 
-	private Mho[] mhos = new Mho[12]; // list of all mhos
+	private int mhoCount = 12;
+	private Mho[] mhos = new Mho[mhoCount]; // list of all mhos
+	private ArrayList<Mho> mhoList = new ArrayList<Mho>();
 	private Player player;
 
 
@@ -105,6 +107,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 				cell[x][y] = new Fence(x, y);
 				break;
 			case 2:
+				mhoList.add(new Mho(x, y));
 				this.mhos[mhoCount++] = new Mho(x, y);
 				cell[x][y] = new Cell(x, y);
 				break;
@@ -151,8 +154,12 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	public boolean occupiedByMho(int x, int y, int mhoCount) {
 		boolean occupied = false;
 		for (int i = 0; i < mhoCount; i++) {
-			int x2 = mhos[i].getX();
-			int y2 = mhos[i].getY();
+			//int x2 = mhos[i].getX();
+			//int y2 = mhos[i].getY();
+			
+			int x2 = mhoList.get(i).getX();
+			int y2 = mhoList.get(i).getY();
+			
 			if (x == x2 && y == y2) {
 				occupied = true;
 			}
@@ -175,19 +182,46 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	 * on the same horizontal or vertical line as the player must move first.
 	 */
 	public void moveMhos() {
-		for (int i = 0; i < mhos.length; i++) {
+		/*for (int i = 0; i < mhos.length; i++) {
 			if (mhos[i].x == player.x) {
-				mhos[i].acty(player.y);
+				mhos[i].actY(player.y);
 			}
 			if (mhos[i].y == player.y) {
-				mhos[i].actx(player.x);
+				mhos[i].actX(player.x);
 			}
 		}
 		for (int i = 0; i < mhos.length; i++) {
 			if (mhos[i].x != player.x && mhos[i].y != player.y) {
 				mhos[i].act(player.x, player.y);
 			}
+		}*/
+		
+		for(int i = 0; i < mhoList.size(); i++) {
+			
+			if(mhoList.get(i).getX() == player.x) {
+				
+				mhoList.get(i).actY(player.y);
+					
+			}
+			
+			if(mhoList.get(i).getY() == player.y) {
+				
+				mhoList.get(i).actX(player.x);
+				
+			}
+			
 		}
+			
+		for(int i = 0; i < mhoList.size(); i++) {
+			
+			if(mhoList.get(i).getX() != player.x && mhoList.get(i).getY() != player.y) {
+				
+				mhoList.get(i).act(player.x, player.y);
+				
+			}
+			
+		}
+		
 	}
 
 	@Override
@@ -267,9 +301,16 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	 * @param g The graphics component on which to draw the mhos
 	 */
 	void drawMhos(Graphics g) {
-		for (Mho mho : mhos) {
-			mho.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
+		
+		for(int i = 0; i < mhoList.size(); i++) {
+			
+			mhoList.get(i).draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
+			
 		}
+		
+		/*for (Mho mho : mhos) {
+			mho.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
+		}*/
 	}
 
 	/**
@@ -278,6 +319,18 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	 */
 	void drawPlayer(Graphics g) {
 		player.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
+	}
+	
+	public int getMhoCount() {
+		
+		return mhoCount;
+		
+	}
+	
+	public void setMhoCount(int mhoCount) {
+		
+		this.mhoCount = mhoCount;
+		
 	}
 
 	/*private void nextTurn() {
