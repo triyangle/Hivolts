@@ -224,11 +224,8 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 				if (!occupiedByFence(x, y)) {
 					if (destination == 0) {
 						player.move(x, y);
-						return;
 					}
-					else {
-						destination--;
-					}
+					destination--;
 				}
 			}
 		}
