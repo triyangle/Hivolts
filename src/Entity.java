@@ -55,8 +55,5 @@ public class Entity {
 		this.y = y;
 		
 	}
-
-
-
 	
 }

@@ -28,6 +28,9 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	private final int CELL_WIDTH = 50;
 	private final int CELL_HEIGHT = 50;
 
+	private final int FENCES = 20;
+	private final int INITIAL_MHOS = 12;
+	
 	private final int DISPLAY_WIDTH;
 	private final int DISPLAY_HEIGHT;
 
@@ -86,12 +89,12 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	 * 3 represents the player
 	 */
 	private void initInterior() {
-		Integer[] empty = new Integer[(ROWS-2)*(COLS-2)-33];
+		Integer[] empty = new Integer[(ROWS-2)*(COLS-2)-FENCES-INITIAL_MHOS-1];
 		for (int i = 0; i < empty.length; i++) {
 			empty[i] = 0;
 		}
-		Integer[] fences = placeRandom(empty, 1, 20);
-		Integer[] mhos = placeRandom(fences, 2, 12);
+		Integer[] fences = placeRandom(empty, 1, FENCES);
+		Integer[] mhos = placeRandom(fences, 2, INITIAL_MHOS);
 		Integer[] player = placeRandom(mhos, 3, 1);
 
 		for (int i = 0; i < player.length; i++) {
@@ -209,6 +212,27 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		}
 		
 	}
+	
+	/**
+	 * Make the player jump to a random non-fence cell
+	 */
+	private void jump() {
+		int unoccupied = (ROWS-2) * (COLS-2) - FENCES;
+		int destination = (int) Math.floor(unoccupied * Math.random());
+		for (int x = 0; x < ROWS; x++) {
+			for (int y = 0; y < COLS; y++) {
+				if (!occupiedByFence(x, y)) {
+					if (destination == 0) {
+						player.move(x, y);
+						return;
+					}
+					else {
+						destination--;
+					}
+				}
+			}
+		}
+	}
 
 	@Override
 	public void paintComponent(Graphics g) {
@@ -225,7 +249,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	/**
 	 * Initializes the fence image
 	 */
-	public void initFenceImage() {
+	private void initFenceImage() {
 		
 		try {
 
@@ -239,7 +263,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		
 	}
 	
-	public void initMhoImage(){
+	private void initMhoImage(){
 		try {
 
 			Mho.setImage(ImageIO.read(new File("Mho.jpg")));
@@ -251,7 +275,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		}
 	}
 	
-	public void initPlayerImage(){
+	private void initPlayerImage(){
 		try {
 
 			Player.setImage(ImageIO.read(new File("player.jpg")));
@@ -297,7 +321,6 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		for (int row = 0; row < ROWS; row++) {
 
 			for (int col = 0; col < COLS; col++) {
-				//System.out.print(cell[row][col].myColor);
 				cell[row][col].draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH,
 						CELL_HEIGHT, g);
 
@@ -339,56 +362,55 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		
 		case '7':
 		case 'q': //up and left
-			player.move(player.x - 1, player.y - 1);
+			player.act(player.x - 1, player.y - 1);
 			repaint();
 			break;
 		
 		case '8':
 		case 'w': //up
 			
-			player.move(player.x, player.y - 1);
+			player.act(player.x, player.y - 1);
 			repaint();
 			break;
 		
 		case '9':
 		case 'e': //up and right
-			player.move(player.x + 1, player.y - 1);
+			player.act(player.x + 1, player.y - 1);
 			repaint();
 			break;
 			
 		case '4':
 		case 'a': //left
-			player.move(player.x - 1, player.y);
+			player.act(player.x - 1, player.y);
 			repaint();
 			break;
 			
 		case '6':
 		case 'd': //right
-			player.move(player.x + 1, player.y);
+			player.act(player.x + 1, player.y);
 			repaint();
 			break;
 			
 		case '1':
 		case 'z': //down and left
-			player.move(player.x - 1, player.y + 1);
+			player.act(player.x - 1, player.y + 1);
 			repaint();
 			break;
 			
 		case '2':
 		case 'x': //down
-			player.move(player.x, player.y + 1);
+			player.act(player.x, player.y + 1);
 			repaint();
 			break;
 			
 		case '3':
 		case 'c': //down and right
-			player.move(player.x + 1, player.y + 1);
+			player.act(player.x + 1, player.y + 1);
 			repaint();
 			break;
 			
 		case 'j': //jump
-			
-			System.out.println(e.getKeyChar());
+			jump();
 			repaint();
 			
 		default:
@@ -406,15 +428,8 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 
 	}
 
-	/**
-	 * Click on window to focus keylistener
-	 * Don't use keyTyped unless you are actually typing anything which we are not
-	 * @param e The KeyEvent that occurs
-	 */
 	@Override
 	public void keyTyped(KeyEvent e) {
-
-
 
 	}
 

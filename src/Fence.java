@@ -33,7 +33,5 @@ public class Fence extends Cell {
 		g.drawImage(sprite, xLeft, yTop, width, height, null);
 		
 	}
-	
-	
 
 }

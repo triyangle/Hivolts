@@ -29,7 +29,17 @@ public class Player extends Entity {
 		
 	}
 	
+	@Override
 	public void move(int x, int y) {
+		if (Main.display.occupiedByMho(x, y)) {
+			// game over
+			super.move(x, y);
+		} else {
+			super.move(x, y);
+		}
+	}
+	
+	public void act(int x, int y) {
 		
 		
 		if (Main.display.occupiedByFence(x, y)) {
@@ -40,7 +50,7 @@ public class Player extends Entity {
 		}
 		else {
 			
-			super.move(x, y);
+			move(x, y);
 			Main.display.moveMhos();
 			
 		}
