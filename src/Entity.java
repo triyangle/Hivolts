@@ -47,7 +47,6 @@ public class Entity {
 		int yTop = yOffset + 1 + (this.y * (height + 1));
 		g.setColor(myColor);
 		g.fillRect(xLeft, yTop, width, height);
-		//g.drawImage(image, xLeft, yTop, width, height, null);
 	}
 	
 	public void move(int x, int y) {
