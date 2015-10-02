@@ -27,8 +27,6 @@ public class Player extends Entity {
 		int xLeft = xOffset + 1 + (this.x * (width + 1));
 		int yTop = yOffset + 1 + (this.y * (height + 1));
 		
-		g.setColor(myColor);
-		g.fillRect(xLeft, yTop, width, height);
 		g.drawImage(sprite, xLeft, yTop, width, height, null);
 		
 	}

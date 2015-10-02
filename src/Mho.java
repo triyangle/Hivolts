@@ -11,14 +11,10 @@ import java.awt.image.BufferedImage;
  */
 
 public class Mho extends Entity {
-
-	private boolean alive;
 	
 	private static BufferedImage sprite;
 	
 	public Mho() {
-		
-		alive = true;
 		
 	}
 	
@@ -42,26 +38,7 @@ public class Mho extends Entity {
 		int xLeft = xOffset + 1 + (this.x * (width + 1));
 		int yTop = yOffset + 1 + (this.y * (height + 1));
 		
-		g.setColor(myColor);
-		g.fillRect(xLeft, yTop, width, height);
 		g.drawImage(sprite, xLeft, yTop, width, height, null);
-		
-	}
-	public void setAlive(boolean newAlive) {
-		
-		alive = newAlive;
-		
-	}
-	
-	public boolean getAlive() {
-		
-		return alive;
-		
-	}
-	
-	public void nextTurn() {
-		
-		
 		
 	}
 	
@@ -72,47 +49,60 @@ public class Mho extends Entity {
 	 */
 	public void act(int playerx, int playery) {
 		
-		if (this.x == playerx) {
-			actX(playerx);
+		int newx = x;
+		if (this.x < playerx) {
+			newx += 1;
 		}
-		else if (this.y == playery) {
-			actY(playery);
+		else if (this.x > playerx) {
+			newx -= 1;
 		}
-		else {
-			// NEED TO LET DIRECTION X & Y = 0 sometimes
-			int directionx = (this.x < playerx) ? 1: -1;
-			int directiony = (this.y < playery) ? 1: -1;
-			int newx = x + directionx;
-			int newy = y + directiony;
-			int deltax = Math.abs(x - playerx);
-			int deltay = Math.abs(y - playery);
-			if (canMove(newx, newy, playerx, playery)) {
-				move(newx, newy);
-			}
-			else if (deltax >= deltay && canMove(newx, y, playerx, playery)) {
-				move(newx, y);
-			}
-			else if (canMove(x, newy, playerx, playery)) {
-				move(x, newy);
-			}
+		int newy = y;
+		if (this.y < playery) {
+			newy += 1;
+		}
+		else if (this.y > playery) {
+			newy -= 1;
+		}
+		int deltax = Math.abs(x - playerx);
+		int deltay = Math.abs(y - playery);
+		
+		if (canMove(x, y, newx, newy, playerx, playery)) {
+			move(newx, newy);
+		}
+		else if (deltax >= deltay && canMove(x, y, newx, y, playerx, playery)) {
+			move(newx, y);
+		}
+		else if (canMove(x, y, x, newy, playerx, playery)) {
+			move(x, newy);
+		}
+		else if (canMoveToFence(newx, newy)
+		      || canMoveToFence(   x, newy)
+		      || canMoveToFence(newx,    y)) {
+			remove();
 		}
 		
 	}
 	
 	/**
-	 * This function figures out whether or not the mho can move to the target cell
+	 * This function figures out whether or not the mho can move to the target cell.
+	 * Mhos are not allowed to move to their own cell.
+	 * @param x The x-coordinate of the mho
+	 * @param y The y-coordinate of the mho
 	 * @param newx The x-coordinate of the target cell
 	 * @param newy The y-coordinate of the target cell
 	 * @param playerx The x-coordinate of the player
 	 * @param playery The y-coordinate of the player
 	 * @return Whether or not the mho can move to the target cell
 	 */
-	public boolean canMove(int newx, int newy, int playerx, int playery) {
+	public boolean canMove(int x, int y, int newx, int newy, int playerx, int playery) {
 		boolean canmove = true;
-		if (Main.display.occupiedByFence(newx, newy) || Main.display.occupiedByMho(newx, newy)) {
+		if (Main.display.occupiedByFence(newx, newy)
+		    || Main.display.occupiedByMho(newx, newy)
+		    || x == newx && y == newy) {
 			canmove = false;
 		}
 		else if (newx == playerx && newy == playery) {
+			// game over
 			canmove = false;
 		}
 		return canmove;
@@ -126,8 +116,16 @@ public class Mho extends Entity {
 	 * @param playery The y-coordinate of the player
 	 * @return Whether or not the mho is moveing to a fence
 	 */
-	public boolean moveToFence(int newx, int newy, int playerx, int playery) {
+	public boolean canMoveToFence(int newx, int newy) {
+		if (Main.display.occupiedByFence(newx, newy)) {
+			return true;
+		}
 		return false;
+	}
+	
+	public void remove() {
+		int index = Main.display.mhoList.indexOf(this);
+		Main.display.mhoList.remove(index);
 	}
 	
 	public void actX(int playerx) {

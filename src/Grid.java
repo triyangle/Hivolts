@@ -32,8 +32,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	private final int DISPLAY_WIDTH;
 	private final int DISPLAY_HEIGHT;
 
-	private Mho[] mhos = new Mho[12]; // list of all mhos
-	private ArrayList<Mho> mhoList = new ArrayList<Mho>();
+	public ArrayList<Mho> mhoList = new ArrayList<Mho>();
 	private Player player;
 
 
@@ -66,7 +65,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	 * them to the grid.
 	 */
 	private void initExterior() {
-		for (int x = 0; x < ROWS; x++) {
+		for (int x = 1; x < ROWS - 1; x++) {
 			cell[x][0] = new Fence(x, 0);
 			cell[x][COLS-1] = new Fence(x, COLS-1);
 		}
@@ -96,7 +95,6 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		Integer[] mhos = placeRandom(fences, 2, 12);
 		Integer[] player = placeRandom(mhos, 3, 1);
 
-		int mhoCount = 0;
 		for (int i = 0; i < player.length; i++) {
 			int x = 1 + i / (ROWS-2);
 			int y = 1 + i - (x-1) * (ROWS-2);
@@ -109,7 +107,6 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 				break;
 			case 2:
 				mhoList.add(new Mho(x, y));
-				this.mhos[mhoCount++] = new Mho(x, y);
 				cell[x][y] = new Cell(x, y);
 				break;
 			case 3:
@@ -154,7 +151,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	 */
 	public boolean occupiedByMho(int x, int y) {
 		boolean occupied = false;
-		for (int i = 0; i < mhos.length; i++) {
+		for (int i = 0; i < mhoList.size(); i++) {
 			
 			int x2 = mhoList.get(i).getX();
 			int y2 = mhoList.get(i).getY();
