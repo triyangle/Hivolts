@@ -38,9 +38,10 @@ public class Main {
 				+ "<br/> Press S to stay still."
 				+ "<br/> Click on the gameboard to begin. "
 				+ "<br/> You may close this window. </html>");
+		//uses html text to create different lines of text
 		JFrame window = new JFrame("Instructions");
+		//creates new window with size 250x250 on top of game window
 		window.setSize(250, 250);
-		    //  Place Frame in middle of Screen
 		window.setVisible(true);
 		window.add(label);
 		
