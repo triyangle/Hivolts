@@ -29,26 +29,14 @@ public class Player extends Entity {
 		
 	}
 	
-	@Override
-	public void move(int x, int y) {
-		if (Main.display.occupiedByMho(x, y)) {
-			// game over
-			super.move(x, y);
-		} else {
-			super.move(x, y);
-		}
-	}
-	
 	public void act(int x, int y) {
 		
 		
-		if (Main.display.occupiedByFence(x, y)) {
-			// do nothing
-		}
-		else if (Main.display.occupiedByMho(x, y)) {
-			// game over
-		}
-		else {
+		if (Main.display.occupiedByFence(x, y) || Main.display.occupiedByMho(x, y)) {
+
+			System.out.println("Game Over");
+			
+		} else {
 			
 			move(x, y);
 			Main.display.moveMhos();
