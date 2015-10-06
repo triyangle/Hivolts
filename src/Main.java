@@ -1,6 +1,9 @@
 
 import java.awt.BorderLayout;
+import java.awt.Font;
+
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class Main {
 	
@@ -29,6 +32,17 @@ public class Main {
 		//centers window placement
 		//f.setLocationRelativeTo(null);
 		
+		JLabel label = new JLabel("Text-Only Label", JLabel.CENTER);
+		label.setText("<html> Welcome to Hivolts! <br/> Use WAXD to move, and "
+				+ "<br/> QEZC to move diagonally."
+				+ "<br/> Press S to stay still."
+				+ "<br/> Click on the gameboard to begin. "
+				+ "<br/> You may close this window. </html>");
+		JFrame window = new JFrame("Instructions");
+		window.setSize(250, 250);
+		    //  Place Frame in middle of Screen
+		window.setVisible(true);
+		window.add(label);
 		
 		
 	}
