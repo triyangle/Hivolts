@@ -8,6 +8,7 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javax.swing.JComponent;
 import javax.imageio.ImageIO;
 
@@ -36,6 +37,11 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 
 	public ArrayList<Mho> mhoList = new ArrayList<Mho>();
 	private Player player;
+	
+	// The arrow key that is currently being held down
+	private int pressedKey = KeyEvent.VK_UNDEFINED;
+	// Whether or not the player has moved diagonally using the arrow keys
+	private boolean movedDiagonally = false;
 
 
 	public Grid(int width, int height) {
@@ -223,7 +229,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 			for (int y = 0; y < COLS; y++) {
 				if (!occupiedByFence(x, y)) {
 					if (destination == 0) {
-						player.move(x, y);
+						player.act(x, y);
 					}
 					destination--;
 				}
@@ -231,6 +237,12 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		}
 	}
 
+	public void gameOver() {
+
+		System.out.println("Game Over");
+		
+	}
+	
 	@Override
 	public void paintComponent(Graphics g) {
 
@@ -355,65 +367,79 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 
-		switch(e.getKeyChar()) {
+		switch(e.getKeyCode()) {
 		
-		case '7':
-		case 'q': //up and left
+		case KeyEvent.VK_NUMPAD7:
+		case KeyEvent.VK_Q: //up and left
 			player.act(player.x - 1, player.y - 1);
 			repaint();
 			break;
 		
-		case '8':
-		case 'w': //up
-			
+		case KeyEvent.VK_NUMPAD8:
+		case KeyEvent.VK_W: //up
 			player.act(player.x, player.y - 1);
 			repaint();
 			break;
 		
-		case '9':
-		case 'e': //up and right
+		case KeyEvent.VK_NUMPAD9:
+		case KeyEvent.VK_E: //up and right
 			player.act(player.x + 1, player.y - 1);
 			repaint();
 			break;
 			
-		case '4':
-		case 'a': //left
+		case KeyEvent.VK_NUMPAD4:
+		case KeyEvent.VK_A: //left
 			player.act(player.x - 1, player.y);
 			repaint();
 			break;
 			
-		case '6':
-		case 'd': //right
+		case KeyEvent.VK_NUMPAD6:
+		case KeyEvent.VK_D: //right
 			player.act(player.x + 1, player.y);
 			repaint();
 			break;
 			
-		case '1':
-		case 'z': //down and left
+		case KeyEvent.VK_NUMPAD1:
+		case KeyEvent.VK_Z: //down and left
 			player.act(player.x - 1, player.y + 1);
 			repaint();
 			break;
 			
-		case '2':
-		case 'x': //down
+		case KeyEvent.VK_NUMPAD2:
+		case KeyEvent.VK_X: //down
 			player.act(player.x, player.y + 1);
 			repaint();
 			break;
 			
-		case '3':
-		case 'c': //down and right
+		case KeyEvent.VK_NUMPAD3:
+		case KeyEvent.VK_C: //down and right
 			player.act(player.x + 1, player.y + 1);
 			repaint();
 			break;
 			
-		case 'j': //jump
+		case KeyEvent.VK_J: //jump
 			jump();
 			repaint();
+			break;
+			
+		case KeyEvent.VK_UP:
+			pressedKey = KeyEvent.VK_UP;
+			break;
+		
+		case KeyEvent.VK_DOWN:
+			pressedKey = KeyEvent.VK_DOWN;
+			break;
+		
+		case KeyEvent.VK_LEFT:
+			pressedKey = KeyEvent.VK_LEFT;
+			break;
+			
+		case KeyEvent.VK_RIGHT:
+			pressedKey = KeyEvent.VK_RIGHT;
+			break;
 			
 		default:
 			break;
-
-
 
 		}
 
@@ -421,8 +447,16 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
 
+		int keyCode = e.getKeyCode();
+		if (keyCode == KeyEvent.VK_UP && pressedKey == KeyEvent.VK_UP) {System.out.println('d');
+			pressedKey = KeyEvent.VK_UNDEFINED;
+			if (!movedDiagonally) {System.out.println('d');
+				player.act(player.x, player.y - 1);
+				repaint();
+			}
+		}
+		
 	}
 
 	@Override

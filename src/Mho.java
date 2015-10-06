@@ -102,7 +102,7 @@ public class Mho extends Entity {
 			canmove = false;
 		}
 		else if (newx == playerx && newy == playery) {
-			// game over
+			Main.display.gameOver();
 			canmove = false;
 		}
 		return canmove;
@@ -114,7 +114,7 @@ public class Mho extends Entity {
 	 * @param newy The y-coordinate of the target cell
 	 * @param playerx The x-coordinate of the player
 	 * @param playery The y-coordinate of the player
-	 * @return Whether or not the mho is moveing to a fence
+	 * @return Whether or not the mho is moving to a fence
 	 */
 	public boolean canMoveToFence(int newx, int newy) {
 		if (Main.display.occupiedByFence(newx, newy)) {
@@ -126,45 +126,6 @@ public class Mho extends Entity {
 	public void remove() {
 		int index = Main.display.mhoList.indexOf(this);
 		Main.display.mhoList.remove(index);
-	}
-	
-	public void actX(int playerx) {
-		int direction = 1;
-		if (this.x > playerx) {
-			direction = -1;
-		}
-		int newx = this.x + direction;
-		if (Main.display.occupiedByFence(newx, y)) {
-			
-			// remove mho
-		}
-		else if (Main.display.occupiedByMho(newx, y)) {
-			
-		}
-		else {
-			move(newx, y);
-		}
-	}
-	
-	public void actY(int playerY) {
-		
-		int direction = (this.y > playerY) ? -1 : 1;
-		
-		int newy = this.y + direction;
-		
-		if (Main.display.occupiedByFence(x, newy)) {
-			
-			
-			// remove mho
-		}
-		else if (Main.display.occupiedByMho(x, newy)) {
-		
-		}
-		else {
-			
-			move(x, newy);
-			
-		}
 	}
 	
 	
