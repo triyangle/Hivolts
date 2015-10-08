@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.JComponent;
+import javax.swing.*;
 import javax.imageio.ImageIO;
 
 /**
@@ -31,13 +31,13 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 
 	private final int FENCES = 20;
 	private final int INITIAL_MHOS = 12;
-	
+
 	private final int DISPLAY_WIDTH;
 	private final int DISPLAY_HEIGHT;
 
 	public ArrayList<Mho> mhoList = new ArrayList<Mho>();
 	private Player player;
-	
+
 	// The arrow key that is currently being held down
 	private int pressedKey = KeyEvent.VK_UNDEFINED;
 	// Whether or not the player has moved diagonally using the arrow keys
@@ -160,10 +160,10 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	public boolean occupiedByMho(int x, int y) {
 		boolean occupied = false;
 		for (int i = 0; i < mhoList.size(); i++) {
-			
+
 			int x2 = mhoList.get(i).getX();
 			int y2 = mhoList.get(i).getY();
-			
+
 			if (x == x2 && y == y2) {
 				occupied = true;
 			}
@@ -180,45 +180,45 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	public boolean occupiedByFence(int x, int y) {
 		return cell[x][y].getFence();
 	}
-	
+
 	/**
 	 * Make all mhos move. In order to comply with the specification, mhos that are
 	 * on the same horizontal or vertical line as the player must move first.
 	 */
 	public void moveMhos() {
-		
+
 		/*for(int i = 0; i < mhoList.size(); i++) {
-			
+
 			if(mhoList.get(i).getX() == player.x) {
-				
+
 				mhoList.get(i).actY(player.y);
-					
+
 			}
-			
+
 			if(mhoList.get(i).getY() == player.y) {
-				
+
 				mhoList.get(i).actX(player.x);
-				
+
 			}
-			
+
 		}
-			
+
 		for(int i = 0; i < mhoList.size(); i++) {
-			
+
 			if(mhoList.get(i).getX() != player.x && mhoList.get(i).getY() != player.y) {
-				
+
 				mhoList.get(i).act(player.x, player.y);
-				
+
 			}
-			
+
 		}*/
-		
+
 		for (int i = 0; i < mhoList.size(); i++) {
 			mhoList.get(i).act(player.x, player.y);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Make the player jump to a random non-fence cell
 	 */
@@ -239,10 +239,27 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 
 	public void gameOver() {
 
+		int response = JOptionPane.showConfirmDialog(this, "Game Over. Play again?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+		switch(response) {
+
+		case JOptionPane.YES_OPTION:
+			//reset frame board
+			break;
+
+		case JOptionPane.NO_OPTION:
+			//exit
+			break;
+
+		default:
+			break;
+
+		}
+
 		System.out.println("Game Over");
-		
+
 	}
-	
+
 	@Override
 	public void paintComponent(Graphics g) {
 
@@ -254,43 +271,43 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 
 	}
 
-	
+
 	/**
 	 * Initializes the fence image
 	 */
 	private void initFenceImage() {
-		
+
 		try {
 
 			Fence.setImage(ImageIO.read(new File("fence.jpg")));
 
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 
 		}
-		
+
 	}
-	
+
 	private void initMhoImage(){
 		try {
 
 			Mho.setImage(ImageIO.read(new File("Mho.jpg")));
 
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 
 		}
 	}
-	
+
 	private void initPlayerImage(){
 		try {
 
 			Player.setImage(ImageIO.read(new File("player.jpg")));
 
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 
 		}
@@ -344,13 +361,13 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	 * @param g The graphics component on which to draw the mhos
 	 */
 	void drawMhos(Graphics g) {
-		
+
 		for(int i = 0; i < mhoList.size(); i++) {
-			
+
 			mhoList.get(i).draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
-			
+
 		}
-		
+
 		/*for (Mho mho : mhos) {
 			mho.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
 		}*/
@@ -368,76 +385,76 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	public void keyPressed(KeyEvent e) {
 
 		switch(e.getKeyCode()) {
-		
+
 		case KeyEvent.VK_NUMPAD7:
 		case KeyEvent.VK_Q: //up and left
 			player.act(player.x - 1, player.y - 1);
 			repaint();
 			break;
-		
+
 		case KeyEvent.VK_NUMPAD8:
 		case KeyEvent.VK_W: //up
 			player.act(player.x, player.y - 1);
 			repaint();
 			break;
-		
+
 		case KeyEvent.VK_NUMPAD9:
 		case KeyEvent.VK_E: //up and right
 			player.act(player.x + 1, player.y - 1);
 			repaint();
 			break;
-			
+
 		case KeyEvent.VK_NUMPAD4:
 		case KeyEvent.VK_A: //left
 			player.act(player.x - 1, player.y);
 			repaint();
 			break;
-			
+
 		case KeyEvent.VK_NUMPAD6:
 		case KeyEvent.VK_D: //right
 			player.act(player.x + 1, player.y);
 			repaint();
 			break;
-			
+
 		case KeyEvent.VK_NUMPAD1:
 		case KeyEvent.VK_Z: //down and left
 			player.act(player.x - 1, player.y + 1);
 			repaint();
 			break;
-			
+
 		case KeyEvent.VK_NUMPAD2:
 		case KeyEvent.VK_X: //down
 			player.act(player.x, player.y + 1);
 			repaint();
 			break;
-			
+
 		case KeyEvent.VK_NUMPAD3:
 		case KeyEvent.VK_C: //down and right
 			player.act(player.x + 1, player.y + 1);
 			repaint();
 			break;
-			
+
 		case KeyEvent.VK_J: //jump
 			jump();
 			repaint();
 			break;
-			
+
 		case KeyEvent.VK_UP:
 			pressedKey = KeyEvent.VK_UP;
 			break;
-		
+
 		case KeyEvent.VK_DOWN:
 			pressedKey = KeyEvent.VK_DOWN;
 			break;
-		
+
 		case KeyEvent.VK_LEFT:
 			pressedKey = KeyEvent.VK_LEFT;
 			break;
-			
+
 		case KeyEvent.VK_RIGHT:
 			pressedKey = KeyEvent.VK_RIGHT;
 			break;
-			
+
 		default:
 			break;
 
@@ -450,13 +467,13 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 
 		int keyCode = e.getKeyCode();
 		if (keyCode == KeyEvent.VK_UP && pressedKey == KeyEvent.VK_UP) {System.out.println('d');
-			pressedKey = KeyEvent.VK_UNDEFINED;
-			if (!movedDiagonally) {System.out.println('d');
-				player.act(player.x, player.y - 1);
-				repaint();
-			}
+		pressedKey = KeyEvent.VK_UNDEFINED;
+		if (!movedDiagonally) {System.out.println('d');
+		player.act(player.x, player.y - 1);
+		repaint();
 		}
-		
+		}
+
 	}
 
 	@Override
