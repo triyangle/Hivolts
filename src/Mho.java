@@ -1,7 +1,9 @@
 
 import java.awt.Color;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+
 
 /**
  * 
@@ -9,14 +11,10 @@ import java.awt.image.BufferedImage;
  */
 
 public class Mho extends Entity {
-
-	private boolean alive;
 	
 	private static BufferedImage sprite;
 	
 	public Mho() {
-		
-		alive = true;
 		
 	}
 	
@@ -27,6 +25,7 @@ public class Mho extends Entity {
 		this.myColor = Color.RED;
 		
 	}
+	
 	public static void setImage(BufferedImage image) {
 		
 		sprite = image;
@@ -39,64 +38,95 @@ public class Mho extends Entity {
 		int xLeft = xOffset + 1 + (this.x * (width + 1));
 		int yTop = yOffset + 1 + (this.y * (height + 1));
 		
-		g.setColor(myColor);
-		g.fillRect(xLeft, yTop, width, height);
 		g.drawImage(sprite, xLeft, yTop, width, height, null);
 		
 	}
-	public void setAlive(boolean newAlive) {
-		
-		alive = newAlive;
-		
-	}
 	
-	public boolean getAlive() {
-		
-		return alive;
-		
-	}
-	
-	public void nextTurn() {
-		
-		
-		
-	}
-	
-	public void move(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-	
+	/**
+	 * This method is called for every mho after the player's turn. It does
+	 * @param playerx The x-coordinate of the player
+	 * @param playery The y-coordinate of the player
+	 */
 	public void act(int playerx, int playery) {
 		
-	}
-	
-	public void actx(int playerx) {
-		int direction = 1;
-		if (this.x > playerx) {
-			direction = -1;
+		int newx = x;
+		if (this.x < playerx) {
+			newx += 1;
 		}
-		int newx = this.x + direction;
-		if (Main.display.occupiedByFence(newx, y)) {
-			// remove mho
+		else if (this.x > playerx) {
+			newx -= 1;
 		}
-		else {
+		int newy = y;
+		if (this.y < playery) {
+			newy += 1;
+		}
+		else if (this.y > playery) {
+			newy -= 1;
+		}
+		int deltax = Math.abs(x - playerx);
+		int deltay = Math.abs(y - playery);
+		
+		if (canMove(x, y, newx, newy, playerx, playery)) {
+			move(newx, newy);
+		}
+		else if (deltax >= deltay && canMove(x, y, newx, y, playerx, playery)) {
 			move(newx, y);
 		}
-	}
-	
-	public void acty(int playery) {
-		int direction = 1;
-		if (this.y > playery) {
-			direction = -1;
-		}
-		int newy = this.y + direction;
-		if (Main.display.occupiedByFence(x, newy)) {
-			// remove mho
-		}
-		else {
+		else if (canMove(x, y, x, newy, playerx, playery)) {
 			move(x, newy);
 		}
+		else if (canMoveToFence(newx, newy)
+		      || canMoveToFence(   x, newy)
+		      || canMoveToFence(newx,    y)) {
+			remove();
+		}
+		
 	}
+	
+	/**
+	 * This function figures out whether or not the mho can move to the target cell.
+	 * Mhos are not allowed to move to their own cell.
+	 * @param x The x-coordinate of the mho
+	 * @param y The y-coordinate of the mho
+	 * @param newx The x-coordinate of the target cell
+	 * @param newy The y-coordinate of the target cell
+	 * @param playerx The x-coordinate of the player
+	 * @param playery The y-coordinate of the player
+	 * @return Whether or not the mho can move to the target cell
+	 */
+	public boolean canMove(int x, int y, int newx, int newy, int playerx, int playery) {
+		boolean canmove = true;
+		if (Main.display.occupiedByFence(newx, newy)
+		    || Main.display.occupiedByMho(newx, newy)
+		    || x == newx && y == newy) {
+			canmove = false;
+		}
+		else if (newx == playerx && newy == playery) {
+			Main.display.gameOver();
+			canmove = false;
+		}
+		return canmove;
+	}
+	
+	/**
+	 * This function figures out whether or not the mho is moving to a fence
+	 * @param newx The x-coordinate of the target cell
+	 * @param newy The y-coordinate of the target cell
+	 * @param playerx The x-coordinate of the player
+	 * @param playery The y-coordinate of the player
+	 * @return Whether or not the mho is moving to a fence
+	 */
+	public boolean canMoveToFence(int newx, int newy) {
+		if (Main.display.occupiedByFence(newx, newy)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public void remove() {
+		int index = Main.display.mhoList.indexOf(this);
+		Main.display.mhoList.remove(index);
+	}
+	
 	
 }

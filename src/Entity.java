@@ -49,4 +49,11 @@ public class Entity {
 		g.fillRect(xLeft, yTop, width, height);
 	}
 	
+	public void move(int x, int y) {
+		
+		this.x = x;
+		this.y = y;
+		
+	}
+	
 }
