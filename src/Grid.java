@@ -410,6 +410,13 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 			repaint();
 			break;
 
+			
+		case KeyEvent.VK_NUMPAD5:
+		case KeyEvent.VK_S:
+			player.act(player.x, player.y);
+			repaint();
+			break;
+			
 		case KeyEvent.VK_NUMPAD6:
 		case KeyEvent.VK_D: //right
 			player.act(player.x + 1, player.y);
@@ -440,11 +447,43 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 			break;
 
 		case KeyEvent.VK_UP:
-			pressedKey = KeyEvent.VK_UP;
+			switch (pressedKey) {
+			case KeyEvent.VK_UNDEFINED:
+				pressedKey = KeyEvent.VK_UP;
+				break;
+			case KeyEvent.VK_LEFT:
+				movedDiagonally = true;
+				player.act(player.x - 1, player.y - 1);
+				repaint();
+				break;
+			case KeyEvent.VK_RIGHT:
+				movedDiagonally = true;
+				player.act(player.x + 1, player.y - 1);
+				repaint();
+				break;
+			case KeyEvent.VK_DOWN:
+				movedDiagonally = true;
+				break;
+			}
 			break;
 
 		case KeyEvent.VK_DOWN:
-			pressedKey = KeyEvent.VK_DOWN;
+			switch (pressedKey) {
+			case KeyEvent.VK_UNDEFINED:
+				pressedKey = KeyEvent.VK_DOWN;
+				break;
+			case KeyEvent.VK_LEFT:
+				movedDiagonally = true;
+				player.act(player.x - 1, player.y + 1);
+				break;
+			case KeyEvent.VK_RIGHT:
+				movedDiagonally = true;
+				player.act(player.x + 1, player.y + 1);
+				break;
+			case KeyEvent.VK_UP:
+				movedDiagonally = true;
+				break;
+			}
 			break;
 
 		case KeyEvent.VK_LEFT:
@@ -466,12 +505,41 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	public void keyReleased(KeyEvent e) {
 
 		int keyCode = e.getKeyCode();
-		if (keyCode == KeyEvent.VK_UP && pressedKey == KeyEvent.VK_UP) {System.out.println('d');
-		pressedKey = KeyEvent.VK_UNDEFINED;
-		if (!movedDiagonally) {System.out.println('d');
-		player.act(player.x, player.y - 1);
-		repaint();
+		
+		if (keyCode == KeyEvent.VK_UP && pressedKey == KeyEvent.VK_UP) {
+			pressedKey = KeyEvent.VK_UNDEFINED;
+			if (!movedDiagonally) {
+				player.act(player.x, player.y - 1);
+				repaint();
+			}
+			movedDiagonally = false;
 		}
+		
+		else if (keyCode == KeyEvent.VK_LEFT && pressedKey == KeyEvent.VK_LEFT) {
+			pressedKey = KeyEvent.VK_UNDEFINED;
+			if (!movedDiagonally) {
+				player.act(player.x - 1, player.y);
+				repaint();
+			}
+			movedDiagonally = false;
+		}
+		
+		else if (keyCode == KeyEvent.VK_RIGHT && pressedKey == KeyEvent.VK_RIGHT) {
+			pressedKey = KeyEvent.VK_UNDEFINED;
+			if (!movedDiagonally) {
+				player.act(player.x + 1, player.y);
+				repaint();
+			}
+			movedDiagonally = false;
+		}
+		
+		else if (keyCode == KeyEvent.VK_DOWN && pressedKey == KeyEvent.VK_DOWN) {
+			pressedKey = KeyEvent.VK_UNDEFINED;
+			if (!movedDiagonally) {
+				player.act(player.x, player.y + 1);
+				repaint();
+			}
+			movedDiagonally = false;
 		}
 
 	}
