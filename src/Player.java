@@ -1,8 +1,6 @@
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 
@@ -27,25 +25,31 @@ public class Player extends Entity {
 		int xLeft = xOffset + 1 + (this.x * (width + 1));
 		int yTop = yOffset + 1 + (this.y * (height + 1));
 		
-		g.setColor(myColor);
-		g.fillRect(xLeft, yTop, width, height);
 		g.drawImage(sprite, xLeft, yTop, width, height, null);
 		
 	}
 	
+	@Override
 	public void move(int x, int y) {
 		
-		if (Main.display.occupiedByFence(x, y)) {
-			// do nothing
-		}
-		else if (Main.display.occupiedByMho(x, y, 12)) {
-			// game over
-		}
-		else {	
+		if (Main.display.occupiedByFence(x, y) || Main.display.occupiedByMho(x, y)) {
+
+			Main.display.gameOver();
+			
+		} else {
+			
 			this.x = x;
 			this.y = y;
-			Main.display.moveMhos();
+			
 		}
+		
+	}
+	
+	public void act(int x, int y) {
+		
+		move(x, y);
+		Main.display.moveMhos();
+		
 	}
 	
 }
