@@ -21,15 +21,16 @@ import javax.imageio.ImageIO;
 
 public class Grid extends JComponent implements KeyListener, MouseListener {
 
-	//Various Grid variables
+	//various Grid variables
 	public static final int ROWS = 12;
 	public static final int COLS = 12;
 	public static Cell[][] cell = new Cell[ROWS][COLS];
-	public ArrayList<Mho> mhoList = new ArrayList<Mho>();
-
+	
 	public static ImageIcon mhoIcon;
 	public static ImageIcon fenceIcon;
 	public static ImageIcon playerIcon;
+	
+	public ArrayList<Mho> mhoList = new ArrayList<Mho>();
 	
 	private final int X_GRID_OFFSET = 50;
 	private final int Y_GRID_OFFSET = 50;
