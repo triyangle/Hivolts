@@ -21,12 +21,18 @@ import javax.imageio.ImageIO;
 
 public class Grid extends JComponent implements KeyListener, MouseListener {
 
-	//grid info
+	//Various Grid variables
 	public static final int ROWS = 12;
 	public static final int COLS = 12;
 	public static Cell[][] cell = new Cell[ROWS][COLS];
-	private final int X_GRID_OFFSET = 50; // 50 pixels from left
-	private final int Y_GRID_OFFSET = 50; // 50 pixels from top
+	public ArrayList<Mho> mhoList = new ArrayList<Mho>();
+
+	public static ImageIcon mhoIcon;
+	public static ImageIcon fenceIcon;
+	public static ImageIcon playerIcon;
+	
+	private final int X_GRID_OFFSET = 50;
+	private final int Y_GRID_OFFSET = 50;
 	private final int CELL_WIDTH = 50;
 	private final int CELL_HEIGHT = 50;
 
@@ -36,11 +42,6 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	private final int DISPLAY_WIDTH;
 	private final int DISPLAY_HEIGHT;
 
-	public static ImageIcon mhoIcon;
-	public static ImageIcon fenceIcon;
-	public static ImageIcon playerIcon;
-	
-	public ArrayList<Mho> mhoList = new ArrayList<Mho>();
 	private Player player;
 
 	private boolean gameOver;
@@ -50,44 +51,60 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	// Whether or not the player has moved diagonally using the arrow keys
 	private boolean movedDiagonally = false;
 
-
+	/**
+	 * Initializes a new Grid.
+	 * @param width The width of the Grid frame
+	 * @param height The height of the Grid frame
+	 */
 	public Grid(int width, int height) {
 
 		DISPLAY_WIDTH = width;
 		DISPLAY_HEIGHT = height;
+		
 		addKeyListener(this);
 		addMouseListener(this);
+		
 		initFenceImage();
 		initPlayerImage();
 		initMhoImage();
+		
 		initExterior();
 		initInterior();
+		
 		repaint();
 
 	}
-
+	
 	/**
-	 * Overrides the preferred size (of 0) to make it the correct with and height.
+	 * Overrides the preferred size (of 0) to make it the correct width and height.
 	 */
 	@Override
 	public Dimension getPreferredSize() {
+		
 		return new Dimension(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+		
 	}
 
 	/**
 	 * Initialize the outer fences.
-	 * This method creates the fences along the edge of the board and adds
-	 * them to the grid.
+	 * This method creates the fences along the edge of the board and adds them to the grid.
 	 */
 	private void initExterior() {
-		for (int x = 1; x < ROWS - 1; x++) {
+		
+		for(int x = 1; x < COLS - 1; x++) {
+			
 			cell[x][0] = new Fence(x, 0);
-			cell[x][COLS-1] = new Fence(x, COLS-1);
+			cell[x][ROWS-1] = new Fence(x, ROWS-1);
+			
 		}
-		for (int y = 0; y < COLS; y++) {
+		
+		for(int y = 0; y < ROWS; y++) {
+			
 			cell[0][y] = new Fence(0, y);
-			cell[ROWS-1][y] = new Fence(ROWS-1, y);
+			cell[COLS-1][y] = new Fence(COLS-1, y);
+			
 		}
+		
 	}
 
 	/**
@@ -95,39 +112,55 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	 * This method creates a linear array containing all the empty space, fences,
 	 * mhos, and the player that are inside the outer fences. It places these elements randomly
 	 * then iterates through them, placing them in the 2d array for the grid.
-	 * In the 1d array, since Integers are used to represent objects:
-	 * 0 represents empty cells
-	 * 1 represents fences
-	 * 2 represents mhos
-	 * 3 represents the player
+	 * <p/><b>In the 1d array, since Integers are used to represent objects:</b>
+	 * 
+	 * <ul>
+	 * <li><b>0</b> represents empty cells</li>
+	 * <li><b>1</b> represents fences</li>
+	 * <li><b>2</b> represents mhos</li>
+	 * <li><b>3</b> represents the player</li>
+	 * </ul>
+	 * 
 	 */
 	private void initInterior() {
+		
 		Integer[] empty = new Integer[(ROWS-2)*(COLS-2)-FENCES-INITIAL_MHOS-1];
+		
 		for (int i = 0; i < empty.length; i++) {
+			
 			empty[i] = 0;
+			
 		}
+		
 		Integer[] fences = placeRandom(empty, 1, FENCES);
 		Integer[] mhos = placeRandom(fences, 2, INITIAL_MHOS);
 		Integer[] player = placeRandom(mhos, 3, 1);
 
 		for (int i = 0; i < player.length; i++) {
+			
 			int x = 1 + i / (ROWS-2);
 			int y = 1 + i - (x-1) * (ROWS-2);
+			
 			switch (player[i]) {
+			
 			case 0:
 				cell[x][y] = new Cell(x, y);
 				break;
+				
 			case 1:
 				cell[x][y] = new Fence(x, y);
 				break;
+				
 			case 2:
 				mhoList.add(new Mho(x, y));
 				cell[x][y] = new Cell(x, y);
 				break;
+				
 			case 3:
 				this.player = new Player(x, y);
 				cell[x][y] = new Cell(x, y);
 				break;
+				
 			}
 		}
 	}
@@ -138,177 +171,36 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	 * This method works by creating a list out of the input array, then adding items at random
 	 * indices for each item. The fact that it is a list ensures that there are no overlapping items.
 	 * @param array The array that items should be placed into.
-	 * @param item An int representing the item to be placed
+	 * @param item An <code>int</code> representing the item to be placed
 	 * @param itemCount The number of items to be placed
 	 * @return A new array with the items placed among the input array
 	 */
 	private static Integer[] placeRandom(Integer[] array, int item, int itemCount) {
+		
 		// Create a list that represents the input array
 		ArrayList<Integer> list = new ArrayList<Integer>();
+		
 		for (int i = 0; i < array.length; i++) {
+			
 			list.add(array[i]);
+			
 		}
+		
 		// Add each item to the list at a random index
 		for (int i = 1; i <= itemCount; i++) {
+			
 			int index = (int) Math.floor((array.length - itemCount + i) * Math.random());
 			list.add(index, item);
+			
 		}
+		
 		Integer[] finalArray = new Integer[array.length + itemCount];
 		return list.toArray(finalArray);
-	}
-
-	/**
-	 * This method loops through all existing mhos to see whether or not a certain cell is occupied by a mho
-	 * @param x The x-coordinate of the cell
-	 * @param y The y-coordinate of the cell
-	 * @param mhoCount The number of mhos in the list of mhos
-	 * @return whether or not the cell in question is occupied by a mho
-	 */
-	public boolean occupiedByMho(int x, int y) {
-		boolean occupied = false;
-		for (int i = 0; i < mhoList.size(); i++) {
-
-			int x2 = mhoList.get(i).getX();
-			int y2 = mhoList.get(i).getY();
-
-			if (x == x2 && y == y2) {
-				occupied = true;
-			}
-		}
-		return occupied;
-	}
-
-	/**
-	 * This method checks to see if a certain cell is occupied by a fence
-	 * @param x The x-coordinate of the cell
-	 * @param y The y-coordinate of the cell
-	 * @return whether or not the cell in question is occupied by a fence
-	 */
-	public boolean occupiedByFence(int x, int y) {
-		return cell[x][y].getFence();
-	}
-
-	/**
-	 * Make all mhos move. In order to comply with the specification, mhos that are
-	 * on the same horizontal or vertical line as the player must move first.
-	 */
-	public void moveMhos() {
-
-		/*for(int i = 0; i < mhoList.size(); i++) {
-
-			if(mhoList.get(i).getX() == player.x) {
-
-				mhoList.get(i).actY(player.y);
-
-			}
-
-			if(mhoList.get(i).getY() == player.y) {
-
-				mhoList.get(i).actX(player.x);
-
-			}
-
-		}
-
-		for(int i = 0; i < mhoList.size(); i++) {
-
-			if(mhoList.get(i).getX() != player.x && mhoList.get(i).getY() != player.y) {
-
-				mhoList.get(i).act(player.x, player.y);
-
-			}
-
-		}*/
-
-		for (int i = 0; i < mhoList.size(); i++) {
-
-			if(gameOver) {
-
-				break;
-
-			} else {
-				
-				mhoList.get(i).act(player.x, player.y);
-				
-			}
-
-		}
-
-		repaint();
 		
-		if(gameOver) {
-			
-			gameOver(false, "A Mho has moved onto you! ", mhoIcon);
-			
-		}
-
-		if(mhoList.isEmpty()) {
-
-			gameOver(true, "All the Mhos have been defeated! ", playerIcon);
-
-		}
-
 	}
 
 	/**
-	 * Make the player jump to a random non-fence cell
-	 */
-	private void jump() {
-		int unoccupied = (ROWS-2) * (COLS-2) - FENCES;
-		int destination = (int) Math.floor(unoccupied * Math.random());
-		for (int x = 0; x < ROWS; x++) {
-			for (int y = 0; y < COLS; y++) {
-				if (!occupiedByFence(x, y)) {
-					if (destination == 0) {
-						player.move(x, y, true);
-					}
-					destination--;
-				}
-			}
-		}
-	}
-
-	public void gameOver(boolean win, String message, ImageIcon icon) {
-
-		String titleMessage = win ? "Congratulations, you have won! " : "Game Over. ";
-
-		int response = JOptionPane.showConfirmDialog(this, message + "\nPlay again?", titleMessage, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icon);
-
-		switch(response) {
-
-		case JOptionPane.YES_OPTION:
-			setGameOver(false);
-			mhoList.clear();
-			initInterior();
-			repaint();
-			break;
-
-		case JOptionPane.NO_OPTION:
-		default:
-			System.exit(0);
-			break;
-
-		}
-
-		System.out.println("Game Over");
-
-	}
-
-	@Override
-	public void paintComponent(Graphics g) {
-
-		g.setColor(Color.BLACK);
-		drawGrid(g);
-		drawCells(g);
-		drawPlayer(g);
-		drawMhos(g);
-		
-
-	}
-
-
-	/**
-	 * Initializes the fence image
+	 * Initializes the fence image and icon
 	 */
 	private void initFenceImage() {
 
@@ -326,7 +218,11 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 
 	}
 
+	/**
+	 * Initializes the mho image and icon
+	 */
 	private void initMhoImage(){
+		
 		try {
 
 			Mho.setImage(ImageIO.read(new File("Mho.jpg")));
@@ -341,7 +237,11 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 				
 	}
 
+	/**
+	 * Initializes the player image and icon
+	 */
 	private void initPlayerImage(){
+		
 		try {
 
 			Player.setImage(ImageIO.read(new File("player.jpg")));
@@ -355,12 +255,28 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		playerIcon = new ImageIcon(Player.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
 		
 	}
+	
+	/**
+	 * Paints the <code>Grid</code>, <code>Cells</code>, <code>Player</code>, and <code>Mhos</code>
+	 * onto the component.
+	 * @param g The graphics component on which to paint the objects
+	 */
+	@Override
+	public void paintComponent(Graphics g) {
+
+		g.setColor(Color.BLACK);
+		drawGrid(g);
+		drawCells(g);
+		drawPlayer(g);
+		drawMhos(g);
+		
+	}
 
 	/**
 	 * Draws the lines for the grid
 	 * @param g The graphics component on which to draw the lines
 	 */
-	void drawGrid(Graphics g) {
+	private void drawGrid(Graphics g) {
 
 		for (int row = 0; row <= ROWS; row++) {
 
@@ -385,7 +301,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	 * Fills in a gray cell for each cell bounded by the grid lines
 	 * @param g The graphics component on which to draw the cells
 	 */
-	void drawCells(Graphics g) {
+	private void drawCells(Graphics g) {
 
 		for (int row = 0; row < ROWS; row++) {
 
@@ -403,7 +319,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	 * Draws all the mhos on the grid
 	 * @param g The graphics component on which to draw the mhos
 	 */
-	void drawMhos(Graphics g) {
+	private void drawMhos(Graphics g) {
 
 		for(int i = 0; i < mhoList.size(); i++) {
 
@@ -411,25 +327,170 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 
 		}
 
-		/*for (Mho mho : mhos) {
-			mho.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
-		}*/
 	}
 
 	/**
 	 * Draws the player
 	 * @param g The graphics component on which to draw the mhos
 	 */
-	void drawPlayer(Graphics g) {
+	private void drawPlayer(Graphics g) {
+		
 		player.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
+		
+	}
+	
+	/**
+	 * This method loops through all existing mhos to see whether or not a certain cell is occupied by a mho
+	 * @param x The x-coordinate of the cell
+	 * @param y The y-coordinate of the cell
+	 * @param mhoCount The number of mhos in the list of mhos
+	 * @return Whether or not the cell in question is occupied by a mho
+	 */
+	public boolean occupiedByMho(int x, int y) {
+		
+		boolean occupied = false;
+		
+		for (int i = 0; i < mhoList.size(); i++) {
+
+			int x2 = mhoList.get(i).getX();
+			int y2 = mhoList.get(i).getY();
+
+			if (x == x2 && y == y2) {
+				
+				occupied = true;
+				
+			}
+			
+		}
+		
+		return occupied;
+		
 	}
 
-	public boolean setGameOver(boolean gameOver) {
+	/**
+	 * This method checks to see if a certain cell is occupied by a fence
+	 * @param x The x-coordinate of the cell
+	 * @param y The y-coordinate of the cell
+	 * @return whether or not the cell in question is occupied by a fence
+	 */
+	public boolean occupiedByFence(int x, int y) {
+		
+		return cell[x][y].getFence();
+		
+	}
 
-		return this.gameOver = gameOver;
+	/**
+	 * Loops through the <code>ArrayList</code> of mhos and moves each of them. Breaks out of said
+	 * loop if <code>gameOver</code> is true.
+	 */
+	public void moveMhos() {
+
+		for (int i = 0; i < mhoList.size(); i++) {
+
+			if(gameOver) {
+
+				break;
+
+			} else {
+				
+				mhoList.get(i).act(player.x, player.y);
+				
+			}
+
+		}
+
+		repaint();
+		
+		if(gameOver) {
+			
+			gameOver(false, "A Mho has moved onto you! ", mhoIcon);
+			
+		} else {
+			
+		if(mhoList.isEmpty()) {
+
+			gameOver(true, "All the Mhos have been defeated! ", playerIcon);
+
+		}
+		
+		}
 
 	}
 
+	/**
+	 * Make the player jump to a random non-fence cell
+	 */
+	private void jump() {
+		
+		int unoccupied = (ROWS-2) * (COLS-2) - FENCES;
+		int destination = (int) Math.floor(unoccupied * Math.random());
+		
+		for (int x = 0; x < COLS; x++) {
+			
+			for (int y = 0; y < ROWS; y++) {
+				
+				if (!occupiedByFence(x, y)) {
+					
+					if (destination == 0) {
+						
+						player.move(x, y, true);
+						
+					}
+					
+					destination--;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Invoked when the player moves onto a mho or fence, or a mho moves onto the player, or if there
+	 * are no mhos left. Prompts the player whether or not to play again and appropriately resets the
+	 * <code>Grid</code> or exits the game.
+	 * 
+	 * @param win Whether the player won (no mhos left)
+	 * @param message A message describing how the game ended
+	 * @param icon An icon pertaining to how the game ended
+	 */
+	public void gameOver(boolean win, String message, ImageIcon icon) {
+
+		String titleMessage = win ? "Congratulations, you have won!" : "Game Over";
+
+		int response = JOptionPane.showConfirmDialog(this, message + "\nPlay again?",
+				titleMessage, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icon);
+
+		switch(response) {
+
+		case JOptionPane.YES_OPTION:
+			setGameOver(false);
+			mhoList.clear();
+			initInterior();
+			repaint();
+			break;
+
+		case JOptionPane.NO_OPTION:
+		default:
+			System.exit(0);
+			break;
+
+		}
+
+	}
+
+	/**
+	 * Sets whether or not the player has lost the game.
+	 * @param gameOver The new <code>boolean</code> value for <code>gameOver</code>
+	 */
+	public void setGameOver(boolean gameOver) {
+
+		this.gameOver = gameOver;
+
+	}
+	
+	/**
+	 * Moves the player according to the key pressed
+	 * @param e The <code>KeyEvent</code> on which to obtain the <code>KeyCode</code>
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 
@@ -438,101 +499,103 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		case KeyEvent.VK_NUMPAD7:
 		case KeyEvent.VK_Q: //up and left
 			player.act(player.x - 1, player.y - 1);
-			//repaint();
 			break;
 
 		case KeyEvent.VK_NUMPAD8:
 		case KeyEvent.VK_W: //up
 			player.act(player.x, player.y - 1);
-			//repaint();
 			break;
 
 		case KeyEvent.VK_NUMPAD9:
 		case KeyEvent.VK_E: //up and right
 			player.act(player.x + 1, player.y - 1);
-			//repaint();
 			break;
 
 		case KeyEvent.VK_NUMPAD4:
 		case KeyEvent.VK_A: //left
 			player.act(player.x - 1, player.y);
-			//repaint();
 			break;
 
 
 		case KeyEvent.VK_NUMPAD5:
 		case KeyEvent.VK_S:
 			player.act(player.x, player.y);
-			//repaint();
 			break;
 
 		case KeyEvent.VK_NUMPAD6:
 		case KeyEvent.VK_D: //right
 			player.act(player.x + 1, player.y);
-			//repaint();
 			break;
 
 		case KeyEvent.VK_NUMPAD1:
 		case KeyEvent.VK_Z: //down and left
 			player.act(player.x - 1, player.y + 1);
-			//repaint();
 			break;
 
 		case KeyEvent.VK_NUMPAD2:
 		case KeyEvent.VK_X: //down
 			player.act(player.x, player.y + 1);
-			//repaint();
 			break;
 
 		case KeyEvent.VK_NUMPAD3:
 		case KeyEvent.VK_C: //down and right
 			player.act(player.x + 1, player.y + 1);
-			//repaint();
 			break;
 
 		case KeyEvent.VK_J: //jump
 			jump();
-			//repaint();
 			break;
 
 		case KeyEvent.VK_UP:
 			switch (pressedKey) {
+			
 			case KeyEvent.VK_UNDEFINED:
 				pressedKey = KeyEvent.VK_UP;
 				break;
+				
 			case KeyEvent.VK_LEFT:
 				movedDiagonally = true;
 				player.act(player.x - 1, player.y - 1);
 				repaint();
 				break;
+				
 			case KeyEvent.VK_RIGHT:
 				movedDiagonally = true;
 				player.act(player.x + 1, player.y - 1);
 				repaint();
 				break;
+				
 			case KeyEvent.VK_DOWN:
 				movedDiagonally = true;
 				break;
+				
 			}
+			
 			break;
 
 		case KeyEvent.VK_DOWN:
 			switch (pressedKey) {
+			
 			case KeyEvent.VK_UNDEFINED:
 				pressedKey = KeyEvent.VK_DOWN;
 				break;
+				
 			case KeyEvent.VK_LEFT:
 				movedDiagonally = true;
 				player.act(player.x - 1, player.y + 1);
 				break;
+				
 			case KeyEvent.VK_RIGHT:
 				movedDiagonally = true;
 				player.act(player.x + 1, player.y + 1);
 				break;
+				
 			case KeyEvent.VK_UP:
 				movedDiagonally = true;
 				break;
+				
 			}
+			
 			break;
 
 		case KeyEvent.VK_LEFT:
@@ -550,6 +613,10 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 
 	}
 
+	/**
+	 * 
+	 * @param e
+	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
 
@@ -593,11 +660,19 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 
 	}
 
+	/**
+	 * Unimplemented method
+	 * @param e Unused parameter
+	 */
 	@Override
 	public void keyTyped(KeyEvent e) {
 
 	}
 
+	/**
+	 * The component grabs the focus when the mouse is clicked over it
+	 * @param arg0 Unused parameter
+	 */
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 
@@ -605,30 +680,42 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 
 	}
 
+	/**
+	 * The component grabs the focus when the mouse enters over it
+	 * @param arg0 Unused parameter
+	 */
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
+		
+		this.grabFocus();
 
 	}
 
+	/**
+	 * Unimplemented method
+	 * @param arg0 Unused parameter
+	 */
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-
-
+		
 	}
-
+	
+	/**
+	 * Unimplemented method
+	 * @param arg0 Unused parameter
+	 */
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 
-
-
 	}
 
+	/**
+	 * Unimplemented method
+	 * @param arg0 Unused parameter
+	 */
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 
 	}
 
 }
-
-

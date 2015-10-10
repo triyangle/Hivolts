@@ -11,25 +11,40 @@ public class Entity {
 	
 	public Entity() {
 		
-		
 	}
 	
 	public void act() {
 		
 	}
 	
+	/**
+	 * Get the x-coordinate of this entity
+	 * @return The x-coordinate of this entity
+	 */
 	public int getX() {
 		return x;
 	}
 	
+	/**
+	 * Set the x-coordinate of this entity
+	 * @param x The new x-coordinate of this entity
+	 */
 	public void setX(int x) {
 		this.x = x;
 	}
 	
+	/**
+	 * Get the y-coordinate of this entity
+	 * @return The y-coordinate of this entity
+	 */
 	public int getY() {
 		return y;
 	}
 	
+	/**
+	 * Set the y-coordinate of this entity
+	 * @param y The new y-coordinate of this entity
+	 */
 	public void setY(int y) {
 		this.y = y;
 	}
@@ -49,6 +64,11 @@ public class Entity {
 		g.fillRect(xLeft, yTop, width, height);
 	}
 	
+	/**
+	 * Moves the entity to the new coordinates
+	 * @param x The new x-coordinate
+	 * @param y The new y-coordinate
+	 */
 	public void move(int x, int y) {
 		
 		this.x = x;

@@ -9,6 +9,10 @@ public class Main {
 	
 	public static Grid display;
 
+	/**
+	 * Creates a new Grid and displays it along with instructions.
+	 * @param args Unused parameter
+	 */
 	public static void main(String[] args) {
 		
 		// Bring up a JFrame with squares to represent the cells
@@ -25,27 +29,24 @@ public class Main {
 		f.add(display, BorderLayout.CENTER);
 		f.pack();
 		f.setVisible(true);
+		f.setResizable(false);
+		f.setLocationRelativeTo(null);
 		
-		//fixes window dimensions
-		//f.setResizable(false);
-		
-		//centers window placement
-		//f.setLocationRelativeTo(null);
-		
+		//uses html text to create different lines of text
 		JLabel label = new JLabel("Text-Only Label", JLabel.CENTER);
-		label.setText("<html> Welcome to Hivolts! <br/> Use WAXD to move, and "
+		label.setText("<html> Welcome to Hivolts! <br/><br/>Use WAXD to move, and "
 				+ "<br/> QEZC to move diagonally."
 				+ "<br/> Press S to stay still."
-				+ "<br/> Click on the gameboard to begin. "
-				+ "<br/> You may close this window. </html>");
-		//uses html text to create different lines of text
-		JFrame window = new JFrame("Instructions");
+				+ "<br/> Press J to jump."
+				+ "<br/><br/> Click on the gameboard to begin. "
+				+ "<br/><br/> You may close this window. </html>");
+		
 		//creates new window with size 250x250 on top of game window
+		JFrame window = new JFrame("Instructions");
 		window.setSize(250, 250);
 		window.setVisible(true);
 		window.add(label);
 		window.setLocationRelativeTo(f);
-		
 		
 	}
 	

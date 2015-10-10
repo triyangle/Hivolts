@@ -4,8 +4,12 @@ import java.awt.image.BufferedImage;
 public class Fence extends Cell {
 
 	private static BufferedImage sprite;
-	//private Graphics g;
 
+	/**
+	 * Creates a new <code>Fence</code>
+	 * @param x The x-coordinate of the <code>Fence</code>
+	 * @param y The y-coordinate of the <code>Fence</code>
+	 */
 	public Fence(int x, int y) {
 		
 		super(x, y);
@@ -22,20 +26,25 @@ public class Fence extends Cell {
 		
 	}
 	
+	/**
+	 * Gets the image of the <code>Fence</code>
+	 * @return The <code>Fence</code> sprite as a <code>BufferedImage</code>
+	 */
 	public static BufferedImage getImage() {
 		
 		return sprite;
 		
 	}
 	
+	/**
+	 * Draws a <code>Fence</code>
+	 */
 	@Override
 	public void draw(int xOffset, int yOffset, int width, int height, Graphics g) {
 		
 		int xLeft = xOffset + 1 + (this.x * (width + 1));
 		int yTop = yOffset + 1 + (this.y * (height + 1));
 		
-		g.setColor(myColor);
-		g.fillRect(xLeft, yTop, width, height);
 		g.drawImage(sprite, xLeft, yTop, width, height, null);
 		
 	}

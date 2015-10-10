@@ -4,6 +4,11 @@ public class Cell extends Entity {
 
 	private final Color DEFAULT_EMPTY = Color.BLACK;
 
+	/**
+	 * Creates a new black <code>Cell</code>
+	 * @param col The x-coordinate of the cell
+	 * @param row The y-coordinate of the cell
+	 */
 	public Cell(int col, int row) {
 
 		this.x = col;
@@ -12,6 +17,10 @@ public class Cell extends Entity {
 
 	}
 
+	/**
+	 * Determines whether this cell is a <code>Fence</code> or not
+	 * @return Whether or not this cell is a <code>Fence</code>
+	 */
 	public boolean getFence() {
 		
 		return this instanceof Fence;
