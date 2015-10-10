@@ -19,6 +19,12 @@ public class Player extends Entity {
 		
 	}
 	
+	public static BufferedImage getImage() {
+		
+		return sprite;
+		
+	}
+	
 	@Override
 	public void draw(int xOffset, int yOffset, int width, int height, Graphics g) {
 		
@@ -29,27 +35,38 @@ public class Player extends Entity {
 		
 	}
 	
-	@Override
-	public void move(int x, int y) {
+	public boolean move(int x, int y, boolean jump) {
 		
+		String message = "";
+		boolean lost = false;
+
 		if (Main.display.occupiedByFence(x, y) || Main.display.occupiedByMho(x, y)) {
 
-			Main.display.gameOver();
+			lost = true;
 			
+			message = Main.display.occupiedByFence(x, y) ? "You have moved onto a Fence! " : (jump ? "You have jumped onto a Mho! " : "You have moved onto a Mho! ");
+
+			Main.display.gameOver(false, message, (Main.display.occupiedByFence(x, y) ? Grid.fenceIcon : Grid.mhoIcon));
+
 		} else {
 			
-			this.x = x;
-			this.y = y;
-			
+			move(x, y);
+			Main.display.repaint();
+
 		}
 		
+		return lost;
+
 	}
-	
+
 	public void act(int x, int y) {
-		
-		move(x, y);
-		Main.display.moveMhos();
-		
+
+		if(!move(x, y, false)) {
+
+			Main.display.moveMhos();
+
+		}
+
 	}
-	
+
 }

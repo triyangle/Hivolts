@@ -44,6 +44,7 @@ public class Main {
 		window.setSize(250, 250);
 		window.setVisible(true);
 		window.add(label);
+		window.setLocationRelativeTo(f);
 		
 		
 	}

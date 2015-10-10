@@ -2,6 +2,7 @@
 import java.awt.Color;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 
@@ -32,6 +33,12 @@ public class Mho extends Entity {
 		
 	}
 	
+	public static Image getImage() {
+		
+		return sprite;
+		
+	}
+	
 	@Override
 	public void draw(int xOffset, int yOffset, int width, int height, Graphics g) {
 		
@@ -46,6 +53,7 @@ public class Mho extends Entity {
 	 * This method is called for every mho after the player's turn. It does
 	 * @param playerx The x-coordinate of the player
 	 * @param playery The y-coordinate of the player
+	 * @return 
 	 */
 	public void act(int playerx, int playery) {
 		
@@ -102,8 +110,8 @@ public class Mho extends Entity {
 			canmove = false;
 		}
 		else if (newx == playerx && newy == playery) {
-			Main.display.gameOver();
-			canmove = false;
+			Main.display.setGameOver(true);
+			canmove = true;
 		}
 		return canmove;
 	}

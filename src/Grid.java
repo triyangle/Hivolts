@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -35,8 +36,14 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	private final int DISPLAY_WIDTH;
 	private final int DISPLAY_HEIGHT;
 
+	public static ImageIcon mhoIcon;
+	public static ImageIcon fenceIcon;
+	public static ImageIcon playerIcon;
+	
 	public ArrayList<Mho> mhoList = new ArrayList<Mho>();
 	private Player player;
+
+	private boolean gameOver;
 
 	// The arrow key that is currently being held down
 	private int pressedKey = KeyEvent.VK_UNDEFINED;
@@ -214,7 +221,31 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		}*/
 
 		for (int i = 0; i < mhoList.size(); i++) {
-			mhoList.get(i).act(player.x, player.y);
+
+			if(gameOver) {
+
+				break;
+
+			} else {
+				
+				mhoList.get(i).act(player.x, player.y);
+				
+			}
+
+		}
+
+		repaint();
+		
+		if(gameOver) {
+			
+			gameOver(false, "A Mho has moved onto you! ", mhoIcon);
+			
+		}
+
+		if(mhoList.isEmpty()) {
+
+			gameOver(true, "All the Mhos have been defeated! ", playerIcon);
+
 		}
 
 	}
@@ -229,7 +260,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 			for (int y = 0; y < COLS; y++) {
 				if (!occupiedByFence(x, y)) {
 					if (destination == 0) {
-						player.move(x, y);
+						player.move(x, y, true);
 					}
 					destination--;
 				}
@@ -237,21 +268,24 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		}
 	}
 
-	public void gameOver() {
+	public void gameOver(boolean win, String message, ImageIcon icon) {
 
-		int response = JOptionPane.showConfirmDialog(this, "Game Over. Play again?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		String titleMessage = win ? "Congratulations, you have won! " : "Game Over. ";
+
+		int response = JOptionPane.showConfirmDialog(this, message + "\nPlay again?", titleMessage, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icon);
 
 		switch(response) {
 
 		case JOptionPane.YES_OPTION:
-			//reset frame board
+			setGameOver(false);
+			mhoList.clear();
+			initInterior();
+			repaint();
 			break;
 
 		case JOptionPane.NO_OPTION:
-			//exit
-			break;
-
 		default:
+			System.exit(0);
 			break;
 
 		}
@@ -266,8 +300,9 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		g.setColor(Color.BLACK);
 		drawGrid(g);
 		drawCells(g);
-		drawMhos(g);
 		drawPlayer(g);
+		drawMhos(g);
+		
 
 	}
 
@@ -286,6 +321,8 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 			e.printStackTrace();
 
 		}
+		
+		fenceIcon = new ImageIcon(Fence.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
 
 	}
 
@@ -299,6 +336,9 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 			e.printStackTrace();
 
 		}
+		
+		mhoIcon = new ImageIcon(Mho.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+				
 	}
 
 	private void initPlayerImage(){
@@ -311,6 +351,9 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 			e.printStackTrace();
 
 		}
+				
+		playerIcon = new ImageIcon(Player.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+		
 	}
 
 	/**
@@ -381,6 +424,12 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		player.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
 	}
 
+	public boolean setGameOver(boolean gameOver) {
+
+		return this.gameOver = gameOver;
+
+	}
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 
@@ -389,61 +438,61 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		case KeyEvent.VK_NUMPAD7:
 		case KeyEvent.VK_Q: //up and left
 			player.act(player.x - 1, player.y - 1);
-			repaint();
+			//repaint();
 			break;
 
 		case KeyEvent.VK_NUMPAD8:
 		case KeyEvent.VK_W: //up
 			player.act(player.x, player.y - 1);
-			repaint();
+			//repaint();
 			break;
 
 		case KeyEvent.VK_NUMPAD9:
 		case KeyEvent.VK_E: //up and right
 			player.act(player.x + 1, player.y - 1);
-			repaint();
+			//repaint();
 			break;
 
 		case KeyEvent.VK_NUMPAD4:
 		case KeyEvent.VK_A: //left
 			player.act(player.x - 1, player.y);
-			repaint();
+			//repaint();
 			break;
 
-			
+
 		case KeyEvent.VK_NUMPAD5:
 		case KeyEvent.VK_S:
 			player.act(player.x, player.y);
-			repaint();
+			//repaint();
 			break;
-			
+
 		case KeyEvent.VK_NUMPAD6:
 		case KeyEvent.VK_D: //right
 			player.act(player.x + 1, player.y);
-			repaint();
+			//repaint();
 			break;
 
 		case KeyEvent.VK_NUMPAD1:
 		case KeyEvent.VK_Z: //down and left
 			player.act(player.x - 1, player.y + 1);
-			repaint();
+			//repaint();
 			break;
 
 		case KeyEvent.VK_NUMPAD2:
 		case KeyEvent.VK_X: //down
 			player.act(player.x, player.y + 1);
-			repaint();
+			//repaint();
 			break;
 
 		case KeyEvent.VK_NUMPAD3:
 		case KeyEvent.VK_C: //down and right
 			player.act(player.x + 1, player.y + 1);
-			repaint();
+			//repaint();
 			break;
 
 		case KeyEvent.VK_J: //jump
 			jump();
-			repaint();
+			//repaint();
 			break;
 
 		case KeyEvent.VK_UP:
@@ -505,7 +554,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	public void keyReleased(KeyEvent e) {
 
 		int keyCode = e.getKeyCode();
-		
+
 		if (keyCode == KeyEvent.VK_UP && pressedKey == KeyEvent.VK_UP) {
 			pressedKey = KeyEvent.VK_UNDEFINED;
 			if (!movedDiagonally) {
@@ -514,7 +563,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 			}
 			movedDiagonally = false;
 		}
-		
+
 		else if (keyCode == KeyEvent.VK_LEFT && pressedKey == KeyEvent.VK_LEFT) {
 			pressedKey = KeyEvent.VK_UNDEFINED;
 			if (!movedDiagonally) {
@@ -523,7 +572,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 			}
 			movedDiagonally = false;
 		}
-		
+
 		else if (keyCode == KeyEvent.VK_RIGHT && pressedKey == KeyEvent.VK_RIGHT) {
 			pressedKey = KeyEvent.VK_UNDEFINED;
 			if (!movedDiagonally) {
@@ -532,7 +581,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 			}
 			movedDiagonally = false;
 		}
-		
+
 		else if (keyCode == KeyEvent.VK_DOWN && pressedKey == KeyEvent.VK_DOWN) {
 			pressedKey = KeyEvent.VK_UNDEFINED;
 			if (!movedDiagonally) {

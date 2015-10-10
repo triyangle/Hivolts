@@ -22,6 +22,12 @@ public class Fence extends Cell {
 		
 	}
 	
+	public static BufferedImage getImage() {
+		
+		return sprite;
+		
+	}
+	
 	@Override
 	public void draw(int xOffset, int yOffset, int width, int height, Graphics g) {
 		
