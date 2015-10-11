@@ -557,13 +557,11 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 			case KeyEvent.VK_LEFT:
 				movedDiagonally = true;
 				player.act(player.x - 1, player.y - 1);
-				repaint();
 				break;
 				
 			case KeyEvent.VK_RIGHT:
 				movedDiagonally = true;
 				player.act(player.x + 1, player.y - 1);
-				repaint();
 				break;
 				
 			case KeyEvent.VK_DOWN:
@@ -627,7 +625,6 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 			pressedKey = KeyEvent.VK_UNDEFINED;
 			if (!movedDiagonally) {
 				player.act(player.x, player.y - 1);
-				repaint();
 			}
 			movedDiagonally = false;
 		}
@@ -636,7 +633,6 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 			pressedKey = KeyEvent.VK_UNDEFINED;
 			if (!movedDiagonally) {
 				player.act(player.x - 1, player.y);
-				repaint();
 			}
 			movedDiagonally = false;
 		}
@@ -645,7 +641,6 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 			pressedKey = KeyEvent.VK_UNDEFINED;
 			if (!movedDiagonally) {
 				player.act(player.x + 1, player.y);
-				repaint();
 			}
 			movedDiagonally = false;
 		}
@@ -654,7 +649,6 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 			pressedKey = KeyEvent.VK_UNDEFINED;
 			if (!movedDiagonally) {
 				player.act(player.x, player.y + 1);
-				repaint();
 			}
 			movedDiagonally = false;
 		}
