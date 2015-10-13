@@ -245,7 +245,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		
 		try {
 
-			Player.setImage(ImageIO.read(new File("player.jpg")));
+			Player.setImage(ImageIO.read(new File("player.png")));
 
 		} catch (IOException e) {
 
@@ -268,8 +268,8 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		g.setColor(Color.BLACK);
 		drawGrid(g);
 		drawCells(g);
-		drawPlayer(g);
 		drawMhos(g);
+		drawPlayer(g);
 		
 	}
 
@@ -455,6 +455,9 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	 */
 	public void gameOver(boolean win, String message, ImageIcon icon) {
 
+		// unsure if necessary
+		repaint();
+		
 		String titleMessage = win ? "Congratulations, you have won!" : "Game Over";
 
 		int response = JOptionPane.showConfirmDialog(this, message + "\nPlay again?",

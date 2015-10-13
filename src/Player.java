@@ -64,6 +64,9 @@ public class Player extends Entity {
 		String message = "";
 		boolean lost = false;
 
+		move(x, y);
+		Main.display.repaint();
+		
 		if (Main.display.occupiedByFence(x, y) || Main.display.occupiedByMho(x, y)) {
 
 			lost = true;
@@ -71,11 +74,6 @@ public class Player extends Entity {
 			message = Main.display.occupiedByFence(x, y) ? "You have moved onto a Fence! " : (jump ? "You have jumped onto a Mho! " : "You have moved onto a Mho! ");
 
 			Main.display.gameOver(false, message, (Main.display.occupiedByFence(x, y) ? Grid.fenceIcon : Grid.mhoIcon));
-
-		} else {
-			
-			move(x, y);
-			Main.display.repaint();
 
 		}
 		
