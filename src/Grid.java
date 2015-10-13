@@ -9,7 +9,6 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.swing.*;
 import javax.imageio.ImageIO;
 
@@ -29,8 +28,10 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	public static ImageIcon mhoIcon;
 	public static ImageIcon fenceIcon;
 	public static ImageIcon playerIcon;
+	public static ImageIcon deadMhoIcon;
 	
 	public ArrayList<Mho> mhoList = new ArrayList<Mho>();
+	public ArrayList<DeadMho> deadMhoList = new ArrayList<DeadMho>();
 	
 	private final int X_GRID_OFFSET = 50;
 	private final int Y_GRID_OFFSET = 50;
@@ -68,6 +69,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		initFenceImage();
 		initPlayerImage();
 		initMhoImage();
+		initDeadMhoImage();
 		
 		initExterior();
 		initInterior();
@@ -258,6 +260,25 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	}
 	
 	/**
+	 * Initializes the dead mho image and icon
+	 */
+	private void initDeadMhoImage() {
+		
+		try {
+
+			DeadMho.setImage(ImageIO.read(new File("old images/mho.png")));
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+
+		}
+				
+		deadMhoIcon = new ImageIcon(DeadMho.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+		
+	}
+	
+	/**
 	 * Paints the <code>Grid</code>, <code>Cells</code>, <code>Player</code>, and <code>Mhos</code>
 	 * onto the component.
 	 * @param g The graphics component on which to paint the objects
@@ -268,6 +289,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		g.setColor(Color.BLACK);
 		drawGrid(g);
 		drawCells(g);
+		drawDeadMhos(g);
 		drawMhos(g);
 		drawPlayer(g);
 		
@@ -329,6 +351,16 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		}
 
 	}
+	
+	private void drawDeadMhos(Graphics g) {
+		
+		for (int i = 0; i < deadMhoList.size(); i++) {
+			
+			deadMhoList.get(i).draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
+			
+		}
+		
+	}
 
 	/**
 	 * Draws the player
@@ -344,7 +376,6 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	 * This method loops through all existing mhos to see whether or not a certain cell is occupied by a mho
 	 * @param x The x-coordinate of the cell
 	 * @param y The y-coordinate of the cell
-	 * @param mhoCount The number of mhos in the list of mhos
 	 * @return Whether or not the cell in question is occupied by a mho
 	 */
 	public boolean occupiedByMho(int x, int y) {
@@ -367,6 +398,33 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		return occupied;
 		
 	}
+	
+	/**
+	 * This method finds when mho exists at a certain location and returns null if there is none
+	 * @param x The x-coordinate of the cell
+	 * @param y The y-coordinate of the cell
+	 * @return The mho in the target cell
+	 */
+	public Mho getMho(int x, int y) {
+		
+		Mho mho = null;
+		
+		for (int i = 0; i < mhoList.size(); i++) {
+
+			int x2 = mhoList.get(i).getX();
+			int y2 = mhoList.get(i).getY();
+
+			if (x == x2 && y == y2) {
+				
+				mho = mhoList.get(i);
+				
+			}
+			
+		}
+		
+		return mho;
+		
+	}
 
 	/**
 	 * This method checks to see if a certain cell is occupied by a fence
@@ -387,14 +445,17 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	public void moveMhos() {
 
 		for (int i = 0; i < mhoList.size(); i++) {
+			
+			Mho mho = mhoList.get(i);
+			mho.setHasMoved(false);
 
-			if(gameOver) {
+			if (gameOver) {
 
 				break;
 
 			} else {
 				
-				mhoList.get(i).act(player.x, player.y);
+				mho.act(player.x, player.y);
 				
 			}
 
@@ -402,7 +463,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 
 		repaint();
 		
-		if(gameOver) {
+		if (gameOver) {
 			
 			gameOver(false, "A Mho has moved onto you! ", mhoIcon);
 			
@@ -468,6 +529,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		case JOptionPane.YES_OPTION:
 			setGameOver(false);
 			mhoList.clear();
+			deadMhoList.clear();
 			initInterior();
 			repaint();
 			break;
@@ -547,6 +609,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 			break;
 
 		case KeyEvent.VK_SPACE:
+		case KeyEvent.VK_NUMPAD0:
 		case KeyEvent.VK_J: //jump
 			jump();
 			break;

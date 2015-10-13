@@ -12,6 +12,8 @@ public class Mho extends Entity {
 	
 	private static BufferedImage sprite;
 	
+	private boolean hasMoved = false;
+	
 	public Mho() {
 		
 	}
@@ -66,6 +68,8 @@ public class Mho extends Entity {
 	public void act(int playerx, int playery) {
 		
 		int newx = x;
+		
+		hasMoved = true;
 		
 		if (this.x < playerx) {
 			
@@ -122,6 +126,12 @@ public class Mho extends Entity {
 			
 		}
 		
+		else {
+
+			hasMoved = false;
+			
+		}
+		
 	}
 	
 	/**
@@ -140,8 +150,13 @@ public class Mho extends Entity {
 		boolean canmove = true;
 		
 		if (Main.display.occupiedByFence(newx, newy)
-		    || Main.display.occupiedByMho(newx, newy)
-		    || x == newx && y == newy) {
+		    || (x == newx && y == newy)) {
+			
+			canmove = false;
+			
+		}
+		
+		else if (Main.display.occupiedByMho(newx, newy)) {
 			
 			canmove = false;
 			
@@ -178,6 +193,25 @@ public class Mho extends Entity {
 		
 		int index = Main.display.mhoList.indexOf(this);
 		Main.display.mhoList.remove(index);
+		
+		DeadMho corpse = new DeadMho(this.x, this.y);
+		Main.display.deadMhoList.add(corpse);
+		
+	}
+	
+	/**
+	 * Whether or not the mho has moved this turn
+	 * @return Whether or not the mho has moved this turn
+	 */
+	public boolean hasMoved() {
+		
+		return hasMoved;
+		
+	}
+	
+	public void setHasMoved(boolean hasMoved) {
+		
+		this.hasMoved = hasMoved;
 		
 	}
 	
