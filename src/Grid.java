@@ -546,6 +546,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 			player.act(player.x + 1, player.y + 1);
 			break;
 
+		case KeyEvent.VK_SPACE:
 		case KeyEvent.VK_J: //jump
 			jump();
 			break;
@@ -601,11 +602,51 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 			break;
 
 		case KeyEvent.VK_LEFT:
-			pressedKey = KeyEvent.VK_LEFT;
+			switch (pressedKey) {
+			
+			case KeyEvent.VK_UNDEFINED:
+				pressedKey = KeyEvent.VK_LEFT;
+				break;
+			
+			case KeyEvent.VK_UP:
+				movedDiagonally = true;
+				player.act(player.x - 1, player.y - 1);
+				break;
+			
+			case KeyEvent.VK_DOWN:
+				movedDiagonally = true;
+				player.act(player.x - 1, player.y + 1);
+				break;
+			
+			case KeyEvent.VK_RIGHT:
+				movedDiagonally = true;
+				break;
+			
+			}
 			break;
 
 		case KeyEvent.VK_RIGHT:
-			pressedKey = KeyEvent.VK_RIGHT;
+			switch (pressedKey) {
+			
+			case KeyEvent.VK_UNDEFINED:
+				pressedKey = KeyEvent.VK_RIGHT;
+				break;
+			
+			case KeyEvent.VK_UP:
+				movedDiagonally = true;
+				player.act(player.x + 1, player.y - 1);
+				break;
+			
+			case KeyEvent.VK_DOWN:
+				movedDiagonally = true;
+				player.act(player.x + 1, player.y + 1);
+				break;
+			
+			case KeyEvent.VK_LEFT:
+				movedDiagonally = true;
+				break;
+			
+			}
 			break;
 
 		default:
