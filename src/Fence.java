@@ -45,6 +45,7 @@ public class Fence extends Cell {
 		int xLeft = xOffset + 1 + (this.x * (width + 1));
 		int yTop = yOffset + 1 + (this.y * (height + 1));
 		
+		super.draw(xOffset, yOffset, width, height, g);
 		g.drawImage(sprite, xLeft, yTop, width, height, null);
 		
 	}

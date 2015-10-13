@@ -207,7 +207,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 
 		try {
 
-			Fence.setImage(ImageIO.read(new File("fence.jpg")));
+			Fence.setImage(ImageIO.read(new File("fence.png")));
 
 		} catch (IOException e) {
 
