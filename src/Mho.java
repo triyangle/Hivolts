@@ -123,7 +123,7 @@ public class Mho extends Entity {
 		      || canMoveToFence(newx,    y)) {
 			
 			remove();
-			
+			System.out.println(0);
 		}
 		
 		else {

@@ -15,8 +15,8 @@ public class Main {
 	public static void main(String[] args) {
 		
 		// Bring up a JFrame with squares to represent the cells
-		final int DISPLAY_WIDTH = 713;
-		final int DISPLAY_HEIGHT = 713;
+		final int DISPLAY_WIDTH = 713; //1000;
+		final int DISPLAY_HEIGHT = 713;//1000;
 		
 		JFrame f = new JFrame();
 		
