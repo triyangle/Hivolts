@@ -2,6 +2,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -18,7 +20,7 @@ import javax.imageio.ImageIO;
  * 
  */
 
-public class Grid extends JComponent implements KeyListener, MouseListener {
+public class Grid extends JComponent implements KeyListener, MouseListener, ItemListener {
 
 	//various Grid variables
 	public static final int ROWS = 12;
@@ -53,6 +55,8 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	// Whether or not the player has moved diagonally using the arrow keys
 	private boolean movedDiagonally = false;
 
+	private JCheckBox imageOption = new JCheckBox("Old graphics");
+	
 	/**
 	 * Initializes a new Grid.
 	 * @param width The width of the Grid frame
@@ -73,6 +77,9 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 		
 		initExterior();
 		initInterior();
+		
+		//add(imageOption, 50);
+		//imageOption.addItemListener(this);
 		
 		repaint();
 
@@ -207,8 +214,10 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	 */
 	private void initFenceImage() {
 
+		//boolean spriteChoice = imageOption.isSelected();
+		
 		try {
-
+			
 			Fence.setImage(ImageIO.read(new File("fence.png")));
 
 		} catch (IOException e) {
@@ -818,6 +827,11 @@ public class Grid extends JComponent implements KeyListener, MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent arg0) {
+		
 	}
 
 }
