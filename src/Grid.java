@@ -11,6 +11,8 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+
 import javax.swing.*;
 import javax.imageio.ImageIO;
 
@@ -458,21 +460,24 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	 */
 	public void moveMhos() {
 
-		for (int i = 0; i < mhoList.size(); i++) {
+		Iterator<Mho> iterator = mhoList.iterator();
+		
+		while (iterator.hasNext()) {
 			
-			Mho mho = mhoList.get(i);
+			Mho mho = iterator.next();
 			mho.setHasMoved(false);
-
 			if (gameOver) {
-
 				break;
-
-			} else {
-				
-				mho.act(player.x, player.y);
-				
 			}
-
+			else {
+				mho.act(player.x, player.y);
+			}
+			if (!mho.getAlive()) {
+				iterator.remove();
+				DeadMho corpse = new DeadMho(mho.getX(), mho.getY());
+				deadMhoList.add(corpse);
+			}
+			
 		}
 
 		repaint();
@@ -481,13 +486,9 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 			
 			gameOver(false, "A Mho has moved onto you! ", mhoIcon);
 			
-		} else {
-			
-		if(mhoList.isEmpty()) {
+		} else if(mhoList.isEmpty()) {
 
 			gameOver(true, "All the Mhos have been defeated! ", playerIcon);
-
-		}
 		
 		}
 

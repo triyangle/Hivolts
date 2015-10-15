@@ -13,6 +13,7 @@ public class Mho extends Entity {
 	private static BufferedImage sprite;
 	
 	private boolean hasMoved = false;
+	private boolean alive = true;
 	
 	public Mho() {
 		
@@ -122,7 +123,7 @@ public class Mho extends Entity {
 		      || canMoveToFence(   x, newy)
 		      || canMoveToFence(newx,    y)) {
 			
-			remove();
+			setAlive(false);
 		}
 		
 		else {
@@ -186,15 +187,20 @@ public class Mho extends Entity {
 	}
 	
 	/**
-	 * Removes a <code>Mho</code> from the <code>mhoList</code>
+	 * Set whether or not the mho is alive
 	 */
-	public void remove() {
+	public void setAlive(boolean alive) {
 		
-		int index = Main.display.mhoList.indexOf(this);
-		Main.display.mhoList.remove(index);
+		this.alive = alive;
+
+	}
+	
+	/**
+	 * @return whether or not the mho is alive
+	 */
+	public boolean getAlive() {
 		
-		DeadMho corpse = new DeadMho(this.x, this.y);
-		Main.display.deadMhoList.add(corpse);
+		return this.alive;
 		
 	}
 	
