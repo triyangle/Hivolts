@@ -25,8 +25,8 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	//various Grid variable
 	public static final int ROWS = 12; // 12
 	public static final int COLS = 12; // 12
-	public static final int WIDTH = 600; //1000; // 600
-	public static final int HEIGHT = 600; //WIDTH * ROWS / COLS; // 600
+	public static final int WIDTH = 792; // 600
+	public static final int HEIGHT = WIDTH * ROWS / COLS; // 600
 	public static Cell[][] cell = new Cell[COLS][ROWS];
 	
 	public static ImageIcon mhoIcon;
@@ -37,13 +37,13 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	public ArrayList<Mho> mhoList = new ArrayList<Mho>();
 	public ArrayList<DeadMho> deadMhoList = new ArrayList<DeadMho>();
 	
-	private final int X_GRID_OFFSET = 50; // 0
-	private final int Y_GRID_OFFSET = 50; // 0
+	private final int X_GRID_OFFSET = 0; // 0
+	private final int Y_GRID_OFFSET = 0; // 0
 	private final int CELL_WIDTH = WIDTH/COLS-1;
 	private final int CELL_HEIGHT = HEIGHT/ROWS-1;
 
-	private final int FENCES = 20; //((ROWS * COLS) + 16) / 8;
-	private final int INITIAL_MHOS = 12; //(int) Math.sqrt(ROWS*COLS);
+	private final int FENCES = ((ROWS * COLS) + 16) / 8; // 20
+	private final int INITIAL_MHOS = (int) Math.sqrt(ROWS*COLS); // 12
 
 	private final int DISPLAY_WIDTH;
 	private final int DISPLAY_HEIGHT;
@@ -143,14 +143,17 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 			empty[i] = 0;
 			
 		}
-		
+
 		Integer[] fences = placeRandom(empty, 1, FENCES);
 		Integer[] mhos = placeRandom(fences, 2, INITIAL_MHOS);
 		Integer[] player = placeRandom(mhos, 3, 1);
 		for (int i = 0; i < player.length; i++) {
 			
-			int x = 1 + i / (COLS-2);
-			int y = 1 + i - (x-1) * (COLS-2);
+			int x = i / (ROWS-2);
+			int y = i - x * (ROWS-2);
+			
+			x++;
+			y++;
 			
 			switch (player[i]) {
 			
@@ -170,6 +173,10 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 			case 3:
 				this.player = new Player(x, y);
 				cell[x][y] = new Cell(x, y);
+				break;
+				
+			default:
+				System.out.println("Error");
 				break;
 				
 			}
@@ -311,7 +318,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	 */
 	private void drawGrid(Graphics g) {
 
-		for (int row = 0; row <= COLS; row++) {
+		for (int row = 0; row <= ROWS; row++) {
 
 			g.drawLine(X_GRID_OFFSET,
 					Y_GRID_OFFSET + (row * (CELL_HEIGHT + 1)), X_GRID_OFFSET
@@ -320,7 +327,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 
 		}
 
-		for (int col = 0; col <= ROWS; col++) {
+		for (int col = 0; col <= COLS; col++) {
 
 			g.drawLine(X_GRID_OFFSET + (col * (CELL_WIDTH + 1)), Y_GRID_OFFSET,
 					X_GRID_OFFSET + (col * (CELL_WIDTH + 1)), Y_GRID_OFFSET
@@ -337,8 +344,6 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	private void drawCells(Graphics g) {
 		for (int row = 0; row < COLS; row++) {
 			for (int col = 0; col < ROWS; col++) {
-				System.out.println(row);
-				System.out.println(col);
 				cell[row][col].draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
 
 			}
