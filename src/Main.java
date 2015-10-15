@@ -43,8 +43,8 @@ public class Main {
 		//creates new window with size 250x250 on top of game window
 		JFrame window = new JFrame("Instructions");
 		window.setSize(250, 250);
-		window.setVisible(true);
 		window.add(label);
+		window.setVisible(true);
 		window.setLocationRelativeTo(f);
 		
 	}
