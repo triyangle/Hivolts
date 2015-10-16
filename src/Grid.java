@@ -400,10 +400,11 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 		
 		for (int i = 0; i < mhoList.size(); i++) {
 
-			int x2 = mhoList.get(i).getX();
-			int y2 = mhoList.get(i).getY();
+			Mho mho = mhoList.get(i);
+			int x2 = mho.getX();
+			int y2 = mho.getY();
 
-			if (x == x2 && y == y2) {
+			if (mho.getAlive() && x == x2 && y == y2) {
 				
 				occupied = true;
 				
@@ -460,12 +461,16 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	 */
 	public void moveMhos() {
 
+		// reset hasMoved for all mhos BEFORE making each one act
+		for (Mho mho : mhoList) {
+			mho.setHasMoved(false);
+		}
+		
 		Iterator<Mho> iterator = mhoList.iterator();
 		
 		while (iterator.hasNext()) {
 			
 			Mho mho = iterator.next();
-			mho.setHasMoved(false);
 			if (gameOver) {
 				break;
 			}
@@ -530,9 +535,6 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	 * @param icon An icon pertaining to how the game ended
 	 */
 	public void gameOver(boolean win, String message, ImageIcon icon) {
-
-		// unsure if necessary
-		//repaint();
 		
 		String titleMessage = win ? "Congratulations, you have won!" : "Game Over";
 

@@ -13,10 +13,6 @@ public class Entity {
 		
 	}
 	
-	public void act() {
-		
-	}
-	
 	/**
 	 * Get the x-coordinate of this entity
 	 * @return The x-coordinate of this entity
