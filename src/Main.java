@@ -27,7 +27,6 @@ public class Main {
 		f.setTitle("Hivolts");
 		f.add(display, BorderLayout.CENTER);
 		f.pack();
-		f.setVisible(true);
 		f.setResizable(false);
 		f.setLocationRelativeTo(null);
 		
@@ -44,6 +43,7 @@ public class Main {
 		JFrame window = new JFrame("Instructions");
 		window.setSize(250, 250);
 		window.add(label);
+		f.setVisible(true);
 		window.setVisible(true);
 		window.setLocationRelativeTo(f);
 		
