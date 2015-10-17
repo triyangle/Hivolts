@@ -15,12 +15,15 @@ public class Main {
 	public static void main(String[] args) {
 		
 		// Bring up a JFrame with squares to represent the cells
-		final int DISPLAY_WIDTH = 792; //713;
-		final int DISPLAY_HEIGHT = 792; //713;
+		final int DISPLAY_WIDTH = 792;
+		final int DISPLAY_HEIGHT = 792;
+		
+		final int ROWS = 36;
+		final int COLS = 36;
 		
 		JFrame f = new JFrame();
 		
-		display = new Grid(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+		display = new Grid(DISPLAY_WIDTH, DISPLAY_HEIGHT, ROWS, COLS);
 		
 		f.setLayout(new BorderLayout());
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
