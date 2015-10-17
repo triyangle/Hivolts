@@ -25,9 +25,9 @@ import javax.imageio.ImageIO;
 public class Grid extends JComponent implements KeyListener, MouseListener, ItemListener {
 
 	//various Grid variable
-	public static final int ROWS = 36; // 12
-	public static final int COLS = 36; // 12
-	public static Cell[][] cell = new Cell[COLS][ROWS];
+	public final int ROWS; // 12
+	public final int COLS; // 12
+	public static Cell[][] cell;
 	
 	public static ImageIcon mhoIcon;
 	public static ImageIcon fenceIcon;
@@ -42,8 +42,8 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	private final int CELL_WIDTH;
 	private final int CELL_HEIGHT;
 
-	private final int FENCES = ((ROWS * COLS) + 16) / 8; // 20
-	private final int INITIAL_MHOS = (int) ROWS * COLS / 12; // 12
+	private final int FENCES; // 20
+	private final int INITIAL_MHOS; // 12
 
 	private final int DISPLAY_WIDTH;
 	private final int DISPLAY_HEIGHT;
@@ -69,8 +69,15 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 		DISPLAY_WIDTH = width;
 		DISPLAY_HEIGHT = height;
 		
+		ROWS = rows;
+		COLS = cols;
+		cell = new Cell[COLS][ROWS];
+		
 		CELL_WIDTH = DISPLAY_WIDTH / COLS - 1;
 		CELL_HEIGHT = DISPLAY_HEIGHT / ROWS - 1;
+		
+		FENCES = ((ROWS * COLS) + 16) / 8;
+		INITIAL_MHOS = ROWS * COLS / 12;
 		
 		addKeyListener(this);
 		addMouseListener(this);
