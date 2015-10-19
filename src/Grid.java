@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -57,6 +58,11 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	// Whether or not the player has moved diagonally using the arrow keys
 	private boolean movedDiagonally = false;
 
+	private File fenceImage = new File("old images/fence.png");
+	private File mhoImage = new File("old image/mho.png");
+	private File playerImage = new File("old image/player.png");
+	
+	private JPanel northPanel = new JPanel();
 	private JCheckBox imageOption = new JCheckBox("Old graphics");
 	
 	/**
@@ -66,6 +72,12 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	 */
 	public Grid(int width, int height, int rows, int cols) {
 
+		setLayout(new BorderLayout());
+		
+		northPanel.add(imageOption);
+		
+		//add(northPanel, BorderLayout.EAST);
+		
 		DISPLAY_WIDTH = width;
 		DISPLAY_HEIGHT = height;
 		
@@ -222,6 +234,22 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 		return list.toArray(finalArray);
 		
 	}
+	
+	public void setImageFiles(boolean newImage) {
+		
+		String fileName = newImage ? "" : "old images/";
+		
+		fenceImage = new File(fileName + "fence.png");
+		mhoImage = new File(fileName + "mho.png");
+		playerImage = new File(fileName + "player.png");
+		
+		
+		initFenceImage();
+		initMhoImage();
+		initPlayerImage();
+		repaint();
+		
+	}
 
 	/**
 	 * Initializes the fence image and icon
@@ -232,7 +260,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 		
 		try {
 			
-			Fence.setImage(ImageIO.read(new File("old images/fence.png")));
+			Fence.setImage(ImageIO.read(fenceImage));
 
 		} catch (IOException e) {
 
@@ -289,7 +317,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 		
 		try {
 
-			DeadMho.setImage(ImageIO.read(new File("old images/deadmho.png")));
+			DeadMho.setImage(ImageIO.read(new File("old images/deadmho1.png")));
 
 		} catch (IOException e) {
 

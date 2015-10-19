@@ -2,6 +2,8 @@
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 
 import javax.swing.*;
@@ -44,6 +46,27 @@ public class Main {
 				display = new Grid(DISPLAY_WIDTH, DISPLAY_HEIGHT, size, size);
 				f.setLayout(new BorderLayout());
 				f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				
+				JPanel northPanel = new JPanel();
+				JCheckBox imageOption = new JCheckBox("New Images");
+				
+				imageOption.addItemListener(new ItemListener() {
+			
+					@Override
+					public void itemStateChanged(ItemEvent arg0) {
+						// TODO Auto-generated method stub
+
+
+						display.setImageFiles(imageOption.isSelected());
+
+
+					}
+
+				});
+				northPanel.add(imageOption);
+				
+				f.add(northPanel, BorderLayout.NORTH);
+				
 				f.setTitle("Hivolts");
 				f.add(display, BorderLayout.CENTER);
 				f.pack();
