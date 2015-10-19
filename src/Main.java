@@ -39,6 +39,9 @@ public class Main {
 		JButton button = new JButton("Start");
 		button.addActionListener(new ActionListener() {
 
+			/**
+			 * 
+			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFrame f = new JFrame();
