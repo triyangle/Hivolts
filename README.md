@@ -23,5 +23,10 @@ The specification of this project was to reimplement the Hivolts game with updat
 
 ### Major Challenges
 One challenge that was faced was implementing a draw method that imported images in the Entity superclass that could be inherited to all entities. This created conflicting images as it treated the imported sprite as part of Entity, and thus all game objects had to share a sprite. We overcame this by writing a specific draw method for each game object. 
+Another challenge we faced was the random placement of the game objects. Originally the idea was to just place entities in the grid randomly. On Mr. Kuszmaul's suggestion, an array that contained the elements of the grid was implemented, and objects were randomly placed in this grid. 
+
+### Credits
+Original basis for the grid was taken from William Yang's Conway's Game of Life project. Graphics were drawn and implemented by Kevin Li. Object placement, player controls, and turn system were implemented by Albert Ford. Further player control and polishing was done by William Yang. Game messages were done by Kevin Li and Albert Ford. 
 
 ### Acknowledgements
+We would like to thank Chris Kuszmaul for giving us inspiration for the implementation of random placement, and Lilia Tang, Nathan Kau, and William Meng for moral support. 
