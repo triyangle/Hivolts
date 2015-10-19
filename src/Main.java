@@ -54,12 +54,9 @@ public class Main {
 			
 					@Override
 					public void itemStateChanged(ItemEvent arg0) {
-						// TODO Auto-generated method stub
-
 
 						display.setImageFiles(imageOption.isSelected());
-
-
+						
 					}
 
 				});
