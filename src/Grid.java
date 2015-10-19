@@ -25,11 +25,9 @@ import javax.imageio.ImageIO;
 public class Grid extends JComponent implements KeyListener, MouseListener, ItemListener {
 
 	//various Grid variable
-	public static final int ROWS = 12; // 12
-	public static final int COLS = 12; // 12
-	public static final int WIDTH = 792; // 600
-	public static final int HEIGHT = WIDTH * ROWS / COLS; // 600
-	public static Cell[][] cell = new Cell[COLS][ROWS];
+	public final int ROWS; // 12
+	public final int COLS; // 12
+	public static Cell[][] cell;
 	
 	public static ImageIcon mhoIcon;
 	public static ImageIcon fenceIcon;
@@ -41,11 +39,11 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	
 	private final int X_GRID_OFFSET = 0; // 0
 	private final int Y_GRID_OFFSET = 0; // 0
-	private final int CELL_WIDTH = WIDTH/COLS-1;
-	private final int CELL_HEIGHT = HEIGHT/ROWS-1;
+	private final int CELL_WIDTH;
+	private final int CELL_HEIGHT;
 
-	private final int FENCES = ((ROWS * COLS) + 16) / 8; // 20
-	private final int INITIAL_MHOS = (int) Math.sqrt(ROWS*COLS); // 12
+	private final int FENCES; // 20
+	private final int INITIAL_MHOS; // 12
 
 	private final int DISPLAY_WIDTH;
 	private final int DISPLAY_HEIGHT;
@@ -66,10 +64,20 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	 * @param width The width of the Grid frame
 	 * @param height The height of the Grid frame
 	 */
-	public Grid(int width, int height) {
+	public Grid(int width, int height, int rows, int cols) {
 
 		DISPLAY_WIDTH = width;
 		DISPLAY_HEIGHT = height;
+		
+		ROWS = rows;
+		COLS = cols;
+		cell = new Cell[COLS][ROWS];
+		
+		CELL_WIDTH = DISPLAY_WIDTH / COLS - 1;
+		CELL_HEIGHT = DISPLAY_HEIGHT / ROWS - 1;
+		
+		FENCES = ((ROWS * COLS) + 16) / 8;
+		INITIAL_MHOS = ROWS * COLS / 12;
 		
 		addKeyListener(this);
 		addMouseListener(this);
@@ -199,19 +207,15 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 		
 		// Create a list that represents the input array
 		ArrayList<Integer> list = new ArrayList<Integer>();
-		
 		for (int i = 0; i < array.length; i++) {
-			
 			list.add(array[i]);
-			
 		}
 		
 		// Add each item to the list at a random index
+		// array.length + i - 1 === list.size()
 		for (int i = 1; i <= itemCount; i++) {
-			
-			int index = (int) Math.floor((/*array.length - itemCount + i*/list.size()) * Math.random());
+			int index = (int) Math.floor((array.length + i - 1) * Math.random());
 			list.add(index, item);
-			
 		}
 		
 		Integer[] finalArray = new Integer[array.length + itemCount];

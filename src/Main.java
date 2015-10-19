@@ -1,8 +1,10 @@
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.*;
 
 public class Main {
 	
@@ -15,20 +17,43 @@ public class Main {
 	public static void main(String[] args) {
 		
 		// Bring up a JFrame with squares to represent the cells
-		final int DISPLAY_WIDTH = 792; //713;
-		final int DISPLAY_HEIGHT = 792; //713;
+		final int DISPLAY_WIDTH = 792;
+		final int DISPLAY_HEIGHT = 792;
 		
-		JFrame f = new JFrame();
+		final int DEFAULT_SIZE = 12;
+		final int MIN_SIZE = 10;
+		final int MAX_SIZE = 36;
 		
-		display = new Grid(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+		// create new window with size 250x250 on top of game window
+		JFrame window = new JFrame("Instructions");
+		window.setLayout(new BoxLayout(window.getContentPane(), BoxLayout.PAGE_AXIS));
+		window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		f.setLayout(new BorderLayout());
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setTitle("Hivolts");
-		f.add(display, BorderLayout.CENTER);
-		f.pack();
-		f.setResizable(false);
-		f.setLocationRelativeTo(null);
+		// create a spinner that specifies the size of the grid
+		SpinnerModel model = new SpinnerNumberModel(DEFAULT_SIZE, MIN_SIZE, MAX_SIZE, 1);
+		JSpinner spinner = new JSpinner(model);
+		
+		// create a button that launches the game
+		JButton button = new JButton("Start");
+		button.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFrame f = new JFrame();
+				int size = (int) spinner.getValue();
+				display = new Grid(DISPLAY_WIDTH, DISPLAY_HEIGHT, size, size);
+				f.setLayout(new BorderLayout());
+				f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				f.setTitle("Hivolts");
+				f.add(display, BorderLayout.CENTER);
+				f.pack();
+				f.setResizable(false);
+				f.setLocationRelativeTo(null);
+				f.setVisible(true);
+				window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+			}
+			
+		});
 		
 		//uses html text to create different lines of text
 		JLabel label = new JLabel("Text-Only Label", JLabel.CENTER);
@@ -36,16 +61,15 @@ public class Main {
 				+ "<br/> QEZC to move diagonally."
 				+ "<br/> Press S to stay still."
 				+ "<br/> Press J to jump."
-				+ "<br/><br/> Click on the gameboard to begin. "
-				+ "<br/><br/> You may close this window. </html>");
+				+ "<br/><br/> Enter the desired size of the board in the text box. "
+				+ "<br/><br/> Press start to begin. </html>");
 		
-		//creates new window with size 250x250 on top of game window
-		JFrame window = new JFrame("Instructions");
-		window.setSize(250, 250);
+		window.setSize(250, 300);
 		window.add(label);
-		f.setVisible(true);
+		window.add(spinner);
+		window.add(button);
+		window.setLocationRelativeTo(null);
 		window.setVisible(true);
-		window.setLocationRelativeTo(f);
 		
 	}
 	
