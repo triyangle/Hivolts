@@ -1,14 +1,17 @@
 # Hivolts
 
+Authors: Albert Ford, Kevin Li, William Yang
+
 ### Introduction
 
-The purpose of this project is to reimplement the Hivolts game.
+The purpose of this project is to reimplement the Hivolts game. 
 
 ### Description
 
-The specification of this project was to reimplement the Hivolts game with updated, modern graphics. We have successfully reproduced the game to play like the original as according to the specifications on paleyontology.com. We have designed new and updated graphics to meet the criterion. 
+The specification of this project was to reimplement the Hivolts game with updated graphics. We have successfully reproduced the game to play like the original as according to the specifications on paleyontology.com. We have designed new and updated graphics to meet the criterion. In addition, the game features were updated to include variable grid size, allowing the player to play on a bigger board. 
 
 ### Current Errors
+There are no current errors in the game. There was an error with the varible grid size, in which a grid size that wasn't a square wasn't working, but the issue was resolved as of 10/19/2015. 
 
 ### Code Overview
 
@@ -26,7 +29,7 @@ One challenge that was faced was implementing a draw method that imported images
 Another challenge we faced was the random placement of the game objects. Originally the idea was to just place entities in the grid randomly. On Mr. Kuszmaul's suggestion, an array that contained the elements of the grid was implemented, and objects were randomly placed in this grid. 
 
 ### Credits
-Original basis for the grid was taken from William Yang's Conway's Game of Life project. Graphics were drawn and implemented by Kevin Li. Object placement, player controls, and turn system were implemented by Albert Ford. Further player control and polishing was done by William Yang. Game messages were done by Kevin Li and Albert Ford. 
+Group members were Kevin Li, Albert Ford, and William Yang. Original basis for the grid and display were taken from William Yang's Conway's Game of Life project. Graphics were drawn and implemented by Kevin Li. Object placement, player controls, and turn system were implemented by Albert Ford. Further player control, player death detection, and polishing was done by William Yang. Game messages were done by Kevin Li and Albert Ford. 
 
 ### Acknowledgements
 We would like to thank Chris Kuszmaul for giving us inspiration for the implementation of random placement, and Lilia Tang, Nathan Kau, and William Meng for moral support. 
