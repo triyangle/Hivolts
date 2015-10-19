@@ -13,6 +13,7 @@ The specification of this project was to reimplement the Hivolts game with updat
 ### Current Errors
 There are no current errors in the game. There was an error with the varible grid size, in which a grid size that wasn't a square wasn't working, but the issue was resolved as of 10/19/2015. 
 
+
 ### Code Overview
 
  * The Main class initializes the JFrame and loads the game. In addition, it creates a new JFrame providing instructions for the game. 
@@ -26,10 +27,10 @@ There are no current errors in the game. There was an error with the varible gri
 
 ### Major Challenges
 One challenge that was faced was implementing a draw method that imported images in the Entity superclass that could be inherited to all entities. This created conflicting images as it treated the imported sprite as part of Entity, and thus all game objects had to share a sprite. We overcame this by writing a specific draw method for each game object. 
-Another challenge we faced was the random placement of the game objects. Originally the idea was to just place entities in the grid randomly. On Mr. Kuszmaul's suggestion, an array that contained the elements of the grid was implemented, and objects were randomly placed in this grid. 
+Another challenge we faced was the random placement of the game objects. Originally the idea was to just place entities in the grid randomly. On Mr. Kuszmaul's suggestion, we developed a more efficient method of placing mhos. Our implementation differed from the one suggested by Mr. Kuszmaul, as described in the [RandomPlacement](https://github.com/as-f/RandomPlacement) project.
 
 ### Credits
-Group members were Kevin Li, Albert Ford, and William Yang. Original basis for the grid and display were taken from William Yang's Conway's Game of Life project. Graphics were drawn and implemented by Kevin Li. Object placement, player controls, and turn system were implemented by Albert Ford. Further player control, player death detection, and polishing was done by William Yang. Game messages were done by Kevin Li and Albert Ford. 
+Group members were Kevin Li, Albert Ford, and William Yang. Original basis for the grid and display were taken from William Yang's Conway's Game of Life project. Graphics were drawn and implemented by Kevin Li. Object placement, optional player controls, and turn system were implemented by Albert Ford. Player control, player death detection, and polishing were done by William Yang. Game messages were done by Kevin Li. 
 
 ### Acknowledgements
-We would like to thank Chris Kuszmaul for giving us inspiration for the implementation of random placement, and Lilia Tang, Nathan Kau, and William Meng for moral support. 
+We would like to thank Chris Kuszmaul and Ben Cohen-Wang for giving us guidance for the implementation of random placement, and Lilia Tang, Nathan Kau, and William Meng for moral support. 
