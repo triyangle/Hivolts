@@ -11,8 +11,8 @@ The purpose of this project is to reimplement the Hivolts game.
 The specification of this project was to reimplement the Hivolts game with updated graphics. We have successfully reproduced the game to play like the original as according to the specifications on paleyontology.com. We have designed new and updated graphics to meet the criterion. In addition, the game features were updated to include variable grid size, allowing the player to play on a bigger board. 
 
 ### Current Errors
-There are no current errors in the game. There was an error with the varible grid size, in which a grid size that wasn't a square wasn't working, but the issue was resolved as of 10/19/2015. 
 
+There are currently a few subtle errors with mho movement. The specification calls for mhos to move in the order in which they are stored. It also declares rules that work best when mhos move in arbitrary order. To try to reconcile these different 
 
 ### Code Overview
 
