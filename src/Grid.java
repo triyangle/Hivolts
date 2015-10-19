@@ -59,8 +59,9 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	private boolean movedDiagonally = false;
 
 	private File fenceImage = new File("old images/fence.png");
-	private File mhoImage = new File("old image/mho.png");
-	private File playerImage = new File("old image/player.png");
+	private File mhoImage = new File("old images/mho.png");
+	private File playerImage = new File("old images/player.png");
+	private File deadMhoImage = new File("old images/deadmho.png");
 	
 	private JPanel northPanel = new JPanel();
 	private JCheckBox imageOption = new JCheckBox("Old graphics");
@@ -240,13 +241,15 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 		String fileName = newImage ? "" : "old images/";
 		
 		fenceImage = new File(fileName + "fence.png");
-		mhoImage = new File(fileName + "mho.png");
+		mhoImage = new File(fileName + "Mho.png");
 		playerImage = new File(fileName + "player.png");
+		deadMhoImage = new File(fileName + "deadmho.png");
 		
 		
 		initFenceImage();
 		initMhoImage();
 		initPlayerImage();
+		initDeadMhoImage();
 		repaint();
 		
 	}
@@ -278,8 +281,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	private void initMhoImage(){
 		
 		try {
-
-			Mho.setImage(ImageIO.read(new File("old images/Mho.png")));
+			Mho.setImage(ImageIO.read(mhoImage));
 
 		} catch (IOException e) {
 
@@ -298,7 +300,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 		
 		try {
 
-			Player.setImage(ImageIO.read(new File("old images/player.png")));
+			Player.setImage(ImageIO.read(playerImage));
 
 		} catch (IOException e) {
 
@@ -317,7 +319,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 		
 		try {
 
-			DeadMho.setImage(ImageIO.read(new File("old images/deadmho1.png")));
+			DeadMho.setImage(ImageIO.read(deadMhoImage));
 
 		} catch (IOException e) {
 
