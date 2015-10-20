@@ -1,9 +1,15 @@
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+/**
+ * Group members:
+ * Albert Ford, Kevin Li, and William Yang
+ * @author Albert
+ */
 
 public class DeadMho extends Entity {
 
+	// The image of the dead mho
 	private static BufferedImage sprite;
 	
 	/**

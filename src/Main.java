@@ -8,6 +8,11 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
+/**
+ * Group members:
+ * Albert Ford, Kevin Li, and William Yang
+ */
+
 public class Main {
 	
 	public static Grid display;
@@ -21,16 +26,26 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		// Bring up a JFrame with squares to represent the cells
+		// width in pixels of the display
 		final int DISPLAY_WIDTH = 792;
+		// height in pixels of the display
 		final int DISPLAY_HEIGHT = 792;
 		
+
 		//default, max, and min sizes of the grid (side length number of cells of grid)
+		
+		// default width and height in cells of the board
 		final int DEFAULT_SIZE = 12;
+		
+		// minimum width and height in cells of the board
 		final int MIN_SIZE = 10;
+		
+		// maximum width and height in cells of the board
 		final int MAX_SIZE = 36;
 		
-		// create new window with size 250x250 on top of game window
+		// @author Kevin
+		
+		// create new window with size 250x300 on top of game window
 		JFrame window = new JFrame("Instructions");
 		window.setLayout(new BoxLayout(window.getContentPane(), BoxLayout.PAGE_AXIS));
 		window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -47,8 +62,11 @@ public class Main {
 			 * Displays the main frame for the game and initializes the grid based on the
 			 * size grid size specified in the spinner. Also adds a checkbox to the top of
 			 * the frame that allows for toggling between older and more modern graphics.
-			 * 
+			 * This method is called when the start button is pressed.
+			 * It launches the game and closes the intro window.
+			 * @author Albert
 			 * @param e Unused parameter
+
 			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -61,17 +79,21 @@ public class Main {
 				f.setLayout(new BorderLayout());
 				f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				
+				
 				JPanel northPanel = new JPanel();
 				JCheckBox imageOption = new JCheckBox("New Images");
 								
 				imageOption.addItemListener(new ItemListener() {
 			
 					/**
+
 					 * Changes the game images based on whether the checkbox is selected
 					 * or not. <code>mouseEntered</code> method in Grid is invoked to
 					 * make the grid regain focus after the checkbox is clicked.
-					 * 
+					 * This method tells grid to change the graphics when the checkbox is toggled.
 					 * @param arg0 Unused parameter
+					 * @author William
+
 					 */
 					@Override
 					public void itemStateChanged(ItemEvent arg0) {
@@ -100,6 +122,8 @@ public class Main {
 			}
 			
 		});
+		
+		// @author Kevin
 		
 		//uses html text to create different lines of text
 		JLabel label = new JLabel("Text-Only Label", JLabel.CENTER);

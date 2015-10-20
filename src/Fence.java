@@ -1,8 +1,14 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * Group members:
+ * Albert Ford, Kevin Li, and William Yang
+ */
+
 public class Fence extends Cell {
 
+	// The image of the fence
 	private static BufferedImage sprite;
 
 	/**
@@ -39,6 +45,7 @@ public class Fence extends Cell {
 	/**
 	 * Draws a <code>Fence</code> sprite for a certain <code>Fence</code>based on the cell boundaries, 
 	 * initial offsets and the cell coordinates of the particular <code>Fence</code>.
+	 * @author Kevin, William
 	 */
 	@Override
 	public void draw(int xOffset, int yOffset, int width, int height, Graphics g) {

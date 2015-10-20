@@ -2,6 +2,10 @@
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+/**
+ * Group members:
+ * Albert Ford, Kevin Li, and William Yang
+ */
 
 public class Player extends Entity {
 	
@@ -42,6 +46,7 @@ public class Player extends Entity {
 	/**
 	 * Draws the <code>Player</code> sprite based on cell boundaries, initial offsets,
 	 * and the cell coordinates of the <code>Player</code>
+	 * @author William
 	 */
 	@Override
 	public void draw(int xOffset, int yOffset, int width, int height, Graphics g) {
@@ -60,6 +65,7 @@ public class Player extends Entity {
 	 * @param y The new y-coordinate to move the player to
 	 * @param jump Whether or not the player jumped to move
 	 * @return Whether or not the player lost (moved onto a Mho/Fence)
+	 * @author William, Albert
 	 */
 	public boolean move(int x, int y, boolean jump) {
 		
@@ -90,6 +96,7 @@ public class Player extends Entity {
 	 * Moves the player, then moves the Mhos if the player did not lose
 	 * @param x The new x-coordinate to move the Player to
 	 * @param y The new y-coordinate to move the Player to
+	 * @author Albert, William
 	 */
 	public void act(int x, int y) {
 
