@@ -4,7 +4,7 @@ Authors: Albert Ford, Kevin Li, William Yang
 
 ### Introduction
 
-The purpose of this project is to reimplement the Hivolts game. A video demo of our code can be seen [here:](https://www.youtube.com/watch?v=gATqJGEV0e8)
+The purpose of this project is to reimplement the Hivolts game. A video demo of our code can be seen [here.](https://www.youtube.com/watch?v=gATqJGEV0e8)
 
 ### Description
 
