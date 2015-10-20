@@ -53,17 +53,25 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	private final int X_GRID_OFFSET = 0; // 0
 	// The vertical offset between the board and the top of the window
 	private final int Y_GRID_OFFSET = 0; // 0
+	// The width of a cell in pixels
 	private final int CELL_WIDTH;
+	// The height of a cell in pixels
 	private final int CELL_HEIGHT;
 
+	// The number of interior fences
 	private final int FENCES; // 20
+	// The initial number of mhos
 	private final int INITIAL_MHOS; // 12
 
+	// The width in pixels of the board
 	private final int DISPLAY_WIDTH;
+	// The height in pixels of the board
 	private final int DISPLAY_HEIGHT;
 
+	// The player object
 	private Player player;
 
+	// Whether or not the game is over
 	private boolean gameOver;
 
 	// The arrow key that is currently being held down
@@ -71,18 +79,22 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	// Whether or not the player has moved diagonally using the arrow keys
 	private boolean movedDiagonally = false;
 
+	// The files for the images of fences, mhos, the player, and dead mhos, respectively
 	private File fenceImage = new File("old images/fence.png");
 	private File mhoImage = new File("old images/mho.png");
 	private File playerImage = new File("old images/player.png");
 	private File deadMhoImage = new File("old images/deadmho.png");
 	
+	// The JPanel that holds the checkbox
 	private JPanel northPanel = new JPanel();
+	// The checkbox that controls what version of graphics to use
 	private JCheckBox imageOption = new JCheckBox("Old graphics");
 	
 	/**
 	 * Initializes a new Grid.
 	 * @param width The width of the Grid frame
 	 * @param height The height of the Grid frame
+	 * @author William
 	 */
 	public Grid(int width, int height, int rows, int cols) {
 
@@ -125,6 +137,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	
 	/**
 	 * Overrides the preferred size (of 0) to make it the correct width and height.
+	 * @author Albert
 	 */
 	@Override
 	public Dimension getPreferredSize() {
@@ -136,6 +149,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	/**
 	 * Initialize the outer fences.
 	 * This method creates the fences along the edge of the board and adds them to the grid.
+	 * @author William
 	 */
 	private void initExterior() {
 		
@@ -168,10 +182,10 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	 * <li><b>2</b> represents mhos</li>
 	 * <li><b>3</b> represents the player</li>
 	 * </ul>
-	 * 
+	 * @author Albert
 	 */
 	private void initInterior() {
-		
+		// create a list of empty interior cells
 		Integer[] empty = new Integer[(ROWS-2)*(COLS-2)-FENCES-INITIAL_MHOS-1];
 		
 		for (int i = 0; i < empty.length; i++) {
@@ -180,9 +194,14 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 			
 		}
 
+		// place fences randomly
 		Integer[] fences = placeRandom(empty, 1, FENCES);
+		// place mhos randomly
 		Integer[] mhos = placeRandom(fences, 2, INITIAL_MHOS);
+		// place player randomly
 		Integer[] player = placeRandom(mhos, 3, 1);
+		
+		// update the array of cells based on the list generated
 		for (int i = 0; i < player.length; i++) {
 			
 			int x = i / (ROWS-2);
@@ -228,6 +247,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	 * @param item An <code>int</code> representing the item to be placed
 	 * @param itemCount The number of items to be placed
 	 * @return A new array with the items placed among the input array
+	 * @author Albert
 	 */
 	private static Integer[] placeRandom(Integer[] array, int item, int itemCount) {
 		
@@ -249,6 +269,11 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 		
 	}
 	
+	/**
+	 * Set the image files for Entities after the checkbox is toggled
+	 * @param newImage whether or not to use the new images
+	 * @author William
+	 */
 	public void setImageFiles(boolean newImage) {
 		
 		String fileName = newImage ? "" : "old images/";
@@ -269,6 +294,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 
 	/**
 	 * Initializes the fence image and icon
+	 * @author Kevin, William
 	 */
 	private void initFenceImage() {
 
@@ -290,6 +316,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 
 	/**
 	 * Initializes the mho image and icon
+	 * @author Kevin, William
 	 */
 	private void initMhoImage(){
 		
@@ -308,6 +335,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 
 	/**
 	 * Initializes the player image and icon
+	 * @author Kevin, William
 	 */
 	private void initPlayerImage(){
 		
@@ -327,6 +355,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	
 	/**
 	 * Initializes the dead mho image and icon
+	 * @author Kevin, William
 	 */
 	private void initDeadMhoImage() {
 		
@@ -404,6 +433,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	/**
 	 * Draws all the mhos on the grid
 	 * @param g The graphics component on which to draw the mhos
+	 * @author William
 	 */
 	private void drawMhos(Graphics g) {
 
@@ -415,6 +445,11 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 
 	}
 	
+	/**
+	 * Draws all the dead mhos on the grid
+	 * @param g The graphics component on which to draw the mhos
+	 * @author Albert
+	 */
 	private void drawDeadMhos(Graphics g) {
 		
 		for (int i = 0; i < deadMhoList.size(); i++) {
@@ -440,6 +475,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	 * @param x The x-coordinate of the cell
 	 * @param y The y-coordinate of the cell
 	 * @return Whether or not the cell in question is occupied by a mho
+	 * @author Albert, William
 	 */
 	public boolean occupiedByMho(int x, int y) {
 		
@@ -468,6 +504,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	 * @param x The x-coordinate of the cell
 	 * @param y The y-coordinate of the cell
 	 * @return The mho in the target cell
+	 * @author Albert, William
 	 */
 	public Mho getMho(int x, int y) {
 		
@@ -505,6 +542,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	/**
 	 * Loops through the <code>ArrayList</code> of mhos and moves each of them. Breaks out of said
 	 * loop if <code>gameOver</code> is true.
+	 * @author Albert, William
 	 */
 	public void moveMhos() {
 
@@ -548,6 +586,9 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 
 	/**
 	 * Make the player jump to a random non-fence cell
+	 * This method finds the number of empty spots, picks one, then finds it and puts
+	 * the player there. It avoids jumping on fences and trying again.
+	 * @author Albert
 	 */
 	private void jump() {
 		
@@ -580,6 +621,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	 * @param win Whether the player won (no mhos left)
 	 * @param message A message describing how the game ended
 	 * @param icon An icon pertaining to how the game ended
+	 * @author William
 	 */
 	public void gameOver(boolean win, String message, ImageIcon icon) {
 		
@@ -620,6 +662,7 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	/**
 	 * Moves the player according to the key pressed
 	 * @param e The <code>KeyEvent</code> on which to obtain the <code>KeyCode</code>
+	 * @author William, Albert
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -784,8 +827,9 @@ public class Grid extends JComponent implements KeyListener, MouseListener, Item
 	}
 
 	/**
-	 * 
-	 * @param e
+	 * Moves the player orthogonally when an arrow key is released.
+	 * @param e The keyboard event
+	 * @author Albert
 	 */
 	@Override
 	public void keyReleased(KeyEvent e) {

@@ -8,6 +8,11 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
+/**
+ * Group members:
+ * Albert Ford, Kevin Li, and William Yang
+ */
+
 public class Main {
 	
 	public static Grid display;
@@ -30,6 +35,8 @@ public class Main {
 		// maximum width and height in cells of the board
 		final int MAX_SIZE = 36;
 		
+		// @author Kevin
+		
 		// create new window with size 250x300 on top of game window
 		JFrame window = new JFrame("Instructions");
 		window.setLayout(new BoxLayout(window.getContentPane(), BoxLayout.PAGE_AXIS));
@@ -46,6 +53,7 @@ public class Main {
 			/**
 			 * This method is called when the start button is pressed.
 			 * It launches the game and closes the intro window.
+			 * @author Albert
 			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -55,6 +63,7 @@ public class Main {
 				f.setLayout(new BorderLayout());
 				f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				
+				
 				JPanel northPanel = new JPanel();
 				JCheckBox imageOption = new JCheckBox("New Images");
 				
@@ -62,6 +71,7 @@ public class Main {
 			
 					/**
 					 * This method tells grid to change the graphics when the checkbox is toggled.
+					 * @author William
 					 */
 					@Override
 					public void itemStateChanged(ItemEvent arg0) {
@@ -85,6 +95,8 @@ public class Main {
 			}
 			
 		});
+		
+		// @author Kevin
 		
 		//uses html text to create different lines of text
 		JLabel label = new JLabel("Text-Only Label", JLabel.CENTER);

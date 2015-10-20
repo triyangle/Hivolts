@@ -2,10 +2,9 @@
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-
 /**
- * 
- * @author Albert
+ * Group members:
+ * Albert Ford, Kevin Li, and William Yang
  */
 
 public class Mho extends Entity {
@@ -19,6 +18,11 @@ public class Mho extends Entity {
 
 	}
 
+	/**
+	 * Create a new Mho
+	 * @param x The x coordinate of the mho
+	 * @param y The y coordinate of the mho
+	 */
 	public Mho(int x, int y) {
 
 		this.x = x;
@@ -48,6 +52,7 @@ public class Mho extends Entity {
 
 	/**
 	 * Draws the <code>Mho</code> sprite
+	 * @author William
 	 */
 	@Override
 	public void draw(int xOffset, int yOffset, int width, int height, Graphics g) {
@@ -65,6 +70,7 @@ public class Mho extends Entity {
 	 * 
 	 * @param playerx The x-coordinate of the player
 	 * @param playery The y-coordinate of the player
+	 * @author Albert
 	 */
 	public void act(int playerx, int playery) {
 
@@ -144,6 +150,7 @@ public class Mho extends Entity {
 	 * @param playerx The x-coordinate of the player
 	 * @param playery The y-coordinate of the player
 	 * @return Whether or not the mho can move to the target cell
+	 * @author Albert
 	 */
 	public boolean canMove(int x, int y, int newx, int newy, int playerx, int playery) {
 
@@ -184,6 +191,7 @@ public class Mho extends Entity {
 	 * @param newx The x-coordinate of the target cell
 	 * @param newy The y-coordinate of the target cell
 	 * @return Whether or not the mho is moving to a fence
+	 * @author Albert
 	 */
 	public boolean canMoveToFence(int newx, int newy) {
 
