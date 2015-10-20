@@ -1,14 +1,23 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
+/**
+ * Group members:
+ * Albert Ford, Kevin Li, and William Yang
+ */
 
 public class Entity {
 
+	// The x coordinate in cells of the entity
 	protected int x;
+	// The y coordinate in cells of the entity
 	protected int y;
-	
+	// The background color of the entity
 	protected Color myColor;
 	
+	/**
+	 * Default constructor
+	 */
 	public Entity() {
 		
 	}
@@ -52,6 +61,7 @@ public class Entity {
 	 * @param width The width of a cell
 	 * @param height The height of a cell
 	 * @param g The graphics object
+	 * @author William
 	 */
 	public void draw(int xOffset, int yOffset, int width, int height, Graphics g) {
 		int xLeft = xOffset + 1 + (this.x * (width + 1));
@@ -64,6 +74,7 @@ public class Entity {
 	 * Moves the entity to the new coordinates
 	 * @param x The new x-coordinate
 	 * @param y The new y-coordinate
+	 * @author William
 	 */
 	public void move(int x, int y) {
 		

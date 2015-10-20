@@ -18,6 +18,11 @@ import javax.swing.*;
 import javax.imageio.ImageIO;
 
 /**
+ * Group members:
+ * Albert Ford, Kevin Li, and William Yang
+ */
+
+/**
  * 
  * @author William
  * 
@@ -25,20 +30,28 @@ import javax.imageio.ImageIO;
 
 public class Grid extends JComponent implements KeyListener, MouseListener, ItemListener {
 
-	//various Grid variable
+	// height of the board in cells
 	public final int ROWS; // 12
+	// width of the board in cells
 	public final int COLS; // 12
+	// 2d array containing all the cells
+	// organized by cell[x][y]
 	public static Cell[][] cell;
 	
+	// Images for the mhos, fences, player, and dead mhos, respectively
 	public static ImageIcon mhoIcon;
 	public static ImageIcon fenceIcon;
 	public static ImageIcon playerIcon;
 	public static ImageIcon deadMhoIcon;
 	
+	// A list of live mhos
 	public ArrayList<Mho> mhoList = new ArrayList<Mho>();
+	// A list of dead mhos
 	public ArrayList<DeadMho> deadMhoList = new ArrayList<DeadMho>();
 	
+	// The horizontal offset between the board and the left side of the window
 	private final int X_GRID_OFFSET = 0; // 0
+	// The vertical offset between the board and the top of the window
 	private final int Y_GRID_OFFSET = 0; // 0
 	private final int CELL_WIDTH;
 	private final int CELL_HEIGHT;

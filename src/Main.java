@@ -18,15 +18,19 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		// Bring up a JFrame with squares to represent the cells
+		// width in pixels of the display
 		final int DISPLAY_WIDTH = 792;
+		// height in pixels of the display
 		final int DISPLAY_HEIGHT = 792;
 		
+		// default width and height in cells of the board
 		final int DEFAULT_SIZE = 12;
+		// minimum width and height in cells of the board
 		final int MIN_SIZE = 10;
+		// maximum width and height in cells of the board
 		final int MAX_SIZE = 36;
 		
-		// create new window with size 250x250 on top of game window
+		// create new window with size 250x300 on top of game window
 		JFrame window = new JFrame("Instructions");
 		window.setLayout(new BoxLayout(window.getContentPane(), BoxLayout.PAGE_AXIS));
 		window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -40,7 +44,8 @@ public class Main {
 		button.addActionListener(new ActionListener() {
 
 			/**
-			 * 
+			 * This method is called when the start button is pressed.
+			 * It launches the game and closes the intro window.
 			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -55,6 +60,9 @@ public class Main {
 				
 				imageOption.addItemListener(new ItemListener() {
 			
+					/**
+					 * This method tells grid to change the graphics when the checkbox is toggled.
+					 */
 					@Override
 					public void itemStateChanged(ItemEvent arg0) {
 
