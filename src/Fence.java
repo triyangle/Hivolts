@@ -6,7 +6,7 @@ public class Fence extends Cell {
 	private static BufferedImage sprite;
 
 	/**
-	 * Creates a new <code>Fence</code>
+	 * Creates a new <code>Fence</code> with given coordinates
 	 * @param x The x-coordinate of the <code>Fence</code>
 	 * @param y The y-coordinate of the <code>Fence</code>
 	 */
@@ -37,7 +37,8 @@ public class Fence extends Cell {
 	}
 	
 	/**
-	 * Draws a <code>Fence</code>
+	 * Draws a <code>Fence</code> sprite for a certain <code>Fence</code>based on the cell boundaries, 
+	 * initial offsets and the cell coordinates of the particular <code>Fence</code>.
 	 */
 	@Override
 	public void draw(int xOffset, int yOffset, int width, int height, Graphics g) {
@@ -45,7 +46,9 @@ public class Fence extends Cell {
 		int xLeft = xOffset + 1 + (this.x * (width + 1));
 		int yTop = yOffset + 1 + (this.y * (height + 1));
 		
+		//draws a black cell first underneath the fence sprite
 		super.draw(xOffset, yOffset, width, height, g);
+		
 		g.drawImage(sprite, xLeft, yTop, width, height, null);
 		
 	}

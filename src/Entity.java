@@ -46,7 +46,9 @@ public class Entity {
 	}
 	
 	/**
-	 * Draws an entity with a certain color
+	 * Draws an entity with a certain color based on the cell boundaries, initial offsets
+	 * and the cell coordinates.
+	 * 
 	 * @param xOffset The horizontal distance before the first cell
 	 * @param yOffset The vertical distance before the first cell
 	 * @param width The width of a cell
@@ -54,14 +56,21 @@ public class Entity {
 	 * @param g The graphics object
 	 */
 	public void draw(int xOffset, int yOffset, int width, int height, Graphics g) {
+		
+		//left edge of cell
 		int xLeft = xOffset + 1 + (this.x * (width + 1));
+		
+		//top edge of cell
 		int yTop = yOffset + 1 + (this.y * (height + 1));
+		
 		g.setColor(myColor);
 		g.fillRect(xLeft, yTop, width, height);
+		
 	}
 	
 	/**
-	 * Moves the entity to the new coordinates
+	 * Moves the entity to the new coordinates by changing its coordinates to the
+	 * specified ones.
 	 * @param x The new x-coordinate
 	 * @param y The new y-coordinate
 	 */

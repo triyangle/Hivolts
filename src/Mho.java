@@ -19,6 +19,11 @@ public class Mho extends Entity {
 
 	}
 
+	/**
+	 * Creates a new <code>Mho</code> based on the specified coordinates
+	 * @param x The x-coordinate of the <code>Mho</code>
+	 * @param y The y-coordinate of the <code>Mho</code>
+	 */
 	public Mho(int x, int y) {
 
 		this.x = x;
@@ -47,7 +52,8 @@ public class Mho extends Entity {
 	}
 
 	/**
-	 * Draws the <code>Mho</code> sprite
+	 * Draws the <code>Mho</code> sprite for a certain <code>Mho</code> based on the cell boundaries,
+	 * initial offsets, and the cell coordinates of the particular <code>Mho</code>.
 	 */
 	@Override
 	public void draw(int xOffset, int yOffset, int width, int height, Graphics g) {
@@ -61,7 +67,8 @@ public class Mho extends Entity {
 
 	/**
 	 * This method is called for every <code>Mho</code> after the player's turn. It moves each
-	 * <code>Mho</code> according to its position relative to the <code>Player</code>.
+	 * <code>Mho</code> according to its position relative to the <code>Player</code>. The order in
+	 * which the <code>Mho</code> checks for valid moves is as specified in the specifications.
 	 * 
 	 * @param playerx The x-coordinate of the player
 	 * @param playery The y-coordinate of the player
@@ -98,6 +105,7 @@ public class Mho extends Entity {
 
 			}
 
+			//absolute distance away mho is from player in terms of x and y
 			int deltax = Math.abs(x - playerx);
 			int deltay = Math.abs(y - playery);
 
@@ -159,6 +167,8 @@ public class Mho extends Entity {
 		else if (Main.display.occupiedByMho(newx, newy)) {
 
 			Mho mho = Main.display.getMho(newx, newy);
+			
+			//Mhos that have moved already can't move again
 			if (mho.hasMoved()) {
 				canmove = false;
 			}
@@ -169,6 +179,7 @@ public class Mho extends Entity {
 
 		}
 
+		//ends game if Mho moves to same coordinates as player
 		else if (newx == playerx && newy == playery) {
 
 			Main.display.setGameOver(true);
@@ -193,6 +204,7 @@ public class Mho extends Entity {
 
 	/**
 	 * Set whether or not the mho is alive
+	 * @param alive New <code>Mho</code> state
 	 */
 	public void setAlive(boolean alive) {
 
@@ -201,6 +213,7 @@ public class Mho extends Entity {
 	}
 
 	/**
+	 * Determines if specific <code>Mho</code> is alive or not
 	 * @return whether or not the mho is alive
 	 */
 	public boolean getAlive() {
@@ -219,6 +232,10 @@ public class Mho extends Entity {
 
 	}
 
+	/**
+	 * Sets whether a particular <code>Mho</code> has moved or not
+	 * @param hasMoved Whether or not the <code>Mho</code> has moved
+	 */
 	public void setHasMoved(boolean hasMoved) {
 
 		this.hasMoved = hasMoved;
