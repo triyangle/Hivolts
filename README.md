@@ -8,7 +8,7 @@ The purpose of this project is to reimplement the Hivolts game.
 
 ### Description
 
-The specification of this project was to reimplement the Hivolts game with updated graphics. We have successfully reproduced the game to play like the original as according to the specifications on paleyontology.com. We have designed new and updated graphics to meet the criterion. In addition, the game features were updated to include variable grid size, allowing the player to play on a bigger board. 
+The specification of this project was to reimplement the Hivolts game with updated graphics. We have successfully reproduced the game to play like the original as according to the specifications on paleyontology.com. We have designed new and updated graphics to meet the criterion, as well as created an option to toggle between old-school pixel graphics and more modern graphics. In addition, the game features were updated to include variable grid size, allowing the player to play on a bigger board. 
 
 ### Current Errors
 
