@@ -69,7 +69,7 @@ public class Mho extends Entity {
 	 * This method is called for every <code>Mho</code> after the player's turn. It moves each
 	 * <code>Mho</code> according to its position relative to the <code>Player</code>. The order in
 	 * which the <code>Mho</code> checks for valid moves is as specified in the specifications.
-	 * 
+	 *
 	 * @param playerx The x-coordinate of the player
 	 * @param playery The y-coordinate of the player
 	 * @author Albert
@@ -169,7 +169,7 @@ public class Mho extends Entity {
 		else if (Main.display.occupiedByMho(newx, newy)) {
 
 			Mho mho = Main.display.getMho(newx, newy);
-			
+
 			//Mhos that have moved already can't move again
 			if (mho.hasMoved()) {
 				canmove = false;

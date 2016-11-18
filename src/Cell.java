@@ -29,9 +29,9 @@ public class Cell extends Entity {
 	 * @author William, Albert
 	 */
 	public boolean getFence() {
-		
+
 		return this instanceof Fence;
-		
+
 	}
 
 }
